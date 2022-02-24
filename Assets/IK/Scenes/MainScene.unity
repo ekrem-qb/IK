@@ -2108,7 +2108,7 @@ ConfigurableJoint:
     positionSpring: 0
     positionDamper: 0
     maximumForce: 3.4028233e+38
-  m_TargetRotation: {x: -0.15, y: -0.18, z: 0.46, w: 1}
+  m_TargetRotation: {x: 0, y: 0, z: 0.42261827, w: 0.90630776}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
   m_RotationDriveMode: 0
   m_AngularXDrive:
@@ -2385,7 +2385,7 @@ ConfigurableJoint:
     positionSpring: 0
     positionDamper: 0
     maximumForce: 3.4028233e+38
-  m_TargetRotation: {x: 0.15, y: -0.18, z: -0.46, w: 1}
+  m_TargetRotation: {x: 0, y: 0, z: -0.42261827, w: 0.90630776}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
   m_RotationDriveMode: 0
   m_AngularXDrive:
