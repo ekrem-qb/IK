@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class AutoAim : MonoBehaviour
@@ -6,13 +6,22 @@ public class AutoAim : MonoBehaviour
     ARP.APR.Scripts.APRController APR_Player;
     ConfigurableJoint armLeft;
     ConfigurableJoint armRight;
-    public List<Enemy> enemyList = new List<Enemy>();
+    ConfigurableJoint armLeftLow;
+    ConfigurableJoint armRightLow;
+    Gun gunLeft;
+    Gun gunRight;
+    public ObservableList<Enemy> enemyList = new ObservableList<Enemy>();
 
     void Awake()
     {
         APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         armLeft = APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>();
         armRight = APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>();
+        armLeftLow = APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>();
+        armRightLow = APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>();
+        gunLeft = armLeft.GetComponentInChildren<Gun>();
+        gunRight = armRight.GetComponentInChildren<Gun>();
+        enemyList.CountChanged += OnEnemyListChanged;
     }
 
     void FixedUpdate()
@@ -31,10 +40,6 @@ public class AutoAim : MonoBehaviour
                     Quaternion newRot = Quaternion.Euler(angles.x - 50, angles.y - 270, angles.z);
 
                     armLeft.targetRotation = newRot;
-                    armLeft.angularXDrive = APR_Player.ReachStiffness;
-                    armLeft.angularYZDrive = APR_Player.ReachStiffness;
-
-                    APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.identity;
                 }
 
                 if (!APR_Player.punchingRight)
@@ -47,21 +52,7 @@ public class AutoAim : MonoBehaviour
                     Quaternion newRot = Quaternion.Euler(angles.x - 50, angles.y - 90, angles.z);
 
                     armRight.targetRotation = newRot;
-                    armRight.angularXDrive = APR_Player.ReachStiffness;
-                    armRight.angularYZDrive = APR_Player.ReachStiffness;
-
-                    APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.identity;
                 }
-            }
-            else
-            {
-                APR_Player.ResetPose = true;
-
-                armLeft.angularXDrive = APR_Player.PoseOn;
-                armLeft.angularYZDrive = APR_Player.PoseOn;
-
-                armRight.angularXDrive = APR_Player.PoseOn;
-                armRight.angularYZDrive = APR_Player.PoseOn;
             }
         }
     }
@@ -111,5 +102,57 @@ public class AutoAim : MonoBehaviour
             return 1;
         }
         return 0;
+    }
+
+    void OnEnemyListChanged(object sender, EventArgs e)
+    {
+        this.enabled = enemyList.Count != 0;
+    }
+
+    void OnDisable()
+    {
+        APR_Player.ResetPose = true;
+
+        armLeft.angularXDrive = APR_Player.PoseOn;
+        armLeft.angularYZDrive = APR_Player.PoseOn;
+
+        armRight.angularXDrive = APR_Player.PoseOn;
+        armRight.angularYZDrive = APR_Player.PoseOn;
+
+        armLeftLow.angularXDrive = APR_Player.PoseOn;
+        armLeftLow.angularYZDrive = APR_Player.PoseOn;
+
+        armRightLow.angularXDrive = APR_Player.PoseOn;
+        armRightLow.angularYZDrive = APR_Player.PoseOn;
+
+        if (gunLeft != null)
+            gunLeft.enabled = false;
+        if (gunRight != null)
+            gunRight.enabled = false;
+    }
+
+    void OnEnable()
+    {
+        APR_Player.ResetPose = false;
+
+        armLeft.angularXDrive = APR_Player.ReachStiffness;
+        armLeft.angularYZDrive = APR_Player.ReachStiffness;
+
+        armRight.angularXDrive = APR_Player.ReachStiffness;
+        armRight.angularYZDrive = APR_Player.ReachStiffness;
+
+        armLeftLow.angularXDrive = APR_Player.ReachStiffness;
+        armLeftLow.angularYZDrive = APR_Player.ReachStiffness;
+
+        armRightLow.angularXDrive = APR_Player.ReachStiffness;
+        armRightLow.angularYZDrive = APR_Player.ReachStiffness;
+
+        armLeftLow.targetRotation = Quaternion.identity;
+        armRightLow.targetRotation = Quaternion.identity;
+
+        if (gunLeft != null)
+            gunLeft.enabled = true;
+        if (gunRight != null)
+            gunRight.enabled = true;
     }
 }
