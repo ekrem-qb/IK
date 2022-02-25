@@ -30,14 +30,15 @@ public class AutoAim : MonoBehaviour
         {
             if (enemyList.Count > 0)
             {
+                OnEnable();
                 if (!APR_Player.punchingLeft)
                 {
                     enemyList.Sort(SortByDistanceToArmLeft);
 
                     Debug.DrawLine(enemyList[0].transform.position, armLeft.transform.position, Color.red);
 
-                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * APR_Player.Body.transform.rotation).eulerAngles;
-                    Quaternion newRot = Quaternion.Euler(angles.x - 50, angles.y - 270, angles.z);
+                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                    Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
 
                     armLeft.targetRotation = newRot;
                 }
@@ -48,8 +49,8 @@ public class AutoAim : MonoBehaviour
 
                     Debug.DrawLine(enemyList[0].transform.position, armRight.transform.position, Color.yellow);
 
-                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * APR_Player.Body.transform.rotation).eulerAngles;
-                    Quaternion newRot = Quaternion.Euler(angles.x - 50, angles.y - 90, angles.z);
+                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                    Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
 
                     armRight.targetRotation = newRot;
                 }
