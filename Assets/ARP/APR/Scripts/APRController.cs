@@ -150,7 +150,7 @@ namespace ARP.APR.Scripts
         //Debug
         public bool editorDebugMode;
 
-
+        AutoAim player;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -163,6 +163,7 @@ namespace ARP.APR.Scripts
         void Awake()
         {
             PlayerSetup();
+            player = COMP.GetComponent<AutoAim>();
         }
 
 
@@ -171,23 +172,32 @@ namespace ARP.APR.Scripts
         ////////////////
         void Update()
         {
-            if (useControls && !inAir)
+            if (useControls)
             {
-                PlayerMovement();
-
-                if (canPunch)
+                if (!inAir)
                 {
-                    PlayerPunch();
+                    PlayerMovement();
+
+                    if (canPunch)
+                    {
+                        PlayerPunch();
+                    }
+                }
+                if (player.gunRight == null)
+                {
+                    PlayerReach();
                 }
             }
 
-            if (balanced && useStepPrediction)
+            if (useStepPrediction)
             {
-                StepPrediction();
-                CenterOfMass();
+                if (balanced)
+                {
+                    StepPrediction();
+                    CenterOfMass();
+                }
             }
-
-            if (!useStepPrediction)
+            else
             {
                 ResetWalkCycle();
             }
@@ -596,6 +606,171 @@ namespace ARP.APR.Scripts
                 inAir = false;
                 ResetPose = true;
             }
+        }
+
+
+
+        //---Player Reach--//
+        ////////////////////
+        public void PlayerReach()
+        {
+            //Body Bending
+            if (1 == 1)
+            {
+                if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
+                {
+                    MouseYAxisBody = MouseYAxisBody + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                }
+
+                else if (MouseYAxisBody > 0.9f)
+                {
+                    MouseYAxisBody = 0.9f;
+                }
+
+                else if (MouseYAxisBody < -0.9f)
+                {
+                    MouseYAxisBody = -0.9f;
+                }
+
+                APR_Parts[1].GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
+            }
+
+
+            //Reach Left
+            if (Input.GetAxisRaw(reachLeft) != 0 && !punchingLeft)
+            {
+
+                if (!reachLeftAxisUsed)
+                {
+                    //Adjust Left Arm joint strength
+                    APR_Parts[5].GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+                    APR_Parts[5].GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+                    APR_Parts[6].GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+                    APR_Parts[6].GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+
+                    //Adjust body joint strength
+                    APR_Parts[1].GetComponent<ConfigurableJoint>().angularXDrive = CoreStiffness;
+                    APR_Parts[1].GetComponent<ConfigurableJoint>().angularYZDrive = CoreStiffness;
+
+                    reachLeftAxisUsed = true;
+                }
+
+                if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
+                {
+                    MouseYAxisArms = MouseYAxisArms + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                }
+
+                else if (MouseYAxisArms > 1.2f)
+                {
+                    MouseYAxisArms = 1.2f;
+                }
+
+                else if (MouseYAxisArms < -1.2f)
+                {
+                    MouseYAxisArms = -1.2f;
+                }
+
+                //upper  left arm pose
+                APR_Parts[5].GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - (MouseYAxisArms), 0.58f - (MouseYAxisArms), -0.8f, 1);
+            }
+
+            if (Input.GetAxisRaw(reachLeft) == 0 && !punchingLeft)
+            {
+                if (reachLeftAxisUsed)
+                {
+                    if (balanced)
+                    {
+                        APR_Parts[5].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[5].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+                        APR_Parts[6].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[6].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+
+                        APR_Parts[1].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[1].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+                    }
+
+                    else if (!balanced)
+                    {
+                        APR_Parts[5].GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+                        APR_Parts[5].GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+                        APR_Parts[6].GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+                        APR_Parts[6].GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+                    }
+
+                    ResetPose = true;
+                    reachLeftAxisUsed = false;
+                }
+            }
+
+
+
+
+            //Reach Right
+            if (Input.GetAxisRaw(reachRight) != 0 && !punchingRight)
+            {
+
+                if (!reachRightAxisUsed)
+                {
+                    //Adjust Right Arm joint strength
+                    APR_Parts[3].GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+                    APR_Parts[3].GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+                    APR_Parts[4].GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+                    APR_Parts[4].GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+
+                    //Adjust body joint strength
+                    APR_Parts[1].GetComponent<ConfigurableJoint>().angularXDrive = CoreStiffness;
+                    APR_Parts[1].GetComponent<ConfigurableJoint>().angularYZDrive = CoreStiffness;
+
+                    reachRightAxisUsed = true;
+                }
+
+                if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
+                {
+                    MouseYAxisArms = MouseYAxisArms + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                }
+
+                else if (MouseYAxisArms > 1.2f)
+                {
+                    MouseYAxisArms = 1.2f;
+                }
+
+                else if (MouseYAxisArms < -1.2f)
+                {
+                    MouseYAxisArms = -1.2f;
+                }
+
+                //upper right arm pose
+                APR_Parts[3].GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f + (MouseYAxisArms), 0.58f - (MouseYAxisArms), -0.8f, 1));
+            }
+
+            if (Input.GetAxisRaw(reachRight) == 0 && !punchingRight)
+            {
+                if (reachRightAxisUsed)
+                {
+                    if (balanced)
+                    {
+                        APR_Parts[3].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[3].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+                        APR_Parts[4].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[4].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+
+                        APR_Parts[1].GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+                        APR_Parts[1].GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+                    }
+
+                    else if (!balanced)
+                    {
+                        APR_Parts[3].GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+                        APR_Parts[3].GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+                        APR_Parts[4].GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+                        APR_Parts[4].GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+                    }
+
+                    ResetPose = true;
+                    reachRightAxisUsed = false;
+                }
+            }
+
         }
 
 

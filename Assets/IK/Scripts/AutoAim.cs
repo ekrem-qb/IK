@@ -4,12 +4,9 @@ using UnityEngine;
 public class AutoAim : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
-    ConfigurableJoint armLeft;
-    ConfigurableJoint armRight;
-    ConfigurableJoint armLeftLow;
-    ConfigurableJoint armRightLow;
-    Gun gunLeft;
-    Gun gunRight;
+    ConfigurableJoint armLeft, armRight;
+    ConfigurableJoint armLeftLow, armRightLow;
+    public Gun gunLeft, gunRight;
     public ObservableList<Enemy> enemyList = new ObservableList<Enemy>();
 
     void Awake()
@@ -28,31 +25,34 @@ public class AutoAim : MonoBehaviour
     {
         if (APR_Player.useControls)
         {
-            if (enemyList.Count > 0)
+            if (gunLeft != null)
             {
-                OnEnable();
-                if (!APR_Player.punchingLeft)
+                if (enemyList.Count > 0)
                 {
-                    enemyList.Sort(SortByDistanceToArmLeft);
+                    OnEnable();
+                    if (!APR_Player.punchingLeft)
+                    {
+                        enemyList.Sort(SortByDistanceToArmLeft);
 
-                    Debug.DrawLine(enemyList[0].transform.position, armLeft.transform.position, Color.red);
+                        Debug.DrawLine(enemyList[0].transform.position, armLeft.transform.position, Color.red);
 
-                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                    Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
+                        Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                        Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
 
-                    armLeft.targetRotation = newRot;
-                }
+                        armLeft.targetRotation = newRot;
+                    }
 
-                if (!APR_Player.punchingRight)
-                {
-                    enemyList.Sort(SortByDistanceToArmRight);
+                    if (!APR_Player.punchingRight)
+                    {
+                        enemyList.Sort(SortByDistanceToArmRight);
 
-                    Debug.DrawLine(enemyList[0].transform.position, armRight.transform.position, Color.yellow);
+                        Debug.DrawLine(enemyList[0].transform.position, armRight.transform.position, Color.yellow);
 
-                    Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                    Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
+                        Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                        Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
 
-                    armRight.targetRotation = newRot;
+                        armRight.targetRotation = newRot;
+                    }
                 }
             }
         }

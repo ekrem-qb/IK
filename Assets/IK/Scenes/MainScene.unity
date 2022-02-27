@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 154368060}
   m_Layer: 0
   m_Name: Enemy_4
-  m_TagString: Untagged
+  m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 242033361}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 399624912}
   m_Layer: 0
   m_Name: Enemy_1
-  m_TagString: Untagged
+  m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 1361906502}
   m_Layer: 0
   m_Name: Enemy_2
-  m_TagString: Untagged
+  m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 1951767540}
   m_Layer: 0
   m_Name: Enemy_3
-  m_TagString: Untagged
+  m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1092,6 +1092,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7906404183605566243, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7906404184273446312, guid: b6b248ede00241d4e976e4ea12ba4ee4,
         type: 3}
       propertyPath: m_RootOrder
@@ -1156,6 +1161,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906404185035268034, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6b248ede00241d4e976e4ea12ba4ee4, type: 3}

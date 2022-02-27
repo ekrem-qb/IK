@@ -3275,7 +3275,7 @@ MonoBehaviour:
   COMP: {fileID: 1577725242274002252}
   GrabRight: {fileID: 6644999386083356938}
   GrabLeft: {fileID: 6644999386083356937}
-  useControls: 1
+  useControls: 0
   forwardBackward: Vertical
   leftRight: Horizontal
   jump: Jump

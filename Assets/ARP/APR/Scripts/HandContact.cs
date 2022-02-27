@@ -2,16 +2,16 @@
 
 
 //-------------------------------------------------------------
-    //--APR Player
-    //--Hand Contact
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
+//--APR Player
+//--Hand Contact
+//
+//--Unity Asset Store - Version 1.0
+//
+//--By The Famous Mouse
+//
+//--Twitter @FamousMouse_Dev
+//--Youtube TheFamouseMouse
+//-------------------------------------------------------------
 
 
 namespace ARP.APR.Scripts
@@ -19,29 +19,35 @@ namespace ARP.APR.Scripts
     public class HandContact : MonoBehaviour
     {
         public APRController APR_Player;
-    
+
         //Is left or right hand
         public bool Left;
-    
+
         //Have joint/grabbed
         public bool hasJoint;
-	
+
+        AutoAim player;
+
+        void Awake()
+        {
+            player = APR_Player.COMP.GetComponent<AutoAim>();
+        }
 
         void Update()
         {
-            if(APR_Player.useControls)
+            if (APR_Player.useControls)
             {
                 //Left Hand
                 //On input release destroy joint
-                if(Left)
+                if (Left)
                 {
-                    if(hasJoint && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
+                    if (hasJoint && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
                     {
                         this.gameObject.GetComponent<FixedJoint>().breakForce = 0;
                         hasJoint = false;
                     }
 
-                    if(hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
+                    if (hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
                     {
                         hasJoint = false;
                     }
@@ -49,15 +55,15 @@ namespace ARP.APR.Scripts
 
                 //Right Hand
                 //On input release destroy joint
-                if(!Left)
+                if (!Left)
                 {
-                    if(hasJoint && Input.GetAxisRaw(APR_Player.reachRight) == 0)
+                    if (hasJoint && Input.GetAxisRaw(APR_Player.reachRight) == 0)
                     {
                         this.gameObject.GetComponent<FixedJoint>().breakForce = 0;
                         hasJoint = false;
                     }
 
-                    if(hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
+                    if (hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
                     {
                         hasJoint = false;
                     }
@@ -68,14 +74,14 @@ namespace ARP.APR.Scripts
         //Grab on collision when input is used
         void OnCollisionEnter(Collision col)
         {
-            if(APR_Player.useControls)
+            if (APR_Player.useControls)
             {
                 //Left Hand
-                if(Left)
+                if (Left)
                 {
-                    if(col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
                     {
-                        if(Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !hasJoint && !APR_Player.punchingLeft)
+                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !hasJoint && !APR_Player.punchingLeft && player.gunRight == null)
                         {
                             hasJoint = true;
                             this.gameObject.AddComponent<FixedJoint>();
@@ -83,15 +89,15 @@ namespace ARP.APR.Scripts
                             this.gameObject.GetComponent<FixedJoint>().connectedBody = col.gameObject.GetComponent<Rigidbody>();
                         }
                     }
-                
+
                 }
 
                 //Right Hand
-                if(!Left)
+                if (!Left)
                 {
-                    if(col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
                     {
-                        if(Input.GetAxisRaw(APR_Player.reachRight) != 0 && !hasJoint && !APR_Player.punchingRight)
+                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !hasJoint && !APR_Player.punchingRight && player.gunRight == null)
                         {
                             hasJoint = true;
                             this.gameObject.AddComponent<FixedJoint>();
