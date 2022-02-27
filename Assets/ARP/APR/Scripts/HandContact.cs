@@ -26,11 +26,11 @@ namespace ARP.APR.Scripts
         //Have joint/grabbed
         public bool hasJoint;
 
-        AutoAim player;
+        GunManager player;
 
         void Awake()
         {
-            player = APR_Player.COMP.GetComponent<AutoAim>();
+            player = APR_Player.COMP.GetComponent<GunManager>();
         }
 
         void Update()
@@ -81,7 +81,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !hasJoint && !APR_Player.punchingLeft && player.gunRight == null)
+                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !hasJoint && !APR_Player.punchingLeft && player.gunLeft == null)
                         {
                             hasJoint = true;
                             this.gameObject.AddComponent<FixedJoint>();
@@ -97,7 +97,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !hasJoint && !APR_Player.punchingRight && player.gunRight == null)
+                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !hasJoint && !APR_Player.punchingRight && player.gunLeft == null)
                         {
                             hasJoint = true;
                             this.gameObject.AddComponent<FixedJoint>();

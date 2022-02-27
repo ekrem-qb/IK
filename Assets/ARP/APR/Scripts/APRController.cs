@@ -150,7 +150,7 @@ namespace ARP.APR.Scripts
         //Debug
         public bool editorDebugMode;
 
-        AutoAim player;
+        GunManager player;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -163,7 +163,7 @@ namespace ARP.APR.Scripts
         void Awake()
         {
             PlayerSetup();
-            player = COMP.GetComponent<AutoAim>();
+            player = COMP.GetComponent<GunManager>();
         }
 
 
@@ -183,7 +183,7 @@ namespace ARP.APR.Scripts
                         PlayerPunch();
                     }
                 }
-                if (player.gunRight == null)
+                if (player.gunLeft == null)
                 {
                     PlayerReach();
                 }

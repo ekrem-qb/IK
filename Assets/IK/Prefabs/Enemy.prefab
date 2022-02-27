@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 3094827245850388684}
   - component: {fileID: 3094827245850388685}
   - component: {fileID: 3094827245850388686}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_COMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,6 +660,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e4298de9f8399489c244d0d3d69dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  armLeft: {fileID: 0}
+  armRight: {fileID: 0}
+  radarCenter: {x: 0, y: 0, z: 0}
+  radarRadius: 15
+  enemiesLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &3094827245850388686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,7 +1847,7 @@ GameObject:
   - component: {fileID: 6644999386083356920}
   - component: {fileID: 6644999386083356914}
   - component: {fileID: 6644999386083356919}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_UpperRightLeg
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -1999,7 +2006,7 @@ GameObject:
   - component: {fileID: 6644999386083356926}
   - component: {fileID: 6644999386083356940}
   - component: {fileID: 6644999386083356924}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LowerLeftArm
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -2158,7 +2165,7 @@ GameObject:
   - component: {fileID: 6644999386083356868}
   - component: {fileID: 6644999386083356925}
   - component: {fileID: 6644999386083356866}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_UpperLeftArm
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -2317,7 +2324,7 @@ GameObject:
   - component: {fileID: 6644999386083356874}
   - component: {fileID: 6644999386083356946}
   - component: {fileID: 6644999386083356872}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LowerRightArm
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -2476,7 +2483,7 @@ GameObject:
   - component: {fileID: 6644999386083356879}
   - component: {fileID: 6644999386083356873}
   - component: {fileID: 6644999386083356878}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_UpperRightArm
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -2637,7 +2644,7 @@ GameObject:
   - component: {fileID: 6644999386083356883}
   - component: {fileID: 8848533068470912545}
   - component: {fileID: 3116213603690372621}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_Head
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -2905,7 +2912,7 @@ GameObject:
   - component: {fileID: 6644999386083356890}
   - component: {fileID: 6644999386083356867}
   - component: {fileID: 6644999386083356889}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_Body
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -3064,7 +3071,7 @@ GameObject:
   - component: {fileID: 6644999386083356895}
   - component: {fileID: 6644999386083356908}
   - component: {fileID: 6644999386083356894}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_Root
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -3221,7 +3228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6644999386083356834}
   - component: {fileID: 6644999386083356936}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Enemy
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3349,7 +3356,7 @@ GameObject:
   - component: {fileID: 6644999386083356985}
   - component: {fileID: 6644999386083356939}
   - component: {fileID: 6644999386083356937}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LeftHand
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -3524,7 +3531,7 @@ GameObject:
   - component: {fileID: 6644999386083356986}
   - component: {fileID: 6644999386083356945}
   - component: {fileID: 6644999386083356938}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_RightHand
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -3699,7 +3706,7 @@ GameObject:
   - component: {fileID: 6644999386083356953}
   - component: {fileID: 6644999386083356951}
   - component: {fileID: 6644999386083356835}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LeftFoot
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -3872,7 +3879,7 @@ GameObject:
   - component: {fileID: 6644999386083356896}
   - component: {fileID: 6644999386083356958}
   - component: {fileID: 6644999386083356836}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_RightFoot
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -4044,7 +4051,7 @@ GameObject:
   - component: {fileID: 6644999386083356903}
   - component: {fileID: 6644999386083356952}
   - component: {fileID: 6644999386083356901}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LowerLeftLeg
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -4203,7 +4210,7 @@ GameObject:
   - component: {fileID: 6644999386083356909}
   - component: {fileID: 6644999386083356902}
   - component: {fileID: 6644999386083356907}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_UpperLeftLeg
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
@@ -4362,7 +4369,7 @@ GameObject:
   - component: {fileID: 6644999386083356915}
   - component: {fileID: 6644999386083356959}
   - component: {fileID: 6644999386083356913}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: APR_LowerRightLeg
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}

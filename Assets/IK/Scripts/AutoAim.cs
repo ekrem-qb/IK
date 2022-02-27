@@ -1,13 +1,16 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AutoAim : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
+    GunManager gunManager;
     ConfigurableJoint armLeft, armRight;
     ConfigurableJoint armLeftLow, armRightLow;
-    public Gun gunLeft, gunRight;
-    public ObservableList<Enemy> enemyList = new ObservableList<Enemy>();
+    public Vector3 radarCenter = Vector3.zero;
+    public float radarRadius = 15;
+    public LayerMask enemiesLayerMask;
+    public List<Collider> enemyList = new List<Collider>();
 
     void Awake()
     {
@@ -16,70 +19,91 @@ public class AutoAim : MonoBehaviour
         armRight = APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>();
         armLeftLow = APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>();
         armRightLow = APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>();
-        gunLeft = armLeft.GetComponentInChildren<Gun>();
-        gunRight = armRight.GetComponentInChildren<Gun>();
-        enemyList.CountChanged += OnEnemyListChanged;
+        gunManager = this.GetComponent<GunManager>();
     }
 
     void FixedUpdate()
     {
         if (APR_Player.useControls)
         {
-            if (gunLeft != null)
+            if (gunManager.gunLeft != null || gunManager.gunRight != null)
             {
+                enemyList = new List<Collider>(Physics.OverlapSphere(radarCenter + this.transform.position, radarRadius, enemiesLayerMask));
+
+                APR_Player.ResetPose = enemyList.Count == 0;
+
                 if (enemyList.Count > 0)
                 {
-                    OnEnable();
-                    if (!APR_Player.punchingLeft)
+                    if (gunManager.gunLeft != null)
                     {
-                        enemyList.Sort(SortByDistanceToArmLeft);
+                        if (!APR_Player.punchingLeft)
+                        {
+                            armLeft.angularXDrive = APR_Player.ReachStiffness;
+                            armLeft.angularYZDrive = APR_Player.ReachStiffness;
+                            armLeftLow.angularXDrive = APR_Player.ReachStiffness;
+                            armLeftLow.angularYZDrive = APR_Player.ReachStiffness;
+                            armLeftLow.targetRotation = Quaternion.identity;
 
-                        Debug.DrawLine(enemyList[0].transform.position, armLeft.transform.position, Color.red);
+                            gunManager.gunLeft.enabled = true;
 
-                        Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                        Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
+                            enemyList.Sort(SortByDistanceToArmLeft);
 
-                        armLeft.targetRotation = newRot;
+                            Debug.DrawLine(enemyList[0].transform.position, armLeft.transform.position, Color.red);
+
+                            Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                            Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
+
+                            armLeft.targetRotation = newRot;
+                        }
                     }
 
-                    if (!APR_Player.punchingRight)
+                    if (gunManager.gunRight != null)
                     {
-                        enemyList.Sort(SortByDistanceToArmRight);
+                        if (!APR_Player.punchingRight)
+                        {
+                            armRight.angularXDrive = APR_Player.ReachStiffness;
+                            armRight.angularYZDrive = APR_Player.ReachStiffness;
+                            armRightLow.angularXDrive = APR_Player.ReachStiffness;
+                            armRightLow.angularYZDrive = APR_Player.ReachStiffness;
+                            armRightLow.targetRotation = Quaternion.identity;
 
-                        Debug.DrawLine(enemyList[0].transform.position, armRight.transform.position, Color.yellow);
+                            gunManager.gunRight.enabled = true;
 
-                        Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                        Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
+                            enemyList.Sort(SortByDistanceToArmRight);
 
-                        armRight.targetRotation = newRot;
+                            Debug.DrawLine(enemyList[0].transform.position, armRight.transform.position, Color.yellow);
+
+                            Vector3 angles = (Quaternion.LookRotation(enemyList[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
+                            Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
+
+                            armRight.targetRotation = newRot;
+                        }
                     }
+                }
+                else
+                {
+                    if (gunManager.gunLeft != null)
+                        gunManager.gunLeft.enabled = false;
+                    if (gunManager.gunRight != null)
+                        gunManager.gunRight.enabled = false;
+
+                    armLeft.angularXDrive = APR_Player.PoseOn;
+                    armLeft.angularYZDrive = APR_Player.PoseOn;
+
+                    armRight.angularXDrive = APR_Player.PoseOn;
+                    armRight.angularYZDrive = APR_Player.PoseOn;
+
+                    armLeftLow.angularXDrive = APR_Player.PoseOn;
+                    armLeftLow.angularYZDrive = APR_Player.PoseOn;
+
+                    armRightLow.angularXDrive = APR_Player.PoseOn;
+                    armRightLow.angularYZDrive = APR_Player.PoseOn;
                 }
             }
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            if (!enemyList.Contains(enemy))
-            {
-                enemyList.Add(enemy);
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            enemyList.Remove(enemy);
-        }
-    }
-
-    int SortByDistanceToArmLeft(Enemy a, Enemy b)
+    int SortByDistanceToArmLeft(Collider a, Collider b)
     {
         if (Vector3.Distance(a.transform.position, armLeft.transform.position) < Vector3.Distance(b.transform.position, armLeft.transform.position))
         {
@@ -92,7 +116,7 @@ public class AutoAim : MonoBehaviour
         return 0;
     }
 
-    int SortByDistanceToArmRight(Enemy a, Enemy b)
+    int SortByDistanceToArmRight(Collider a, Collider b)
     {
         if (Vector3.Distance(a.transform.position, armRight.transform.position) < Vector3.Distance(b.transform.position, armRight.transform.position))
         {
@@ -105,55 +129,9 @@ public class AutoAim : MonoBehaviour
         return 0;
     }
 
-    void OnEnemyListChanged(object sender, EventArgs e)
+    void OnDrawGizmosSelected()
     {
-        this.enabled = enemyList.Count != 0;
-    }
-
-    void OnDisable()
-    {
-        APR_Player.ResetPose = true;
-
-        armLeft.angularXDrive = APR_Player.PoseOn;
-        armLeft.angularYZDrive = APR_Player.PoseOn;
-
-        armRight.angularXDrive = APR_Player.PoseOn;
-        armRight.angularYZDrive = APR_Player.PoseOn;
-
-        armLeftLow.angularXDrive = APR_Player.PoseOn;
-        armLeftLow.angularYZDrive = APR_Player.PoseOn;
-
-        armRightLow.angularXDrive = APR_Player.PoseOn;
-        armRightLow.angularYZDrive = APR_Player.PoseOn;
-
-        if (gunLeft != null)
-            gunLeft.enabled = false;
-        if (gunRight != null)
-            gunRight.enabled = false;
-    }
-
-    void OnEnable()
-    {
-        APR_Player.ResetPose = false;
-
-        armLeft.angularXDrive = APR_Player.ReachStiffness;
-        armLeft.angularYZDrive = APR_Player.ReachStiffness;
-
-        armRight.angularXDrive = APR_Player.ReachStiffness;
-        armRight.angularYZDrive = APR_Player.ReachStiffness;
-
-        armLeftLow.angularXDrive = APR_Player.ReachStiffness;
-        armLeftLow.angularYZDrive = APR_Player.ReachStiffness;
-
-        armRightLow.angularXDrive = APR_Player.ReachStiffness;
-        armRightLow.angularYZDrive = APR_Player.ReachStiffness;
-
-        armLeftLow.targetRotation = Quaternion.identity;
-        armRightLow.targetRotation = Quaternion.identity;
-
-        if (gunLeft != null)
-            gunLeft.enabled = true;
-        if (gunRight != null)
-            gunRight.enabled = true;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(radarCenter + this.transform.position, radarRadius);
     }
 }
