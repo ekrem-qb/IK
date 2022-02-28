@@ -49,7 +49,7 @@ public class GunManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(keyDrop) && (gunLeft != null || gunRight != null))
+        if (Input.GetKeyDown(keyDrop) && (gunLeft != null || gunRight != null))
         {
             Pickup pickup = Instantiate(pickupPrefab).GetComponent<Pickup>();
 

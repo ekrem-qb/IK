@@ -24,7 +24,7 @@ namespace ARP.APR.Scripts
         public bool Left;
 
         //Have joint/grabbed
-        public bool hasJoint;
+        public FixedJoint joint;
 
         GunManager gunManager;
 
@@ -41,15 +41,9 @@ namespace ARP.APR.Scripts
                 //On input release destroy joint
                 if (Left)
                 {
-                    if (hasJoint && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
+                    if (joint != null && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
                     {
-                        this.gameObject.GetComponent<FixedJoint>().breakForce = 0;
-                        hasJoint = false;
-                    }
-
-                    if (hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
-                    {
-                        hasJoint = false;
+                        Destroy(joint);
                     }
                 }
 
@@ -57,15 +51,9 @@ namespace ARP.APR.Scripts
                 //On input release destroy joint
                 if (!Left)
                 {
-                    if (hasJoint && Input.GetAxisRaw(APR_Player.reachRight) == 0)
+                    if (joint != null && Input.GetAxisRaw(APR_Player.reachRight) == 0)
                     {
-                        this.gameObject.GetComponent<FixedJoint>().breakForce = 0;
-                        hasJoint = false;
-                    }
-
-                    if (hasJoint && this.gameObject.GetComponent<FixedJoint>() == null)
-                    {
-                        hasJoint = false;
+                        Destroy(joint);
                     }
                 }
             }
@@ -79,30 +67,27 @@ namespace ARP.APR.Scripts
                 //Left Hand
                 if (Left)
                 {
-                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !hasJoint && !APR_Player.punchingLeft && gunManager.gunLeft == null)
+                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && gunManager.gunLeft == null)
                         {
-                            hasJoint = true;
-                            this.gameObject.AddComponent<FixedJoint>();
-                            this.gameObject.GetComponent<FixedJoint>().breakForce = Mathf.Infinity;
-                            this.gameObject.GetComponent<FixedJoint>().connectedBody = col.gameObject.GetComponent<Rigidbody>();
+                            joint = this.gameObject.AddComponent<FixedJoint>();
+                            joint.breakForce = Mathf.Infinity;
+                            joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
                         }
                     }
-
                 }
 
                 //Right Hand
                 if (!Left)
                 {
-                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !hasJoint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !hasJoint && !APR_Player.punchingRight && gunManager.gunRight == null)
+                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && gunManager.gunRight == null)
                         {
-                            hasJoint = true;
-                            this.gameObject.AddComponent<FixedJoint>();
-                            this.gameObject.GetComponent<FixedJoint>().breakForce = Mathf.Infinity;
-                            this.gameObject.GetComponent<FixedJoint>().connectedBody = col.gameObject.GetComponent<Rigidbody>();
+                            joint = this.gameObject.AddComponent<FixedJoint>();
+                            joint.breakForce = Mathf.Infinity;
+                            joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
                         }
                     }
                 }
