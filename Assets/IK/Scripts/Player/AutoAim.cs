@@ -42,7 +42,7 @@ public class AutoAim : MonoBehaviour
                             armLeftLow.angularYZDrive = APR_Player.ReachStiffness;
                             armLeftLow.targetRotation = Quaternion.identity;
 
-                            gunManager.gunLeft.enabled = true;
+                            gunManager.gunLeft.canShoot = true;
 
                             enemyList.Sort(SortByDistanceToArmLeft);
 
@@ -65,7 +65,7 @@ public class AutoAim : MonoBehaviour
                             armRightLow.angularYZDrive = APR_Player.ReachStiffness;
                             armRightLow.targetRotation = Quaternion.identity;
 
-                            gunManager.gunRight.enabled = true;
+                            gunManager.gunRight.canShoot = true;
 
                             enemyList.Sort(SortByDistanceToArmRight);
 
@@ -89,7 +89,7 @@ public class AutoAim : MonoBehaviour
                         armLeft.targetRotation = APR_Player.UpperLeftArmTarget;
                         armLeftLow.targetRotation = APR_Player.LowerLeftArmTarget;
 
-                        gunManager.gunLeft.enabled = false;
+                        gunManager.gunLeft.canShoot = false;
                     }
                     if (gunManager.gunRight != null)
                     {
@@ -100,7 +100,7 @@ public class AutoAim : MonoBehaviour
                         armRight.targetRotation = APR_Player.UpperRightArmTarget;
                         armRightLow.targetRotation = APR_Player.LowerRightArmTarget;
 
-                        gunManager.gunRight.enabled = false;
+                        gunManager.gunRight.canShoot = false;
                     }
                 }
             }

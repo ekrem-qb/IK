@@ -574,7 +574,7 @@ namespace ARP.APR.Scripts
         ////////////////////
         public void PlayerReach()
         {
-            if (gunManager.gunLeft == null && gunManager.gunLeft == null)
+            if (gunManager.gunLeft == null && gunManager.gunRight == null)
             {
                 //Body Bending
                 if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
