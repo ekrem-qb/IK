@@ -30,8 +30,6 @@ public class AutoAim : MonoBehaviour
             {
                 enemyList = new List<Collider>(Physics.OverlapSphere(radarCenter + this.transform.position, radarRadius, enemiesLayerMask));
 
-                APR_Player.ResetPose = enemyList.Count == 0;
-
                 if (enemyList.Count > 0)
                 {
                     if (gunManager.gunLeft != null)
@@ -83,21 +81,27 @@ public class AutoAim : MonoBehaviour
                 else
                 {
                     if (gunManager.gunLeft != null)
+                    {
+                        armLeft.angularXDrive = APR_Player.PoseOn;
+                        armLeft.angularYZDrive = APR_Player.PoseOn;
+                        armLeftLow.angularXDrive = APR_Player.PoseOn;
+                        armLeftLow.angularYZDrive = APR_Player.PoseOn;
+                        armLeft.targetRotation = APR_Player.UpperLeftArmTarget;
+                        armLeftLow.targetRotation = APR_Player.LowerLeftArmTarget;
+
                         gunManager.gunLeft.enabled = false;
+                    }
                     if (gunManager.gunRight != null)
+                    {
+                        armRight.angularXDrive = APR_Player.PoseOn;
+                        armRight.angularYZDrive = APR_Player.PoseOn;
+                        armRightLow.angularXDrive = APR_Player.PoseOn;
+                        armRightLow.angularYZDrive = APR_Player.PoseOn;
+                        armRight.targetRotation = APR_Player.UpperRightArmTarget;
+                        armRightLow.targetRotation = APR_Player.LowerRightArmTarget;
+
                         gunManager.gunRight.enabled = false;
-
-                    armLeft.angularXDrive = APR_Player.PoseOn;
-                    armLeft.angularYZDrive = APR_Player.PoseOn;
-
-                    armRight.angularXDrive = APR_Player.PoseOn;
-                    armRight.angularYZDrive = APR_Player.PoseOn;
-
-                    armLeftLow.angularXDrive = APR_Player.PoseOn;
-                    armLeftLow.angularYZDrive = APR_Player.PoseOn;
-
-                    armRightLow.angularXDrive = APR_Player.PoseOn;
-                    armRightLow.angularYZDrive = APR_Player.PoseOn;
+                    }
                 }
             }
         }
