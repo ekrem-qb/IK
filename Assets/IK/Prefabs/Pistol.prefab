@@ -219,11 +219,11 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2d89cb1c024cd14f9dbe615d3530a90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   bulletPrefab: {fileID: 5670340682170588313, guid: b8a860d9d7a7f2c48a580325b7f1f267,
     type: 3}
-  fireKey: 323
   holdPosition: {x: 0.1, y: 0.45, z: 0.09}
-  holdAngles: {x: -80, y: 0, z: -90}
+  holdRotation: {x: 0.45451945, y: 0.45451945, z: 0.5416752, w: -0.5416752}
+  transitionSpeed: 5
   canShoot: 0

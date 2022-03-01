@@ -53,20 +53,16 @@ public class GunManager : MonoBehaviour
             if (gunLeft == null)
             {
                 gunLeft = nearGuns[0];
-                gunLeft.enabled = true;
-                gunLeft.fireKey = KeyCode.Mouse0;
+                gunLeft.isLeft = true;
                 gunLeft.transform.SetParent(handLeft);
-                gunLeft.transform.localPosition = gunLeft.holdPosition;
-                gunLeft.transform.localEulerAngles = gunLeft.holdAngles;
+                gunLeft.enabled = true;
             }
             else if (gunRight == null)
             {
                 gunRight = nearGuns[0];
-                gunRight.enabled = true;
-                gunRight.fireKey = KeyCode.Mouse1;
+                gunRight.isLeft = false;
                 gunRight.transform.SetParent(handRight);
-                gunRight.transform.localPosition = new Vector3(-gunRight.holdPosition.x, gunRight.holdPosition.y, gunRight.holdPosition.z);
-                gunRight.transform.localEulerAngles = new Vector3(gunRight.holdAngles.x, gunRight.holdAngles.y, gunRight.holdAngles.z + 180);
+                gunRight.enabled = true;
             }
             nearGuns.Remove(nearGuns[0]);
         }
