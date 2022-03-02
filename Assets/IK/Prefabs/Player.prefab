@@ -218,7 +218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7906404183456832509}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7906404184273446312}
@@ -280,12 +280,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f311ac692b6f94ab33566f3cd920c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nearGuns: []
   gunLeft: {fileID: 0}
   gunRight: {fileID: 0}
   keyPickUp: 101
   keyDrop: 113
-  pickupPrefab: {fileID: 2104956616448274146, guid: 0d8a5463d5bb07d42b7e798c16e8b579,
-    type: 3}
 --- !u!1 &7906404183484677120
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 7906404184273446313}
   Left: 0
-  hasJoint: 0
+  joint: {fileID: 0}
 --- !u!1 &7906404183770513505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3796,7 +3795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 7906404184273446313}
   Left: 1
-  hasJoint: 0
+  joint: {fileID: 0}
 --- !u!1 &7906404185170291676
 GameObject:
   m_ObjectHideFlags: 0

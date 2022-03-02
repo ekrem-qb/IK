@@ -28,7 +28,7 @@ public class RotationControl : MonoBehaviour
 
             if (targetPosition != Vector3.zero)
             {
-                rootJoint.targetRotation = Quaternion.Slerp(rootJoint.targetRotation, Quaternion.LookRotation(rootJoint.transform.position - targetPosition), Time.fixedDeltaTime * APR_Player.turnSpeed * 10000);
+                rootJoint.targetRotation = Quaternion.LookRotation(rootJoint.transform.position - targetPosition);
             }
         }
     }
