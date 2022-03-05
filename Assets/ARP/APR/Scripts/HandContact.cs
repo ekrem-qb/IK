@@ -18,7 +18,7 @@ namespace ARP.APR.Scripts
 {
     public class HandContact : MonoBehaviour
     {
-        public APRController APR_Player;
+        public APRController APR;
 
         //Is left or right hand
         public bool Left;
@@ -30,18 +30,18 @@ namespace ARP.APR.Scripts
 
         void Awake()
         {
-            gunManager = APR_Player.COMP.GetComponent<GunManager>();
+            gunManager = APR.COMP.GetComponent<GunManager>();
         }
 
         void Update()
         {
-            if (APR_Player.useControls)
+            if (APR.useControls)
             {
                 //Left Hand
                 //On input release destroy joint
                 if (Left)
                 {
-                    if (joint && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
+                    if (joint && Input.GetAxisRaw(APR.reachLeft) == 0)
                     {
                         Destroy(joint);
                     }
@@ -51,7 +51,7 @@ namespace ARP.APR.Scripts
                 //On input release destroy joint
                 if (!Left)
                 {
-                    if (joint && Input.GetAxisRaw(APR_Player.reachRight) == 0)
+                    if (joint && Input.GetAxisRaw(APR.reachRight) == 0)
                     {
                         Destroy(joint);
                     }
@@ -62,14 +62,14 @@ namespace ARP.APR.Scripts
         //Grab on collision when input is used
         void OnCollisionEnter(Collision col)
         {
-            if (APR_Player.useControls)
+            if (APR.useControls)
             {
                 //Left Hand
                 if (Left)
                 {
-                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && !gunManager.gunLeft)
+                        if (Input.GetAxisRaw(APR.reachLeft) != 0 && !joint && !APR.punchingLeft && !gunManager.gunLeft)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;
@@ -81,9 +81,9 @@ namespace ARP.APR.Scripts
                 //Right Hand
                 if (!Left)
                 {
-                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
+                    if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && !gunManager.gunRight)
+                        if (Input.GetAxisRaw(APR.reachRight) != 0 && !joint && !APR.punchingRight && !gunManager.gunRight)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;
