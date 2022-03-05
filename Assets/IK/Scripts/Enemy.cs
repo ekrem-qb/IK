@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     ConfigurableJoint armLeftLow, armRightLow;
     Rigidbody rootRB;
     AutoAim player;
-    public float playerAttackDistance = 2;
+    public float attackDistance = 2;
+    public float attackInterval = 0.5f;
     bool isAttacking;
 
     void Awake()
@@ -30,13 +31,13 @@ public class Enemy : MonoBehaviour
         {
             rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(player.transform.position - rootJoint.transform.position));
 
-            if (Vector3.Distance(this.transform.position, player.transform.position) > playerAttackDistance)
+            if (Vector3.Distance(this.transform.position, player.transform.position) > attackDistance)
             {
                 Vector3 direction = APR.Root.transform.forward;
                 direction.y = 0f;
                 rootRB.velocity = Vector3.Lerp(rootRB.velocity, (direction * APR.moveSpeed) + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
 
-                if (Input.GetAxisRaw(APR.leftRight) != 0 || Input.GetAxisRaw(APR.forwardBackward) != 0 && APR.balanced)
+                if (APR.balanced)
                 {
                     if (!APR.WalkForward && !APR.moveAxisUsed)
                     {
@@ -45,19 +46,19 @@ public class Enemy : MonoBehaviour
                         APR.isKeyDown = true;
                     }
                 }
-                else if (Input.GetAxisRaw(APR.leftRight) == 0 && Input.GetAxisRaw(APR.forwardBackward) == 0)
-                {
-                    if (APR.WalkForward && APR.moveAxisUsed)
-                    {
-                        APR.WalkForward = false;
-                        APR.moveAxisUsed = false;
-                        APR.isKeyDown = false;
-                    }
-                }
             }
-            else if (!isAttacking)
+            else
             {
-                StartCoroutine(Attack());
+                if (APR.WalkForward && APR.moveAxisUsed)
+                {
+                    APR.WalkForward = false;
+                    APR.moveAxisUsed = false;
+                    APR.isKeyDown = false;
+                }
+                if (!isAttacking && APR.balanced)
+                {
+                    StartCoroutine(Attack());
+                }
             }
         }
     }
@@ -77,7 +78,7 @@ public class Enemy : MonoBehaviour
         armRight.targetRotation = APR.UpperRightArmTarget;
         armRightLow.targetRotation = APR.LowerRightArmTarget;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
     }
 
@@ -93,6 +94,6 @@ public class Enemy : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, playerAttackDistance);
+        Gizmos.DrawWireSphere(this.transform.position, attackDistance);
     }
 }
