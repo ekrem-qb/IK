@@ -19,16 +19,16 @@ public class RotationControl : MonoBehaviour
 
             if (Input.GetAxisRaw(APR_Player.leftRight) != 0)
             {
-                targetPosition += Vector3.right * Input.GetAxisRaw(APR_Player.leftRight) * 100;
+                targetPosition += Vector3.left * Input.GetAxisRaw(APR_Player.leftRight);
             }
             if (Input.GetAxisRaw(APR_Player.forwardBackward) != 0)
             {
-                targetPosition += Vector3.back * Input.GetAxisRaw(APR_Player.forwardBackward) * 100;
+                targetPosition += Vector3.forward * Input.GetAxisRaw(APR_Player.forwardBackward);
             }
 
             if (targetPosition != Vector3.zero)
             {
-                rootJoint.targetRotation = Quaternion.LookRotation(rootJoint.transform.position - targetPosition);
+                rootJoint.targetRotation = Quaternion.LookRotation(targetPosition);
             }
         }
     }
