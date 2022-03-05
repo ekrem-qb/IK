@@ -200,7 +200,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7906404183456832508}
   - component: {fileID: 8611691335203503018}
-  - component: {fileID: 7906404183456832510}
   - component: {fileID: 7906404183456832511}
   - component: {fileID: 3392452482416765807}
   m_Layer: 10
@@ -235,27 +234,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 2
-  m_Height: 4
+  m_Height: 6
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7906404183456832510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7906404183456832509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78e4298de9f8399489c244d0d3d69dde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radarCenter: {x: 0, y: 0, z: 0}
-  radarRadius: 15
-  enemiesLayerMask:
-    serializedVersion: 2
-    m_Bits: 32768
-  enemyList: []
 --- !u!114 &7906404183456832511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,8 +247,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 047ddf52fc2c99047b09bdac58614254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &3392452482416765807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,8 +259,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29f311ac692b6f94ab33566f3cd920c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   nearGuns: []
   gunLeft: {fileID: 0}
   gunRight: {fileID: 0}
@@ -738,8 +719,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4df9e82ca43343af2ab82a1de4cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 7906404184273446313}
   Left: 0
   joint: {fileID: 0}
@@ -1453,8 +1434,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e3e4e74cd4fe284aa30b72beb915475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 7906404184273446313}
 --- !u!1 &7906404184191131688
 GameObject:
@@ -1862,8 +1843,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c20a6e1c3ec15cc4badfddc68720960c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   Root: {fileID: 7906404184690034838}
   Body: {fileID: 7906404185398019001}
   Head: {fileID: 7906404184168114509}
@@ -2568,6 +2549,8 @@ GameObject:
   - component: {fileID: 7906404184690034834}
   - component: {fileID: 7906404184690034832}
   - component: {fileID: 7906404184690034835}
+  - component: {fileID: 5744558189578077517}
+  - component: {fileID: 3083230176154253055}
   m_Layer: 10
   m_Name: APR_Root
   m_TagString: CanBeGrabbed
@@ -2715,6 +2698,31 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5744558189578077517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7906404184690034838}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e4298de9f8399489c244d0d3d69dde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!135 &3083230176154253055
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7906404184690034838}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 15
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7906404184721017202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2966,8 +2974,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad81a557255ce5f40a5543de21640a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 7906404184273446313}
 --- !u!1 &7906404184776658554
 GameObject:
@@ -3791,8 +3799,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4df9e82ca43343af2ab82a1de4cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 7906404184273446313}
   Left: 1
   joint: {fileID: 0}
@@ -4603,6 +4611,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad81a557255ce5f40a5543de21640a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 7906404184273446313}

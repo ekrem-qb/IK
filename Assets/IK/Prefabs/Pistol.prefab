@@ -225,5 +225,3 @@ MonoBehaviour:
     type: 3}
   holdPosition: {x: 0.1, y: 0.45, z: 0.09}
   holdRotation: {x: 0.45451945, y: 0.45451945, z: 0.5416752, w: -0.5416752}
-  transitionSpeed: 5
-  canShoot: 0

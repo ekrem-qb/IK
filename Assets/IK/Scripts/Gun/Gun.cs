@@ -6,18 +6,20 @@ public class Gun : MonoBehaviour
     public GameObject bulletPrefab;
     public Vector3 holdPosition;
     public Quaternion holdRotation;
-    public float transitionSpeed = 5;
+    public float transitionSpeed = 15;
     [HideInInspector]
     public bool canShoot = false;
     [HideInInspector]
     public bool isLeft;
     SphereCollider pickupTrigger;
+    BoxCollider coll;
     Rigidbody rb;
     KeyCode fireKey;
 
     void Awake()
     {
         pickupTrigger = this.GetComponent<SphereCollider>();
+        coll = this.GetComponent<BoxCollider>();
         rb = this.GetComponent<Rigidbody>();
     }
 
@@ -32,6 +34,7 @@ public class Gun : MonoBehaviour
     void OnEnable()
     {
         pickupTrigger.enabled = false;
+        coll.enabled = false;
         Destroy(rb);
         if (isLeft)
         {
@@ -48,6 +51,7 @@ public class Gun : MonoBehaviour
     void OnDisable()
     {
         pickupTrigger.enabled = true;
+        coll.enabled = true;
         rb = this.gameObject.AddComponent<Rigidbody>();
     }
 

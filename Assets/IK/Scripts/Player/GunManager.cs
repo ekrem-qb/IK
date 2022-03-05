@@ -5,6 +5,7 @@ public class GunManager : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
     Transform handLeft, handRight;
+    AutoAim player;
     public List<Gun> nearGuns = new List<Gun>();
     public Gun gunLeft, gunRight;
     public KeyCode keyPickUp = KeyCode.E;
@@ -13,6 +14,7 @@ public class GunManager : MonoBehaviour
     void Awake()
     {
         APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        player = APR_Player.Root.GetComponent<AutoAim>();
         handLeft = APR_Player.LeftHand.transform.GetChild(0);
         handRight = APR_Player.RightHand.transform.GetChild(0);
     }
@@ -56,6 +58,7 @@ public class GunManager : MonoBehaviour
                 gunLeft.isLeft = true;
                 gunLeft.transform.SetParent(handLeft);
                 gunLeft.enabled = true;
+                gunLeft.canShoot = player.nearEnemies.Count > 0;
             }
             else if (!gunRight)
             {
@@ -63,6 +66,7 @@ public class GunManager : MonoBehaviour
                 gunRight.isLeft = false;
                 gunRight.transform.SetParent(handRight);
                 gunRight.enabled = true;
+                gunRight.canShoot = player.nearEnemies.Count > 0;
             }
             nearGuns.Remove(nearGuns[0]);
         }

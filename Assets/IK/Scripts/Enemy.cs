@@ -87,4 +87,9 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, attackDistance);
     }
+
+    void OnDestroy()
+    {
+        player.nearEnemies.Remove(this);
+    }
 }
