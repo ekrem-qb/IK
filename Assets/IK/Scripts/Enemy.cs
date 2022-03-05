@@ -90,6 +90,9 @@ public class Enemy : MonoBehaviour
 
     void OnDestroy()
     {
-        player.nearEnemies.Remove(this);
+        if (player)
+        {
+            player.nearEnemies.Remove(this);
+        }
     }
 }
