@@ -82,15 +82,6 @@ public class Enemy : MonoBehaviour
         isAttacking = false;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        Bullet bullet = collision.transform.GetComponent<Bullet>();
-        if (bullet)
-        {
-            Destroy(this.transform.root.gameObject);
-        }
-    }
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

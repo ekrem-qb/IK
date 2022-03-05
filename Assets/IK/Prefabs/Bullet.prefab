@@ -226,3 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 75
   timeout: 15
+  enemiesLayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
