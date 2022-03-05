@@ -18,39 +18,39 @@ namespace ARP.APR.Scripts
 {
     public class ImpactContact : MonoBehaviour
     {
-        public APRController APR;
+        public APRController APR_Player;
 
         //Alert APR Player when collision enters with specified force amount
         void OnCollisionEnter(Collision col)
         {
 
             //Knockout by impact
-            if (APR.canBeKnockoutByImpact && col.relativeVelocity.magnitude > APR.requiredForceToBeKO)
+            if (APR_Player.canBeKnockoutByImpact && col.relativeVelocity.magnitude > APR_Player.requiredForceToBeKO)
             {
-                APR.ActivateRagdoll();
+                APR_Player.ActivateRagdoll();
 
-                if (APR.SoundSource)
+                if (APR_Player.SoundSource)
                 {
-                    if (!APR.SoundSource.isPlaying && APR.Hits.Length > 0)
+                    if (!APR_Player.SoundSource.isPlaying && APR_Player.Hits.Length > 0)
                     {
-                        int i = Random.Range(0, APR.Hits.Length);
-                        APR.SoundSource.clip = APR.Hits[i];
-                        APR.SoundSource.Play();
+                        int i = Random.Range(0, APR_Player.Hits.Length);
+                        APR_Player.SoundSource.clip = APR_Player.Hits[i];
+                        APR_Player.SoundSource.Play();
                     }
                 }
             }
 
             //Sound on impact
-            if (col.relativeVelocity.magnitude > APR.ImpactForce)
+            if (col.relativeVelocity.magnitude > APR_Player.ImpactForce)
             {
 
-                if (APR.SoundSource)
+                if (APR_Player.SoundSource)
                 {
-                    if (!APR.SoundSource.isPlaying && APR.Impacts.Length > 0)
+                    if (!APR_Player.SoundSource.isPlaying && APR_Player.Impacts.Length > 0)
                     {
-                        int i = Random.Range(0, APR.Impacts.Length);
-                        APR.SoundSource.clip = APR.Impacts[i];
-                        APR.SoundSource.Play();
+                        int i = Random.Range(0, APR_Player.Impacts.Length);
+                        APR_Player.SoundSource.clip = APR_Player.Impacts[i];
+                        APR_Player.SoundSource.Play();
                     }
                 }
             }

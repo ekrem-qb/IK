@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GunManager : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController APR;
+    ARP.APR.Scripts.APRController APR_Player;
     Transform handLeft, handRight;
     public List<Gun> nearGuns = new List<Gun>();
     public Gun gunLeft, gunRight;
@@ -12,9 +12,9 @@ public class GunManager : MonoBehaviour
 
     void Awake()
     {
-        APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        handLeft = APR.LeftHand.transform.GetChild(0);
-        handRight = APR.RightHand.transform.GetChild(0);
+        APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        handLeft = APR_Player.LeftHand.transform.GetChild(0);
+        handRight = APR_Player.RightHand.transform.GetChild(0);
     }
 
     void OnTriggerEnter(Collider other)
@@ -48,7 +48,7 @@ public class GunManager : MonoBehaviour
     {
         if (Input.GetKeyDown(keyPickUp) && (!gunLeft || !gunRight) && nearGuns.Count > 0)
         {
-            APR.ResetPlayerPose();
+            APR_Player.ResetPlayerPose();
 
             if (!gunLeft)
             {
@@ -73,24 +73,24 @@ public class GunManager : MonoBehaviour
                 gunRight.transform.SetParent(null);
                 gunRight.enabled = false;
                 gunRight = null;
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR.UpperRightArmTarget;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR.LowerRightArmTarget;
+                APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
+                APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
+                APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
+                APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
+                APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperRightArmTarget;
+                APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerRightArmTarget;
             }
             else if (gunLeft)
             {
                 gunLeft.transform.SetParent(null);
                 gunLeft.enabled = false;
                 gunLeft = null;
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR.UpperLeftArmTarget;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR.LowerLeftArmTarget;
+                APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
+                APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
+                APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
+                APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
+                APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperLeftArmTarget;
+                APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerLeftArmTarget;
             }
         }
     }

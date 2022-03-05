@@ -2,28 +2,28 @@ using UnityEngine;
 
 public class RotationControl : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController APR;
+    ARP.APR.Scripts.APRController APR_Player;
     ConfigurableJoint rootJoint;
 
     void Awake()
     {
-        APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
+        APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        rootJoint = APR_Player.Root.GetComponent<ConfigurableJoint>();
     }
 
     void FixedUpdate()
     {
-        if (APR.useControls)
+        if (APR_Player.useControls)
         {
             Vector3 targetPosition = Vector3.zero;
 
-            if (Input.GetAxisRaw(APR.leftRight) != 0)
+            if (Input.GetAxisRaw(APR_Player.leftRight) != 0)
             {
-                targetPosition += Vector3.right * Input.GetAxisRaw(APR.leftRight) * 100;
+                targetPosition += Vector3.right * Input.GetAxisRaw(APR_Player.leftRight) * 100;
             }
-            if (Input.GetAxisRaw(APR.forwardBackward) != 0)
+            if (Input.GetAxisRaw(APR_Player.forwardBackward) != 0)
             {
-                targetPosition += Vector3.back * Input.GetAxisRaw(APR.forwardBackward) * 100;
+                targetPosition += Vector3.back * Input.GetAxisRaw(APR_Player.forwardBackward) * 100;
             }
 
             if (targetPosition != Vector3.zero)
