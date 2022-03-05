@@ -41,7 +41,7 @@ namespace ARP.APR.Scripts
                 //On input release destroy joint
                 if (Left)
                 {
-                    if (joint != null && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
+                    if (joint && Input.GetAxisRaw(APR_Player.reachLeft) == 0)
                     {
                         Destroy(joint);
                     }
@@ -51,7 +51,7 @@ namespace ARP.APR.Scripts
                 //On input release destroy joint
                 if (!Left)
                 {
-                    if (joint != null && Input.GetAxisRaw(APR_Player.reachRight) == 0)
+                    if (joint && Input.GetAxisRaw(APR_Player.reachRight) == 0)
                     {
                         Destroy(joint);
                     }
@@ -69,7 +69,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && gunManager.gunLeft == null)
+                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && !gunManager.gunLeft)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;
@@ -83,7 +83,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && gunManager.gunRight == null)
+                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && !gunManager.gunRight)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;

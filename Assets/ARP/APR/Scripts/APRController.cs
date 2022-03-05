@@ -575,7 +575,7 @@ namespace ARP.APR.Scripts
         ////////////////////
         public void PlayerReach()
         {
-            if (gunManager.gunLeft == null && gunManager.gunRight == null)
+            if (!gunManager.gunLeft && !gunManager.gunRight)
             {
                 //Body Bending
                 if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
@@ -592,7 +592,7 @@ namespace ARP.APR.Scripts
                 }
                 Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
             }
-            if (gunManager.gunLeft == null)
+            if (!gunManager.gunLeft)
             {
                 //Reach Left
                 if (Input.GetAxisRaw(reachLeft) != 0 && !punchingLeft)
@@ -659,7 +659,7 @@ namespace ARP.APR.Scripts
                     }
                 }
             }
-            if (gunManager.gunRight == null)
+            if (!gunManager.gunRight)
             {
                 //Reach Right
                 if (Input.GetAxisRaw(reachRight) != 0 && !punchingRight)

@@ -22,7 +22,7 @@ public class GunManager : MonoBehaviour
         if (other.isTrigger)
         {
             Gun gun = other.GetComponent<Gun>();
-            if (gun != null)
+            if (gun)
             {
                 if (!nearGuns.Contains(gun))
                 {
@@ -37,7 +37,7 @@ public class GunManager : MonoBehaviour
         if (other.isTrigger)
         {
             Gun gun = other.GetComponent<Gun>();
-            if (gun != null)
+            if (gun)
             {
                 nearGuns.Remove(gun);
             }
@@ -46,18 +46,18 @@ public class GunManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(keyPickUp) && (gunLeft == null || gunRight == null) && nearGuns.Count > 0)
+        if (Input.GetKeyDown(keyPickUp) && (!gunLeft || !gunRight) && nearGuns.Count > 0)
         {
             APR_Player.ResetPlayerPose();
 
-            if (gunLeft == null)
+            if (!gunLeft)
             {
                 gunLeft = nearGuns[0];
                 gunLeft.isLeft = true;
                 gunLeft.transform.SetParent(handLeft);
                 gunLeft.enabled = true;
             }
-            else if (gunRight == null)
+            else if (!gunRight)
             {
                 gunRight = nearGuns[0];
                 gunRight.isLeft = false;
@@ -66,9 +66,9 @@ public class GunManager : MonoBehaviour
             }
             nearGuns.Remove(nearGuns[0]);
         }
-        if (Input.GetKeyDown(keyDrop) && (gunLeft != null || gunRight != null))
+        if (Input.GetKeyDown(keyDrop) && (gunLeft || gunRight))
         {
-            if (gunRight != null)
+            if (gunRight)
             {
                 gunRight.transform.SetParent(null);
                 gunRight.enabled = false;
@@ -80,7 +80,7 @@ public class GunManager : MonoBehaviour
                 APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperRightArmTarget;
                 APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerRightArmTarget;
             }
-            else if (gunLeft != null)
+            else if (gunLeft)
             {
                 gunLeft.transform.SetParent(null);
                 gunLeft.enabled = false;

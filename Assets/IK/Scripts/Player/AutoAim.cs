@@ -26,13 +26,13 @@ public class AutoAim : MonoBehaviour
     {
         if (APR_Player.useControls)
         {
-            if (gunManager.gunLeft != null || gunManager.gunRight != null)
+            if (gunManager.gunLeft || gunManager.gunRight)
             {
                 enemyList = new List<Collider>(Physics.OverlapSphere(radarCenter + this.transform.position, radarRadius, enemiesLayerMask));
 
                 if (enemyList.Count > 0)
                 {
-                    if (gunManager.gunLeft != null)
+                    if (gunManager.gunLeft)
                     {
                         if (!APR_Player.punchingLeft)
                         {
@@ -55,7 +55,7 @@ public class AutoAim : MonoBehaviour
                         }
                     }
 
-                    if (gunManager.gunRight != null)
+                    if (gunManager.gunRight)
                     {
                         if (!APR_Player.punchingRight)
                         {
@@ -80,7 +80,7 @@ public class AutoAim : MonoBehaviour
                 }
                 else
                 {
-                    if (gunManager.gunLeft != null)
+                    if (gunManager.gunLeft)
                     {
                         armLeft.angularXDrive = APR_Player.PoseOn;
                         armLeft.angularYZDrive = APR_Player.PoseOn;
@@ -91,7 +91,7 @@ public class AutoAim : MonoBehaviour
 
                         gunManager.gunLeft.canShoot = false;
                     }
-                    if (gunManager.gunRight != null)
+                    if (gunManager.gunRight)
                     {
                         armRight.angularXDrive = APR_Player.PoseOn;
                         armRight.angularYZDrive = APR_Player.PoseOn;
