@@ -224,5 +224,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c78333b8ba71a44ac72a919395dd41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 7.5
+  force: 75
   timeout: 15

@@ -1,18 +1,26 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
+    ConfigurableJoint armLeft, armRight;
+    ConfigurableJoint armLeftLow, armRightLow;
     Rigidbody rootRB;
     AutoAim player;
     public float playerAttackDistance = 2;
+    bool isAttacking;
 
     void Awake()
     {
         APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
         rootRB = APR.Root.GetComponent<Rigidbody>();
+        armLeft = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
+        armRight = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
+        armLeftLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
+        armRightLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
         player = GameObject.FindObjectOfType<AutoAim>();
     }
 
@@ -20,15 +28,57 @@ public class Enemy : MonoBehaviour
     {
         if (player)
         {
-            rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(rootJoint.transform.position - player.transform.position));
+            rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(player.transform.position - rootJoint.transform.position));
 
             if (Vector3.Distance(this.transform.position, player.transform.position) > playerAttackDistance)
             {
                 Vector3 direction = APR.Root.transform.forward;
                 direction.y = 0f;
                 rootRB.velocity = Vector3.Lerp(rootRB.velocity, (direction * APR.moveSpeed) + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
+
+                if (Input.GetAxisRaw(APR.leftRight) != 0 || Input.GetAxisRaw(APR.forwardBackward) != 0 && APR.balanced)
+                {
+                    if (!APR.WalkForward && !APR.moveAxisUsed)
+                    {
+                        APR.WalkForward = true;
+                        APR.moveAxisUsed = true;
+                        APR.isKeyDown = true;
+                    }
+                }
+                else if (Input.GetAxisRaw(APR.leftRight) == 0 && Input.GetAxisRaw(APR.forwardBackward) == 0)
+                {
+                    if (APR.WalkForward && APR.moveAxisUsed)
+                    {
+                        APR.WalkForward = false;
+                        APR.moveAxisUsed = false;
+                        APR.isKeyDown = false;
+                    }
+                }
+            }
+            else if (!isAttacking)
+            {
+                StartCoroutine(Attack());
             }
         }
+    }
+
+    IEnumerator Attack()
+    {
+        isAttacking = true;
+
+        armRight.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
+        armRightLow.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
+
+        yield return new WaitForSeconds(0.25f);
+        armRight.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
+        armRightLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
+
+        yield return new WaitForSeconds(0.25f);
+        armRight.targetRotation = APR.UpperRightArmTarget;
+        armRightLow.targetRotation = APR.LowerRightArmTarget;
+
+        yield return new WaitForSeconds(1);
+        isAttacking = false;
     }
 
     void OnCollisionEnter(Collision collision)

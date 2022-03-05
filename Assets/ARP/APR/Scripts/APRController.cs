@@ -113,7 +113,8 @@ namespace ARP.APR.Scripts
             timer, Step_R_timer, Step_L_timer,
             MouseYAxisArms, MouseXAxisArms, MouseYAxisBody;
 
-        bool
+        [HideInInspector]
+        public bool
             WalkForward, WalkBackward,
             StepRight, StepLeft, Alert_Leg_Right,
             Alert_Leg_Left, balanced = true, GettingUp,
