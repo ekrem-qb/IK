@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunManager : MonoBehaviour
+public class WeaponManager : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
     Transform handLeft, handRight;
     AutoAim player;
-    public List<Gun> nearGuns = new List<Gun>();
-    public Gun gunLeft, gunRight;
+    public List<Weapon> nearWeapons = new List<Weapon>();
+    public Weapon weaponLeft, weaponRight;
     public KeyCode keyPickUp = KeyCode.E;
     public KeyCode keyDrop = KeyCode.Q;
 
@@ -23,12 +23,15 @@ public class GunManager : MonoBehaviour
     {
         if (other.isTrigger)
         {
-            Gun gun = other.GetComponent<Gun>();
-            if (gun)
+            Weapon weapon = other.GetComponent<Weapon>();
+            if (weapon)
             {
-                if (!nearGuns.Contains(gun))
+                if (!weapon.enabled)
                 {
-                    nearGuns.Add(gun);
+                    if (!nearWeapons.Contains(weapon))
+                    {
+                        nearWeapons.Add(weapon);
+                    }
                 }
             }
         }
@@ -38,45 +41,51 @@ public class GunManager : MonoBehaviour
     {
         if (other.isTrigger)
         {
-            Gun gun = other.GetComponent<Gun>();
-            if (gun)
+            Weapon weapon = other.GetComponent<Weapon>();
+            if (weapon)
             {
-                nearGuns.Remove(gun);
+                nearWeapons.Remove(weapon);
             }
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(keyPickUp) && (!gunLeft || !gunRight) && nearGuns.Count > 0)
+        if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && nearWeapons.Count > 0)
         {
             APR_Player.ResetPlayerPose();
 
-            if (!gunLeft)
+            if (!weaponLeft)
             {
-                gunLeft = nearGuns[0];
-                gunLeft.isLeft = true;
-                gunLeft.transform.SetParent(handLeft);
-                gunLeft.enabled = true;
-                gunLeft.canShoot = player.nearEnemies.Count > 0;
+                weaponLeft = nearWeapons[0];
+                weaponLeft.isLeft = true;
+                weaponLeft.transform.SetParent(handLeft);
+                weaponLeft.enabled = true;
+                if (weaponLeft is Gun)
+                {
+                    (weaponLeft as Gun).canShoot = player.nearEnemies.Count > 0;
+                }
             }
-            else if (!gunRight)
+            else if (!weaponRight)
             {
-                gunRight = nearGuns[0];
-                gunRight.isLeft = false;
-                gunRight.transform.SetParent(handRight);
-                gunRight.enabled = true;
-                gunRight.canShoot = player.nearEnemies.Count > 0;
+                weaponRight = nearWeapons[0];
+                weaponRight.isLeft = false;
+                weaponRight.transform.SetParent(handRight);
+                weaponRight.enabled = true;
+                if (weaponRight is Gun)
+                {
+                    (weaponRight as Gun).canShoot = player.nearEnemies.Count > 0;
+                }
             }
-            nearGuns.Remove(nearGuns[0]);
+            nearWeapons.Remove(nearWeapons[0]);
         }
-        if (Input.GetKeyDown(keyDrop) && (gunLeft || gunRight))
+        if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
         {
-            if (gunRight)
+            if (weaponRight)
             {
-                gunRight.transform.SetParent(null);
-                gunRight.enabled = false;
-                gunRight = null;
+                weaponRight.transform.SetParent(null);
+                weaponRight.enabled = false;
+                weaponRight = null;
                 APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
                 APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
                 APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
@@ -84,11 +93,11 @@ public class GunManager : MonoBehaviour
                 APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperRightArmTarget;
                 APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerRightArmTarget;
             }
-            else if (gunLeft)
+            else if (weaponLeft)
             {
-                gunLeft.transform.SetParent(null);
-                gunLeft.enabled = false;
-                gunLeft = null;
+                weaponLeft.transform.SetParent(null);
+                weaponLeft.enabled = false;
+                weaponLeft = null;
                 APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
                 APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
                 APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;

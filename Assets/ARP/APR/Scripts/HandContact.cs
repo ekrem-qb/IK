@@ -26,11 +26,11 @@ namespace ARP.APR.Scripts
         //Have joint/grabbed
         public FixedJoint joint;
 
-        GunManager gunManager;
+        WeaponManager weaponManager;
 
         void Awake()
         {
-            gunManager = APR_Player.COMP.GetComponent<GunManager>();
+            weaponManager = APR_Player.COMP.GetComponent<WeaponManager>();
         }
 
         void Update()
@@ -69,7 +69,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && !gunManager.gunLeft)
+                        if (Input.GetAxisRaw(APR_Player.reachLeft) != 0 && !joint && !APR_Player.punchingLeft && !weaponManager.weaponLeft)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;
@@ -83,7 +83,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && !gunManager.gunRight)
+                        if (Input.GetAxisRaw(APR_Player.reachRight) != 0 && !joint && !APR_Player.punchingRight && !weaponManager.weaponRight)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;

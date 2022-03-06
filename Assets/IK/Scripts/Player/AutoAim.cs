@@ -3,7 +3,7 @@ using UnityEngine;
 public class AutoAim : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
-    GunManager gunManager;
+    WeaponManager weaponManager;
     ConfigurableJoint armLeft, armRight;
     ConfigurableJoint armLeftLow, armRightLow;
     SphereCollider trigger;
@@ -16,7 +16,7 @@ public class AutoAim : MonoBehaviour
         armRight = APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>();
         armLeftLow = APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>();
         armRightLow = APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>();
-        gunManager = APR_Player.COMP.GetComponent<GunManager>();
+        weaponManager = APR_Player.COMP.GetComponent<WeaponManager>();
         trigger = this.GetComponent<SphereCollider>();
         nearEnemies.CountChanged += OnEnemyCountChanged;
     }
@@ -25,7 +25,7 @@ public class AutoAim : MonoBehaviour
     {
         if (APR_Player.useControls)
         {
-            if (gunManager.gunLeft)
+            if (weaponManager.weaponLeft is Gun)
             {
                 nearEnemies.Sort(SortByDistanceToArmLeft);
 
@@ -36,7 +36,7 @@ public class AutoAim : MonoBehaviour
 
                 armLeft.targetRotation = newRot;
             }
-            if (gunManager.gunRight)
+            if (weaponManager.weaponRight is Gun)
             {
                 nearEnemies.Sort(SortByDistanceToArmRight);
 
@@ -57,7 +57,7 @@ public class AutoAim : MonoBehaviour
 
     void OnEnable()
     {
-        if (gunManager.gunLeft)
+        if (weaponManager.weaponLeft is Gun)
         {
             if (!APR_Player.punchingLeft)
             {
@@ -67,10 +67,10 @@ public class AutoAim : MonoBehaviour
                 armLeftLow.angularYZDrive = APR_Player.ReachStiffness;
                 armLeftLow.targetRotation = Quaternion.identity;
 
-                gunManager.gunLeft.canShoot = true;
+                (weaponManager.weaponLeft as Gun).canShoot = true;
             }
         }
-        if (gunManager.gunRight)
+        if (weaponManager.weaponRight is Gun)
         {
             if (!APR_Player.punchingRight)
             {
@@ -80,14 +80,14 @@ public class AutoAim : MonoBehaviour
                 armRightLow.angularYZDrive = APR_Player.ReachStiffness;
                 armRightLow.targetRotation = Quaternion.identity;
 
-                gunManager.gunRight.canShoot = true;
+                (weaponManager.weaponRight as Gun).canShoot = true;
             }
         }
     }
 
     void OnDisable()
     {
-        if (gunManager.gunLeft)
+        if (weaponManager.weaponLeft is Gun)
         {
             armLeft.angularXDrive = APR_Player.PoseOn;
             armLeft.angularYZDrive = APR_Player.PoseOn;
@@ -96,9 +96,9 @@ public class AutoAim : MonoBehaviour
             armLeft.targetRotation = APR_Player.UpperLeftArmTarget;
             armLeftLow.targetRotation = APR_Player.LowerLeftArmTarget;
 
-            gunManager.gunLeft.canShoot = false;
+            (weaponManager.weaponLeft as Gun).canShoot = false;
         }
-        if (gunManager.gunRight)
+        if (weaponManager.weaponRight is Gun)
         {
             armRight.angularXDrive = APR_Player.PoseOn;
             armRight.angularYZDrive = APR_Player.PoseOn;
@@ -107,7 +107,7 @@ public class AutoAim : MonoBehaviour
             armRight.targetRotation = APR_Player.UpperRightArmTarget;
             armRightLow.targetRotation = APR_Player.LowerRightArmTarget;
 
-            gunManager.gunRight.canShoot = false;
+            (weaponManager.weaponRight as Gun).canShoot = false;
         }
     }
 

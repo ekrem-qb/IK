@@ -10,22 +10,21 @@ public class HealthManager : MonoBehaviour
         get => _health;
         set
         {
-            if (value > 0)
+            if (value >= 0)
             {
                 _health = value;
                 if (textHealth)
                 {
                     textHealth.text = _health.ToString();
                 }
-            }
-            else
-            {
-                Destroy(this.gameObject);
+                if (value == 0)
+                {
+                    Destroy(this.gameObject);
+                }
             }
         }
     }
     public Text textHealth;
-    [HideInInspector]
 
     void Awake()
     {

@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour
     public float force = 50;
     public float timeout = 15;
     public LayerMask enemiesLayerMask;
+    [HideInInspector]
+    public Transform owner;
 
     void Awake()
     {
@@ -27,14 +29,17 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.rigidbody)
+        if (owner != collision.transform.root)
         {
-            collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
-        }
-        HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
-        if (enemy)
-        {
-            enemy.health -= 10;
+            if (collision.rigidbody)
+            {
+                collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
+            }
+            HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
+            if (enemy)
+            {
+                enemy.health -= 10;
+            }
         }
     }
 }

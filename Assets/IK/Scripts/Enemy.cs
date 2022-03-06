@@ -74,6 +74,8 @@ public class Enemy : MonoBehaviour
         armRight.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
         armRightLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
 
+        player.transform.root.GetComponent<HealthManager>().health -= 10;
+
         yield return new WaitForSeconds(0.25f);
         armRight.targetRotation = APR.UpperRightArmTarget;
         armRightLow.targetRotation = APR.LowerRightArmTarget;

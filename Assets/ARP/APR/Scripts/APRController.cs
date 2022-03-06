@@ -149,7 +149,7 @@ namespace ARP.APR.Scripts
         //Debug
         public bool editorDebugMode;
 
-        GunManager gunManager;
+        WeaponManager weaponManager;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -162,7 +162,7 @@ namespace ARP.APR.Scripts
         void Awake()
         {
             PlayerSetup();
-            gunManager = COMP.GetComponent<GunManager>();
+            weaponManager = COMP.GetComponent<WeaponManager>();
         }
 
 
@@ -575,7 +575,7 @@ namespace ARP.APR.Scripts
         ////////////////////
         public void PlayerReach()
         {
-            if (!gunManager.gunLeft && !gunManager.gunRight)
+            if (!weaponManager.weaponLeft && !weaponManager.weaponRight)
             {
                 //Body Bending
                 if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
@@ -592,7 +592,7 @@ namespace ARP.APR.Scripts
                 }
                 Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
             }
-            if (!gunManager.gunLeft)
+            if (!weaponManager.weaponLeft)
             {
                 //Reach Left
                 if (Input.GetAxisRaw(reachLeft) != 0 && !punchingLeft)
@@ -659,7 +659,7 @@ namespace ARP.APR.Scripts
                     }
                 }
             }
-            if (!gunManager.gunRight)
+            if (!weaponManager.weaponRight)
             {
                 //Reach Right
                 if (Input.GetAxisRaw(reachRight) != 0 && !punchingRight)

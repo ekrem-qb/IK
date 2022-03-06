@@ -1,40 +1,36 @@
 using System.Collections;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
-    public GameObject bulletPrefab;
     public Vector3 holdPosition;
     public Quaternion holdRotation;
     public float transitionSpeed = 15;
-    [HideInInspector]
-    public bool canShoot = false;
-    [HideInInspector]
-    public bool isLeft;
+    public bool isLeft = true;
     SphereCollider pickupTrigger;
-    BoxCollider coll;
     Rigidbody rb;
     KeyCode fireKey;
+    [HideInInspector]
 
     void Awake()
     {
         pickupTrigger = this.GetComponent<SphereCollider>();
-        coll = this.GetComponent<BoxCollider>();
         rb = this.GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(fireKey) && canShoot)
+        if (Input.GetKeyDown(fireKey))
         {
-            GameObject bullet = Instantiate(bulletPrefab, this.transform.position, this.transform.rotation);
+            Attack();
         }
     }
+
+    public virtual void Attack() { }
 
     void OnEnable()
     {
         pickupTrigger.enabled = false;
-        coll.enabled = false;
         Destroy(rb);
         if (isLeft)
         {
@@ -51,7 +47,6 @@ public class Gun : MonoBehaviour
     void OnDisable()
     {
         pickupTrigger.enabled = true;
-        coll.enabled = true;
         rb = this.gameObject.AddComponent<Rigidbody>();
     }
 
