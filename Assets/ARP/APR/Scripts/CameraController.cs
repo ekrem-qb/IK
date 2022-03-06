@@ -71,21 +71,23 @@ namespace ARP.APR.Scripts
         //Camera follow and rotation
         void FixedUpdate()
         {
-            if (rotateCamera)
+            if (APRRoot)
             {
-                dir = new Vector3(0, 0, -distance);
-                rotation = Quaternion.Euler(-currentY, currentX, 0);
-                cam.transform.position = Vector3.Lerp(cam.transform.position, APRRoot.position + rotation * dir, smoothness);
-                cam.transform.LookAt(APRRoot.position);
-            }
+                if (rotateCamera)
+                {
+                    dir = new Vector3(0, 0, -distance);
+                    rotation = Quaternion.Euler(-currentY, currentX, 0);
+                    cam.transform.position = Vector3.Lerp(cam.transform.position, APRRoot.position + rotation * dir, smoothness);
+                    cam.transform.LookAt(APRRoot.position);
+                }
 
-            if (!rotateCamera)
-            {
-                var targetRotation = Quaternion.LookRotation(APRRoot.position - cam.transform.position);
-                cam.transform.position = Vector3.Lerp(cam.transform.position, APRRoot.position + offset, smoothness);
-                cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, targetRotation, smoothness);
+                if (!rotateCamera)
+                {
+                    var targetRotation = Quaternion.LookRotation(APRRoot.position - cam.transform.position);
+                    cam.transform.position = Vector3.Lerp(cam.transform.position, APRRoot.position + offset, smoothness);
+                    cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, targetRotation, smoothness);
+                }
             }
         }
-
     }
 }

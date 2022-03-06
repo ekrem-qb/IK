@@ -27,9 +27,14 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (enemiesLayerMask.Contains(collision.gameObject.layer))
+        if (collision.rigidbody)
         {
-            Destroy(collision.transform.root.gameObject);
+            collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
+        }
+        HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
+        if (enemy)
+        {
+            enemy.health -= 10;
         }
     }
 }
