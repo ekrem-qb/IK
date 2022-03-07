@@ -17,6 +17,19 @@ public class WeaponManager : MonoBehaviour
         player = APR_Player.Root.GetComponent<AutoAim>();
         handLeft = APR_Player.LeftHand.transform.GetChild(0);
         handRight = APR_Player.RightHand.transform.GetChild(0);
+        Weapon hasWeaponOnLeft = handLeft.GetComponentInChildren<Weapon>();
+        if (hasWeaponOnLeft)
+        {
+            weaponLeft = hasWeaponOnLeft;
+            weaponLeft.player = player;
+        }
+        Weapon hasWeaponOnRight = handRight.GetComponentInChildren<Weapon>();
+        if (hasWeaponOnRight)
+        {
+            weaponRight = hasWeaponOnRight;
+            weaponRight.player = player;
+        }
+        this.enabled = player != null;
     }
 
     void OnTriggerEnter(Collider other)
@@ -61,6 +74,7 @@ public class WeaponManager : MonoBehaviour
                 weaponLeft.isLeft = true;
                 weaponLeft.transform.SetParent(handLeft);
                 weaponLeft.enabled = true;
+                weaponLeft.player = player;
                 if (weaponLeft is Gun)
                 {
                     (weaponLeft as Gun).canShoot = player.nearEnemies.Count > 0;
@@ -72,6 +86,7 @@ public class WeaponManager : MonoBehaviour
                 weaponRight.isLeft = false;
                 weaponRight.transform.SetParent(handRight);
                 weaponRight.enabled = true;
+                weaponRight.player = player;
                 if (weaponRight is Gun)
                 {
                     (weaponRight as Gun).canShoot = player.nearEnemies.Count > 0;

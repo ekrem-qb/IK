@@ -261,9 +261,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f311ac692b6f94ab33566f3cd920c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearGuns: []
-  gunLeft: {fileID: 0}
-  gunRight: {fileID: 0}
+  nearWeapons: []
+  weaponLeft: {fileID: 0}
+  weaponRight: {fileID: 0}
   keyPickUp: 101
   keyDrop: 113
 --- !u!1 &7906404183484677120
@@ -1888,7 +1888,7 @@ MonoBehaviour:
   FeetMountForce: 25
   reachSensitivity: 25
   armReachStiffness: 2000
-  canBeKnockoutByImpact: 1
+  canBeKnockoutByImpact: 0
   requiredForceToBeKO: 20
   canPunch: 0
   punchForce: 15

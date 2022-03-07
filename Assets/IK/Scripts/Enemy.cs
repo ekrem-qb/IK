@@ -5,10 +5,9 @@ public class Enemy : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
-    ConfigurableJoint armLeft, armRight;
-    ConfigurableJoint armLeftLow, armRightLow;
     Rigidbody rootRB;
     AutoAim player;
+    WeaponManager weaponManager;
     public float attackDistance = 2;
     public float attackInterval = 0.5f;
     bool isAttacking;
@@ -18,10 +17,7 @@ public class Enemy : MonoBehaviour
         APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
         rootRB = APR.Root.GetComponent<Rigidbody>();
-        armLeft = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
-        armRight = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
-        armLeftLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
-        armRightLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
+        weaponManager = APR.COMP.GetComponent<WeaponManager>();
         player = GameObject.FindObjectOfType<AutoAim>();
     }
 
@@ -55,11 +51,20 @@ public class Enemy : MonoBehaviour
                     APR.moveAxisUsed = false;
                     APR.isKeyDown = false;
                 }
-                if (!isAttacking && APR.balanced)
+                if (APR.balanced)
                 {
-                    StartCoroutine(Attack());
+                    if (!isAttacking)
+                    {
+                        StartCoroutine(Attack());
+                    }
                 }
             }
+        }
+        else if (APR.WalkForward && APR.moveAxisUsed)
+        {
+            APR.WalkForward = false;
+            APR.moveAxisUsed = false;
+            APR.isKeyDown = false;
         }
     }
 
@@ -67,18 +72,14 @@ public class Enemy : MonoBehaviour
     {
         isAttacking = true;
 
-        armRight.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
-        armRightLow.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
-
-        yield return new WaitForSeconds(0.25f);
-        armRight.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
-        armRightLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
-
-        player.transform.root.GetComponent<HealthManager>().health -= 10;
-
-        yield return new WaitForSeconds(0.25f);
-        armRight.targetRotation = APR.UpperRightArmTarget;
-        armRightLow.targetRotation = APR.LowerRightArmTarget;
+        if (weaponManager.weaponLeft)
+        {
+            weaponManager.weaponLeft.Attack();
+        }
+        if (weaponManager.weaponRight)
+        {
+            weaponManager.weaponRight.Attack();
+        }
 
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;

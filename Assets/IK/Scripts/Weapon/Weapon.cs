@@ -7,10 +7,11 @@ public class Weapon : MonoBehaviour
     public Quaternion holdRotation;
     public float transitionSpeed = 15;
     public bool isLeft = true;
+    [HideInInspector]
+    public AutoAim player;
     SphereCollider pickupTrigger;
     Rigidbody rb;
     KeyCode fireKey;
-    [HideInInspector]
 
     void Awake()
     {
@@ -20,9 +21,12 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(fireKey))
+        if (player)
         {
-            Attack();
+            if (Input.GetKeyDown(fireKey))
+            {
+                Attack();
+            }
         }
     }
 

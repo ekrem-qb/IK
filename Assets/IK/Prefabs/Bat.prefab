@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c37b4fdfc67517c4397951a2785c6d03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   holdPosition: {x: 0, y: 0.2, z: 0.05}
   holdRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   transitionSpeed: 15

@@ -513,6 +513,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1577725242274002252}
+  - component: {fileID: 5925089641980278793}
+  - component: {fileID: 4202901575655269995}
   m_Layer: 15
   m_Name: APR_COMP
   m_TagString: Untagged
@@ -534,6 +536,37 @@ Transform:
   m_Father: {fileID: 6644999386083356834}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5925089641980278793
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094827245850388687}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2
+  m_Height: 6
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4202901575655269995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094827245850388687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f311ac692b6f94ab33566f3cd920c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nearWeapons: []
+  weaponLeft: {fileID: 0}
+  weaponRight: {fileID: 0}
+  keyPickUp: 101
+  keyDrop: 113
 --- !u!1 &3227456264773196406
 GameObject:
   m_ObjectHideFlags: 0
@@ -2760,7 +2793,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 2
-  attackInterval: 0.5
 --- !u!1 &6644999386083356981
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,7 +2867,7 @@ MonoBehaviour:
   punchLeft: q
   punchRight: e
   thisPlayerLayer: Player_1
-  forwardIsCameraDirection: 1
+  forwardIsCameraDirection: 0
   moveSpeed: 5
   turnSpeed: 6
   jumpForce: 18
@@ -2850,7 +2882,7 @@ MonoBehaviour:
   FeetMountForce: 25
   reachSensitivity: 25
   armReachStiffness: 2000
-  canBeKnockoutByImpact: 1
+  canBeKnockoutByImpact: 0
   requiredForceToBeKO: 20
   canPunch: 1
   punchForce: 15
@@ -4578,11 +4610,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4839178406629528336, guid: 7b55624b1e54e5340a20be95f23c4c5f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6951885165600998356, guid: 7b55624b1e54e5340a20be95f23c4c5f,
         type: 3}
