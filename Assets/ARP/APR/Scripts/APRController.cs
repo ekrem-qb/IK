@@ -208,11 +208,14 @@ namespace ARP.APR.Scripts
         //////////////////////
         void FixedUpdate()
         {
-            Walking();
-
-            if (useControls)
+            if (!isRagdoll && balanced)
             {
-                PlayerGetUpJumping();
+                Walking();
+
+                if (useControls)
+                {
+                    PlayerGetUpJumping();
+                }
             }
         }
 
