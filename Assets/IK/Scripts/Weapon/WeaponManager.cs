@@ -78,6 +78,8 @@ public class WeaponManager : MonoBehaviour
                 if (weaponLeft is Gun)
                 {
                     (weaponLeft as Gun).canShoot = player.nearEnemies.Count > 0;
+                    player.enabled = false;
+                    player.enabled = player.nearEnemies.Count > 0;
                 }
             }
             else if (!weaponRight)
@@ -90,6 +92,8 @@ public class WeaponManager : MonoBehaviour
                 if (weaponRight is Gun)
                 {
                     (weaponRight as Gun).canShoot = player.nearEnemies.Count > 0;
+                    player.enabled = false;
+                    player.enabled = player.nearEnemies.Count > 0;
                 }
             }
             nearWeapons.Remove(nearWeapons[0]);

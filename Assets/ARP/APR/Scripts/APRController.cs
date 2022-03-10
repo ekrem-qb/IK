@@ -150,7 +150,6 @@ namespace ARP.APR.Scripts
         public bool editorDebugMode;
 
         WeaponManager weaponManager;
-        AutoAim aimManager;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -164,7 +163,6 @@ namespace ARP.APR.Scripts
         {
             PlayerSetup();
             weaponManager = COMP.GetComponent<WeaponManager>();
-            aimManager = Root.GetComponent<AutoAim>();
         }
 
 
@@ -1071,10 +1069,13 @@ namespace ARP.APR.Scripts
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
 
-                if (!aimManager || !aimManager.enabled)
+                if (!weaponManager.weaponRight)
                 {
                     UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
                     LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
+                }
+                if (!weaponManager.weaponLeft)
+                {
                     UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
                     LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
                 }

@@ -31,14 +31,14 @@ public class Bullet : MonoBehaviour
     {
         if (owner != collision.transform.root)
         {
-            if (collision.rigidbody)
-            {
-                collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
-            }
             HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
             if (enemy)
             {
                 enemy.health -= 10;
+                if (collision.rigidbody)
+                {
+                    collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
+                }
             }
         }
     }
