@@ -25,27 +25,34 @@ public class AutoAim : MonoBehaviour
     {
         if (APR_Player.useControls)
         {
-            if (weaponManager.weaponLeft is Gun)
+            if (weaponManager.weaponLeft is Gun || weaponManager.weaponRight is Gun)
             {
-                nearEnemies.Sort(SortByDistanceToArmLeft);
+                Vector3 bodyBendingFactor = new Vector3(APR_Player.Body.transform.eulerAngles.x, APR_Player.Root.transform.localEulerAngles.y, 0);
 
-                Debug.DrawLine(nearEnemies[0].transform.position, armLeft.transform.position, Color.red);
+                if (weaponManager.weaponLeft is Gun)
+                {
+                    nearEnemies.Sort(SortByDistanceToArmLeft);
 
-                Vector3 angles = (Quaternion.LookRotation(nearEnemies[0].transform.position - armLeft.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 270, angles.z);
+                    Debug.DrawLine(nearEnemies[0].APR.Body.transform.position, armLeft.transform.position, Color.red);
 
-                armLeft.targetRotation = newRot;
-            }
-            if (weaponManager.weaponRight is Gun)
-            {
-                nearEnemies.Sort(SortByDistanceToArmRight);
+                    Vector3 angles = Quaternion.LookRotation(nearEnemies[0].APR.Body.transform.position - armLeft.transform.position).eulerAngles;
+                    angles -= bodyBendingFactor;
+                    Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 270, angles.z);
 
-                Debug.DrawLine(nearEnemies[0].transform.position, armRight.transform.position, Color.yellow);
+                    armLeft.targetRotation = newRot;
+                }
+                if (weaponManager.weaponRight is Gun)
+                {
+                    nearEnemies.Sort(SortByDistanceToArmRight);
 
-                Vector3 angles = (Quaternion.LookRotation(nearEnemies[0].transform.position - armRight.transform.position) * Quaternion.Inverse(APR_Player.Root.transform.rotation)).eulerAngles;
-                Quaternion newRot = Quaternion.Euler(angles.x - 35, angles.y - 90, angles.z);
+                    Debug.DrawLine(nearEnemies[0].APR.Body.transform.position, armRight.transform.position, Color.yellow);
 
-                armRight.targetRotation = newRot;
+                    Vector3 angles = Quaternion.LookRotation(nearEnemies[0].APR.Body.transform.position - armRight.transform.position).eulerAngles;
+                    angles -= bodyBendingFactor;
+                    Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
+
+                    armRight.targetRotation = newRot;
+                }
             }
         }
     }

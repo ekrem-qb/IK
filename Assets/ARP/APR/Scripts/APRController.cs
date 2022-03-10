@@ -150,6 +150,7 @@ namespace ARP.APR.Scripts
         public bool editorDebugMode;
 
         WeaponManager weaponManager;
+        AutoAim aimManager;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -163,6 +164,7 @@ namespace ARP.APR.Scripts
         {
             PlayerSetup();
             weaponManager = COMP.GetComponent<WeaponManager>();
+            aimManager = Root.GetComponent<AutoAim>();
         }
 
 
@@ -175,7 +177,10 @@ namespace ARP.APR.Scripts
             {
                 if (!inAir)
                 {
-                    PlayerMovement();
+                    if (balanced)
+                    {
+                        PlayerMovement();
+                    }
 
                     if (canPunch)
                     {
@@ -1065,10 +1070,14 @@ namespace ARP.APR.Scripts
             if (!jumping)
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
-                UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
-                LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
-                UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
-                LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+
+                if (!aimManager || !aimManager.enabled)
+                {
+                    UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
+                    LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
+                    UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
+                    LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+                }
 
                 MouseYAxisArms = 0;
             }

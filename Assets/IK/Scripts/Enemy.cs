@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController APR;
+    [HideInInspector]
+    public ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
     Rigidbody rootRB;
     AutoAim player;

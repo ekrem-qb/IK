@@ -680,7 +680,7 @@ ConfigurableJoint:
     positionSpring: 0
     positionDamper: 0
     maximumForce: 3.4028233e+38
-  m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_TargetRotation: {x: 0, y: 0, z: -0.10886688, w: 0.99405634}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
   m_RotationDriveMode: 0
   m_AngularXDrive:
@@ -1879,7 +1879,7 @@ MonoBehaviour:
   jumpForce: 18
   autoGetUpWhenPossible: 1
   useStepPrediction: 1
-  balanceHeight: 2.5
+  balanceHeight: 7.5
   balanceStrength: 5000
   coreStrength: 2000
   limbStrength: 500
@@ -3789,7 +3789,7 @@ ConfigurableJoint:
     positionSpring: 0
     positionDamper: 0
     maximumForce: 3.4028233e+38
-  m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_TargetRotation: {x: 0, y: 0, z: 0.10886688, w: 0.99405634}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
   m_RotationDriveMode: 0
   m_AngularXDrive:
