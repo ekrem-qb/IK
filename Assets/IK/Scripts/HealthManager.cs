@@ -58,6 +58,7 @@ public class HealthManager : MonoBehaviour
         }
         if (weaponManager)
         {
+            weaponManager.DropAllWeapons();
             Destroy(weaponManager);
         }
     }

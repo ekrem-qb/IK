@@ -11,18 +11,31 @@ public class Melee : Weapon
 
     void Start()
     {
-        APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        if (isLeft)
+        ReassignToNewOwner();
+    }
+
+    void OnTransformParentChanged()
+    {
+        ReassignToNewOwner();
+    }
+
+    void ReassignToNewOwner()
+    {
+        if (this.transform.parent)
         {
-            arm = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
-            armLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
-            hand = APR.LeftHand.GetComponent<ConfigurableJoint>();
-        }
-        else
-        {
-            arm = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
-            armLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
-            hand = APR.RightHand.GetComponent<ConfigurableJoint>();
+            APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+            if (isLeft)
+            {
+                arm = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
+                armLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
+                hand = APR.LeftHand.GetComponent<ConfigurableJoint>();
+            }
+            else
+            {
+                arm = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
+                armLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
+                hand = APR.RightHand.GetComponent<ConfigurableJoint>();
+            }
         }
     }
 
