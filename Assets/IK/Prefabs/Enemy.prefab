@@ -2787,7 +2787,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6644999386083356935}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e981365d56aa394eab4aa9da95766bc, type: 3}
   m_Name: 
@@ -2925,6 +2925,8 @@ MonoBehaviour:
   LowerRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
   UpperLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
   LowerLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  RightHandTarget: {x: 0, y: 0, z: 0, w: 0}
+  LeftHandTarget: {x: 0, y: 0, z: 0, w: 0}
   UpperRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
   LowerRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
   UpperLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}

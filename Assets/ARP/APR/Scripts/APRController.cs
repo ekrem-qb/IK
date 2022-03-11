@@ -142,6 +142,7 @@ namespace ARP.APR.Scripts
             HeadTarget, BodyTarget,
             UpperRightArmTarget, LowerRightArmTarget,
             UpperLeftArmTarget, LowerLeftArmTarget,
+            RightHandTarget, LeftHandTarget,
             UpperRightLegTarget, LowerRightLegTarget,
             UpperLeftLegTarget, LowerLeftLegTarget;
 
@@ -269,6 +270,8 @@ namespace ARP.APR.Scripts
             LowerRightArmTarget = LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation;
             UpperLeftArmTarget = UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
             LowerLeftArmTarget = LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
+            RightHandTarget = RightHand.GetComponent<ConfigurableJoint>().targetRotation;
+            LeftHandTarget = LeftHand.GetComponent<ConfigurableJoint>().targetRotation;
             UpperRightLegTarget = UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
             LowerRightLegTarget = LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
             UpperLeftLegTarget = UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation;

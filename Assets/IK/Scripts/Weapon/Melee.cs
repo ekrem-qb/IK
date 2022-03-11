@@ -4,8 +4,7 @@ using UnityEngine;
 public class Melee : Weapon
 {
     ARP.APR.Scripts.APRController APR;
-    ConfigurableJoint arm;
-    ConfigurableJoint armLow;
+    ConfigurableJoint arm, armLow, hand;
     public float force = 50;
     bool isInHook;
     bool isAttacking;
@@ -17,11 +16,13 @@ public class Melee : Weapon
         {
             arm = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
             armLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
+            hand = APR.LeftHand.GetComponent<ConfigurableJoint>();
         }
         else
         {
             arm = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
             armLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
+            hand = APR.RightHand.GetComponent<ConfigurableJoint>();
         }
     }
 
@@ -54,11 +55,13 @@ public class Melee : Weapon
         {
             arm.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
             armLow.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
+            hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
         }
         else
         {
             arm.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
             armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
+            hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
         }
         isAttacking = true;
 
@@ -67,11 +70,13 @@ public class Melee : Weapon
         {
             arm.targetRotation = APR.UpperLeftArmTarget;
             armLow.targetRotation = APR.LowerLeftArmTarget;
+            hand.targetRotation = APR.LeftHandTarget;
         }
         else
         {
             arm.targetRotation = APR.UpperRightArmTarget;
             armLow.targetRotation = APR.LowerRightArmTarget;
+            hand.targetRotation = APR.RightHandTarget;
         }
         isAttacking = false;
         isInHook = false;
