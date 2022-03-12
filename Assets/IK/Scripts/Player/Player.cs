@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
             {
                 if (!nearEnemies.Contains(enemy))
                 {
+                    enemy.player = this;
                     nearEnemies.Add(enemy);
                 }
             }
@@ -142,6 +143,7 @@ public class Player : MonoBehaviour
                 Enemy enemy = other.GetComponent<Enemy>();
                 if (enemy)
                 {
+                    enemy.player = null;
                     nearEnemies.Remove(enemy);
                 }
             }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,11 +8,16 @@ public class Enemy : MonoBehaviour
     public ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
     Rigidbody rootRB;
-    Player player;
+    [HideInInspector]
+    public Player player;
     WeaponManager weaponManager;
     public float attackDistance = 2;
     public float attackInterval = 0.5f;
     bool isAttacking;
+
+    public List<Transform> path;
+    public bool loop = true;
+    int nextPoint = 0;
 
     void Awake()
     {
@@ -19,16 +25,27 @@ public class Enemy : MonoBehaviour
         rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
         rootRB = APR.Root.GetComponent<Rigidbody>();
         weaponManager = APR.COMP.GetComponent<WeaponManager>();
-        player = GameObject.FindObjectOfType<Player>();
     }
 
     void FixedUpdate()
     {
-        if (player)
+        if (player || (path.Count > 0 && path[nextPoint]))
         {
-            rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(player.transform.position - rootJoint.transform.position));
+            Vector3 target = Vector3.zero;
 
-            if (Vector3.Distance(this.transform.position, player.transform.position) > attackDistance)
+            if (player)
+            {
+                target = player.transform.position;
+            }
+            else if (path[nextPoint])
+            {
+                target = path[nextPoint].position;
+            }
+            target.y = this.transform.position.y;
+
+            rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - rootJoint.transform.position));
+
+            if (Vector3.Distance(this.transform.position, target) > attackDistance)
             {
                 Vector3 direction = APR.Root.transform.forward;
                 direction.y = 0f;
@@ -52,12 +69,23 @@ public class Enemy : MonoBehaviour
                     APR.moveAxisUsed = false;
                     APR.isKeyDown = false;
                 }
-                if (APR.balanced)
+                if (player)
                 {
-                    if (!isAttacking)
+                    if (APR.balanced)
                     {
-                        StartCoroutine(Attack());
+                        if (!isAttacking)
+                        {
+                            StartCoroutine(Attack());
+                        }
                     }
+                }
+                else if (nextPoint < path.Count - 1)
+                {
+                    nextPoint++;
+                }
+                else if (loop)
+                {
+                    nextPoint = 0;
                 }
             }
         }
@@ -90,6 +118,33 @@ public class Enemy : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, attackDistance);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            if (path[i])
+            {
+                Gizmos.DrawSphere(path[i].position, 0.25f);
+                if (i < path.Count - 1)
+                {
+                    if (path[i + 1])
+                    {
+                        Gizmos.DrawLine(path[i].position, path[i + 1].position);
+                    }
+                }
+            }
+        }
+        if (loop && path.Count > 2)
+        {
+            if (path[path.Count - 1] && path[0] && (path[path.Count - 1] != path[0]))
+            {
+                Gizmos.DrawLine(path[path.Count - 1].position, path[0].position);
+            }
+        }
     }
 
     void OnDestroy()
