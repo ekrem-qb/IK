@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     public ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
     Rigidbody rootRB;
-    AutoAim player;
+    Player player;
     WeaponManager weaponManager;
     public float attackDistance = 2;
     public float attackInterval = 0.5f;
@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
         rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
         rootRB = APR.Root.GetComponent<Rigidbody>();
         weaponManager = APR.COMP.GetComponent<WeaponManager>();
-        player = GameObject.FindObjectOfType<AutoAim>();
+        player = GameObject.FindObjectOfType<Player>();
     }
 
     void FixedUpdate()

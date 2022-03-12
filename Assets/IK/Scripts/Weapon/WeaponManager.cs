@@ -5,7 +5,7 @@ public class WeaponManager : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
     Transform handLeft, handRight;
-    AutoAim player;
+    Player player;
     public List<Weapon> nearWeapons = new List<Weapon>();
     public Weapon weaponLeft, weaponRight;
     public KeyCode keyPickUp = KeyCode.E;
@@ -14,7 +14,7 @@ public class WeaponManager : MonoBehaviour
     void Awake()
     {
         APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        player = APR_Player.Root.GetComponent<AutoAim>();
+        player = APR_Player.Root.GetComponent<Player>();
         handLeft = APR_Player.LeftHand.transform.GetChild(0);
         handRight = APR_Player.RightHand.transform.GetChild(0);
         Weapon hasWeaponOnLeft = handLeft.GetComponentInChildren<Weapon>();

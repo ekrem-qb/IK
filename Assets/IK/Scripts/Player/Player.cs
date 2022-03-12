@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AutoAim : MonoBehaviour
+public class Player : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Player;
     WeaponManager weaponManager;

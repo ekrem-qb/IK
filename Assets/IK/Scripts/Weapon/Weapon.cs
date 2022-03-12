@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     public float transitionSpeed = 15;
     public bool isLeft = true;
     [HideInInspector]
-    public AutoAim player;
+    public Player player;
     SphereCollider pickupTrigger;
     Rigidbody rb;
     KeyCode fireKey;

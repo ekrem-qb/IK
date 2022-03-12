@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviour
 {
     ARP.APR.Scripts.APRController APR_Controller;
-    AutoAim player;
+    Player player;
     Enemy enemy;
     WeaponManager weaponManager;
     [SerializeField]
@@ -37,7 +37,7 @@ public class HealthManager : MonoBehaviour
             textHealth.text = _health.ToString();
         }
         APR_Controller = this.GetComponent<ARP.APR.Scripts.APRController>();
-        player = APR_Controller.Root.GetComponent<AutoAim>();
+        player = APR_Controller.Root.GetComponent<Player>();
         enemy = APR_Controller.Root.GetComponent<Enemy>();
         weaponManager = APR_Controller.COMP.GetComponent<WeaponManager>();
     }
