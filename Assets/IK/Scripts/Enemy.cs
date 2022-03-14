@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [HideInInspector]
-    public ARP.APR.Scripts.APRController APR;
+    [HideInInspector] public ARP.APR.Scripts.APRController APR;
     ConfigurableJoint rootJoint;
     Rigidbody rootRB;
-    [HideInInspector]
-    public Player player;
+    [HideInInspector] public Player player;
     WeaponManager weaponManager;
     public float attackDistance = 2;
     public float attackInterval = 0.5f;
@@ -17,7 +15,12 @@ public class Enemy : MonoBehaviour
 
     public List<Transform> path;
     public bool loop = true;
+    public float minInterval = 0.5f;
+    public float maxInterval = 2;
+    [Range(0,100)]
+    public int probabilityPercent = 50;
     int nextPoint = 0;
+    bool isWaiting = false;
 
     void Awake()
     {
@@ -29,7 +32,7 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (player || (path.Count > 0 && path[nextPoint]))
+        if (!isWaiting && (player || (path.Count > 0 && path[nextPoint])))
         {
             Vector3 target = Vector3.zero;
 
@@ -41,15 +44,32 @@ public class Enemy : MonoBehaviour
             {
                 target = path[nextPoint].position;
             }
+
             target.y = this.transform.position.y;
 
             rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - rootJoint.transform.position));
 
-            if (Vector3.Distance(this.transform.position, target) > attackDistance)
+            float distanceToStop = 0.1f;
+            if (player)
+            {
+                distanceToStop = attackDistance;
+            }
+
+            if (Vector3.Distance(this.transform.position, target) > distanceToStop)
             {
                 Vector3 direction = APR.Root.transform.forward;
                 direction.y = 0f;
-                rootRB.velocity = Vector3.Lerp(rootRB.velocity, (direction * APR.moveSpeed) + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
+
+                if (player)
+                {
+                    direction *= APR.moveSpeed;
+                }
+                else
+                {
+                    direction *= APR.moveSpeed / 4;
+                }
+
+                rootRB.velocity = Vector3.Lerp(rootRB.velocity, direction + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
 
                 if (APR.balanced)
                 {
@@ -69,6 +89,7 @@ public class Enemy : MonoBehaviour
                     APR.moveAxisUsed = false;
                     APR.isKeyDown = false;
                 }
+
                 if (player)
                 {
                     if (APR.balanced)
@@ -82,10 +103,12 @@ public class Enemy : MonoBehaviour
                 else if (nextPoint < path.Count - 1)
                 {
                     nextPoint++;
+                    StartCoroutine(WaitForIntervalBetweenPoints());
                 }
                 else if (loop)
                 {
                     nextPoint = 0;
+                    StartCoroutine(WaitForIntervalBetweenPoints());
                 }
             }
         }
@@ -97,6 +120,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    IEnumerator WaitForIntervalBetweenPoints()
+    {
+        if (Random.Range(0, 101) <= probabilityPercent)
+        {
+            isWaiting = true;
+            yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+            isWaiting = false;
+        }
+    }
+
     IEnumerator Attack()
     {
         isAttacking = true;
@@ -105,6 +138,7 @@ public class Enemy : MonoBehaviour
         {
             weaponManager.weaponLeft.Attack();
         }
+
         if (weaponManager.weaponRight)
         {
             weaponManager.weaponRight.Attack();
@@ -138,6 +172,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
         if (loop && path.Count > 2)
         {
             if (path[path.Count - 1] && path[0] && (path[path.Count - 1] != path[0]))

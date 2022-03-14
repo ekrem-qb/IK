@@ -33,6 +33,7 @@ public class ObservableList<T> : List<T>
         {
             CountChanged(this, null);
         }
+
         return this.Contains(item);
     }
 

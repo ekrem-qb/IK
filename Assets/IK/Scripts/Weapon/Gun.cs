@@ -3,8 +3,7 @@ using UnityEngine;
 public class Gun : Weapon
 {
     public GameObject bulletPrefab;
-    [HideInInspector]
-    public bool canShoot = false;
+    [HideInInspector] public bool canShoot = false;
 
     public override void Attack()
     {

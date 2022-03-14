@@ -19,7 +19,6 @@ namespace ARP.APR.Scripts
 {
     public class APRController : MonoBehaviour
     {
-
         //-------------------------------------------------------------
         //--Variables
         //-------------------------------------------------------------
@@ -28,12 +27,19 @@ namespace ARP.APR.Scripts
         //Active Ragdoll Player parts
         public GameObject
             //
-            Root, Body, Head,
-            UpperRightArm, LowerRightArm,
-            UpperLeftArm, LowerLeftArm,
-            UpperRightLeg, LowerRightLeg,
-            UpperLeftLeg, LowerLeftLeg,
-            RightFoot, LeftFoot;
+            Root,
+            Body,
+            Head,
+            UpperRightArm,
+            LowerRightArm,
+            UpperLeftArm,
+            LowerLeftArm,
+            UpperRightLeg,
+            LowerRightLeg,
+            UpperLeftLeg,
+            LowerLeftLeg,
+            RightFoot,
+            LeftFoot;
 
         //Rigidbody Hands
         public Rigidbody RightHand, LeftHand;
@@ -44,6 +50,7 @@ namespace ARP.APR.Scripts
         [Header("Hand Dependancies")]
         //Hand Controller Scripts & dependancies
         public HandContact GrabRight;
+
         public HandContact GrabLeft;
 
         [Header("Input on this player")]
@@ -53,6 +60,7 @@ namespace ARP.APR.Scripts
         [Header("Player Input Axis")]
         //Player Axis controls
         public string forwardBackward = "Vertical";
+
         public string leftRight = "Horizontal";
         public string jump = "Jump";
         public string reachLeft = "Fire1";
@@ -61,6 +69,7 @@ namespace ARP.APR.Scripts
         [Header("Player Input KeyCodes")]
         //Player KeyCode controls
         public string punchLeft = "q";
+
         public string punchRight = "e";
 
         [Header("The Layer Only This Player Is On")]
@@ -70,6 +79,7 @@ namespace ARP.APR.Scripts
         [Header("Movement Properties")]
         //Player properties
         public bool forwardIsCameraDirection = true;
+
         //Movement
         public float moveSpeed = 10f;
         public float turnSpeed = 6f;
@@ -78,11 +88,14 @@ namespace ARP.APR.Scripts
         [Header("Balance Properties")]
         //Balance
         public bool autoGetUpWhenPossible = true;
+
         public bool useStepPrediction = true;
         public float balanceHeight = 2.5f;
         public float balanceStrength = 5000f;
         public float coreStrength = 1500f;
+
         public float limbStrength = 500f;
+
         //Walking
         public float StepDuration = 0.2f;
         public float StepHeight = 1.7f;
@@ -91,11 +104,13 @@ namespace ARP.APR.Scripts
         [Header("Reach Properties")]
         //Reach
         public float reachSensitivity = 25f;
+
         public float armReachStiffness = 2000f;
 
         [Header("Actions")]
         //Punch
         public bool canBeKnockoutByImpact = true;
+
         public float requiredForceToBeKO = 20f;
         public bool canPunch = true;
         public float punchForce = 15f;
@@ -103,6 +118,7 @@ namespace ARP.APR.Scripts
         [Header("Audio")]
         //Impact sounds
         public float ImpactForce = 10f;
+
         public AudioClip[] Impacts;
         public AudioClip[] Hits;
         public AudioSource SoundSource;
@@ -110,21 +126,35 @@ namespace ARP.APR.Scripts
 
         //Hidden variables
         private float
-            timer, Step_R_timer, Step_L_timer,
-            MouseYAxisArms, MouseXAxisArms, MouseYAxisBody;
+            timer,
+            Step_R_timer,
+            Step_L_timer,
+            MouseYAxisArms,
+            MouseXAxisArms,
+            MouseYAxisBody;
 
-        [HideInInspector]
-        public bool
-            WalkForward, WalkBackward,
-            StepRight, StepLeft, Alert_Leg_Right,
-            Alert_Leg_Left, balanced = true, GettingUp,
-            isRagdoll, isKeyDown, moveAxisUsed,
-            jumpAxisUsed, reachLeftAxisUsed, reachRightAxisUsed;
+        [HideInInspector] public bool
+            WalkForward,
+            WalkBackward,
+            StepRight,
+            StepLeft,
+            Alert_Leg_Right,
+            Alert_Leg_Left,
+            balanced = true,
+            GettingUp,
+            isRagdoll,
+            isKeyDown,
+            moveAxisUsed,
+            jumpAxisUsed,
+            reachLeftAxisUsed,
+            reachRightAxisUsed;
 
-        [HideInInspector]
-        public bool
-            jumping, isJumping, inAir,
-            punchingRight, punchingLeft;
+        [HideInInspector] public bool
+            jumping,
+            isJumping,
+            inAir,
+            punchingRight,
+            punchingLeft;
 
         private Camera cam;
         private Vector3 Direction;
@@ -136,15 +166,20 @@ namespace ARP.APR.Scripts
             BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
 
         //Original pose target rotation
-        [HideInInspector]
-        public Quaternion
+        [HideInInspector] public Quaternion
             //
-            HeadTarget, BodyTarget,
-            UpperRightArmTarget, LowerRightArmTarget,
-            UpperLeftArmTarget, LowerLeftArmTarget,
-            RightHandTarget, LeftHandTarget,
-            UpperRightLegTarget, LowerRightLegTarget,
-            UpperLeftLegTarget, LowerLeftLegTarget;
+            HeadTarget,
+            BodyTarget,
+            UpperRightArmTarget,
+            LowerRightArmTarget,
+            UpperLeftArmTarget,
+            LowerLeftArmTarget,
+            RightHandTarget,
+            LeftHandTarget,
+            UpperRightLegTarget,
+            LowerRightLegTarget,
+            UpperLeftLegTarget,
+            LowerLeftLegTarget;
 
         [Header("Player Editor Debug Mode")]
         //Debug
@@ -157,7 +192,6 @@ namespace ARP.APR.Scripts
         //-------------------------------------------------------------
 
 
-
         //---Setup---//
         //////////////
         void Awake()
@@ -165,7 +199,6 @@ namespace ARP.APR.Scripts
             PlayerSetup();
             weaponManager = COMP.GetComponent<WeaponManager>();
         }
-
 
 
         //---Updates---//
@@ -186,6 +219,7 @@ namespace ARP.APR.Scripts
                         PlayerPunch();
                     }
                 }
+
                 PlayerReach();
             }
 
@@ -207,7 +241,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Fixed Updates---//
         //////////////////////
         void FixedUpdate()
@@ -224,11 +257,9 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //-------------------------------------------------------------
         //--Functions
         //-------------------------------------------------------------
-
 
 
         //---Player Setup--//
@@ -279,7 +310,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Ground Check---//
         /////////////////////
         void GroundCheck()
@@ -319,7 +349,6 @@ namespace ARP.APR.Scripts
                 ActivateRagdoll();
             }
         }
-
 
 
         //---Step Prediction---//
@@ -366,7 +395,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Reset Walk Cycle---//
         /////////////////////////
         void ResetWalkCycle()
@@ -382,7 +410,6 @@ namespace ARP.APR.Scripts
                 Alert_Leg_Left = false;
             }
         }
-
 
 
         //---Player Movement---//
@@ -512,7 +539,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Player GetUp & Jumping---//
         ///////////////////////////////
         void PlayerGetUpJumping()
@@ -566,7 +592,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Player Landed---//
         //////////////////////
         public void PlayerLanded()
@@ -577,7 +602,6 @@ namespace ARP.APR.Scripts
                 ResetPlayerPose();
             }
         }
-
 
 
         //---Player Reach--//
@@ -599,8 +623,10 @@ namespace ARP.APR.Scripts
                 {
                     MouseYAxisBody = -0.9f;
                 }
+
                 Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
             }
+
             if (!weaponManager.weaponLeft)
             {
                 //Reach Left
@@ -668,6 +694,7 @@ namespace ARP.APR.Scripts
                     }
                 }
             }
+
             if (!weaponManager.weaponRight)
             {
                 //Reach Right
@@ -738,12 +765,10 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Player Punch---//
         /////////////////////
         void PlayerPunch()
         {
-
             //punch right
             if (!punchingRight && Input.GetKey(punchRight))
             {
@@ -770,6 +795,7 @@ namespace ARP.APR.Scripts
                 Body.GetComponent<Rigidbody>().AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
 
                 StartCoroutine(DelayCoroutine());
+
                 IEnumerator DelayCoroutine()
                 {
                     yield return new WaitForSeconds(0.3f);
@@ -808,6 +834,7 @@ namespace ARP.APR.Scripts
                 Body.GetComponent<Rigidbody>().AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
 
                 StartCoroutine(DelayCoroutine());
+
                 IEnumerator DelayCoroutine()
                 {
                     yield return new WaitForSeconds(0.3f);
@@ -819,7 +846,6 @@ namespace ARP.APR.Scripts
                 }
             }
         }
-
 
 
         //---Player Walking---//
@@ -968,7 +994,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Activate Ragdoll---//
         /////////////////////////
         public void ActivateRagdoll()
@@ -998,6 +1023,7 @@ namespace ARP.APR.Scripts
                 LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
                 LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
             }
+
             //legs
             UpperRightLeg.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
             UpperRightLeg.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -1012,8 +1038,6 @@ namespace ARP.APR.Scripts
             LeftFoot.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
             LeftFoot.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
         }
-
-
 
 
         //---Deactivate Ragdoll---//
@@ -1045,6 +1069,7 @@ namespace ARP.APR.Scripts
                 LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
                 LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
             }
+
             //legs
             UpperRightLeg.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
             UpperRightLeg.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
@@ -1063,7 +1088,6 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Reset Player Pose---//
         //////////////////////////
         public void ResetPlayerPose()
@@ -1077,6 +1101,7 @@ namespace ARP.APR.Scripts
                     UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
                     LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
                 }
+
                 if (!weaponManager.weaponLeft)
                 {
                     UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
@@ -1088,13 +1113,11 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //---Calculating Center of mass point---//
         /////////////////////////////////////////
         void CenterOfMass()
         {
             CenterOfMassPoint =
-
                 (Root.GetComponent<Rigidbody>().mass * Root.transform.position +
                  Body.GetComponent<Rigidbody>().mass * Body.transform.position +
                  Head.GetComponent<Rigidbody>().mass * Head.transform.position +
@@ -1108,9 +1131,7 @@ namespace ARP.APR.Scripts
                  LowerLeftLeg.GetComponent<Rigidbody>().mass * LowerLeftLeg.transform.position +
                  RightFoot.GetComponent<Rigidbody>().mass * RightFoot.transform.position +
                  LeftFoot.GetComponent<Rigidbody>().mass * LeftFoot.transform.position)
-
                 /
-
                 (Root.GetComponent<Rigidbody>().mass + Body.GetComponent<Rigidbody>().mass +
                  Head.GetComponent<Rigidbody>().mass + UpperRightArm.GetComponent<Rigidbody>().mass +
                  LowerRightArm.GetComponent<Rigidbody>().mass + UpperLeftArm.GetComponent<Rigidbody>().mass +
@@ -1123,11 +1144,9 @@ namespace ARP.APR.Scripts
         }
 
 
-
         //-------------------------------------------------------------
         //--Debug
         //-------------------------------------------------------------
-
 
 
         //---Editor Debug Mode---//
@@ -1145,6 +1164,5 @@ namespace ARP.APR.Scripts
                 }
             }
         }
-
     }
 }

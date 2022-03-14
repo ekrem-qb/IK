@@ -25,11 +25,13 @@ namespace ARP.APR.Scripts
         [Header("Follow Properties")]
         //Follow values
         public float distance = 10.0f; //The distance is only used when "rotateCamera" is enabled, when disabled the camera offset is used
+
         public float smoothness = 0.15f;
 
         [Header("Rotation Properties")]
         //Rotate with input
         public bool rotateCamera = true;
+
         public float rotateSpeed = 5.0f;
 
         //Min & max camera angle

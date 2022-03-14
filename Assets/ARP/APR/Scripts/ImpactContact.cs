@@ -23,7 +23,6 @@ namespace ARP.APR.Scripts
         //Alert APR Player when collision enters with specified force amount
         void OnCollisionEnter(Collision col)
         {
-
             //Knockout by impact
             if (APR_Player.canBeKnockoutByImpact && col.relativeVelocity.magnitude > APR_Player.requiredForceToBeKO)
             {
@@ -43,7 +42,6 @@ namespace ARP.APR.Scripts
             //Sound on impact
             if (col.relativeVelocity.magnitude > APR_Player.ImpactForce)
             {
-
                 if (APR_Player.SoundSource)
                 {
                     if (!APR_Player.SoundSource.isPlaying && APR_Player.Impacts.Length > 0)

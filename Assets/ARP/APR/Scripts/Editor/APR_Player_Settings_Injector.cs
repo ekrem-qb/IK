@@ -71,7 +71,11 @@ namespace ARP.APR.Scripts.Editor
                 for (int i = 0; i < tagsProp.arraySize; i++)
                 {
                     SerializedProperty t = tagsProp.GetArrayElementAtIndex(i);
-                    if (t.stringValue.Equals(s)) { found = true; break; }
+                    if (t.stringValue.Equals(s))
+                    {
+                        found = true;
+                        break;
+                    }
                 }
 
                 if (!found)

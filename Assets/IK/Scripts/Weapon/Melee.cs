@@ -76,6 +76,7 @@ public class Melee : Weapon
             armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
             hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
         }
+
         isAttacking = true;
 
         yield return new WaitForSeconds(0.25f);
@@ -91,6 +92,7 @@ public class Melee : Weapon
             armLow.targetRotation = APR.LowerRightArmTarget;
             hand.targetRotation = APR.RightHandTarget;
         }
+
         isAttacking = false;
         isInHook = false;
     }

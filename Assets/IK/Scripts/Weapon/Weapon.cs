@@ -7,8 +7,7 @@ public class Weapon : MonoBehaviour
     public Quaternion holdRotation;
     public float transitionSpeed = 15;
     public bool isLeft = true;
-    [HideInInspector]
-    public Player player;
+    [HideInInspector] public Player player;
     SphereCollider pickupTrigger;
     Rigidbody rb;
     KeyCode fireKey;
@@ -30,7 +29,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public virtual void Attack() { }
+    public virtual void Attack()
+    {
+    }
 
     void OnEnable()
     {

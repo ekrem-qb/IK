@@ -19,7 +19,6 @@ namespace ARP.APR.Scripts.Editor
 {
     public class APR_Player_Binder : EditorWindow
     {
-
         //Editor window
         public Texture tex;
         private static APR_Player_Binder _instance;
@@ -151,7 +150,6 @@ namespace ARP.APR.Scripts.Editor
             }
 
 
-
             //New Model fields
             EditorGUILayout.Space();
             EditorGUILayout.Space();
@@ -159,82 +157,82 @@ namespace ARP.APR.Scripts.Editor
             //Container
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Model Container");
-            Container = (GameObject)EditorGUILayout.ObjectField(Container, typeof(GameObject), true, GUILayout.Width(180));
+            Container = (GameObject) EditorGUILayout.ObjectField(Container, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //Root
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Root Bone");
-            Root = (GameObject)EditorGUILayout.ObjectField(Root, typeof(GameObject), true, GUILayout.Width(180));
+            Root = (GameObject) EditorGUILayout.ObjectField(Root, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //body
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Body Bone");
-            Body = (GameObject)EditorGUILayout.ObjectField(Body, typeof(GameObject), true, GUILayout.Width(180));
+            Body = (GameObject) EditorGUILayout.ObjectField(Body, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //Head
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Head Bone");
-            Head = (GameObject)EditorGUILayout.ObjectField(Head, typeof(GameObject), true, GUILayout.Width(180));
+            Head = (GameObject) EditorGUILayout.ObjectField(Head, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //UpperRightArm
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Upper Right Arm Bone");
-            UpperRightArm = (GameObject)EditorGUILayout.ObjectField(UpperRightArm, typeof(GameObject), true, GUILayout.Width(180));
+            UpperRightArm = (GameObject) EditorGUILayout.ObjectField(UpperRightArm, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LowerRightArm
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Lower Right Arm Bone");
-            LowerRightArm = (GameObject)EditorGUILayout.ObjectField(LowerRightArm, typeof(GameObject), true, GUILayout.Width(180));
+            LowerRightArm = (GameObject) EditorGUILayout.ObjectField(LowerRightArm, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //RightHand
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Right Hand Bone");
-            RightHand = (GameObject)EditorGUILayout.ObjectField(RightHand, typeof(GameObject), true, GUILayout.Width(180));
+            RightHand = (GameObject) EditorGUILayout.ObjectField(RightHand, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //UpperLeftArm
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Upper Left Arm Bone");
-            UpperLeftArm = (GameObject)EditorGUILayout.ObjectField(UpperLeftArm, typeof(GameObject), true, GUILayout.Width(180));
+            UpperLeftArm = (GameObject) EditorGUILayout.ObjectField(UpperLeftArm, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LowerLeftArm
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Lower Left Arm Bone");
-            LowerLeftArm = (GameObject)EditorGUILayout.ObjectField(LowerLeftArm, typeof(GameObject), true, GUILayout.Width(180));
+            LowerLeftArm = (GameObject) EditorGUILayout.ObjectField(LowerLeftArm, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LeftHand
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Left Hand Bone");
-            LeftHand = (GameObject)EditorGUILayout.ObjectField(LeftHand, typeof(GameObject), true, GUILayout.Width(180));
+            LeftHand = (GameObject) EditorGUILayout.ObjectField(LeftHand, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //UpperRightLeg
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Upper Right Leg Bone");
-            UpperRightLeg = (GameObject)EditorGUILayout.ObjectField(UpperRightLeg, typeof(GameObject), true, GUILayout.Width(180));
+            UpperRightLeg = (GameObject) EditorGUILayout.ObjectField(UpperRightLeg, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LowerRightLeg
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Lower Right Leg Bone");
-            LowerRightLeg = (GameObject)EditorGUILayout.ObjectField(LowerRightLeg, typeof(GameObject), true, GUILayout.Width(180));
+            LowerRightLeg = (GameObject) EditorGUILayout.ObjectField(LowerRightLeg, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //RightFoot
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Right Foot Bone");
-            RightFoot = (GameObject)EditorGUILayout.ObjectField(RightFoot, typeof(GameObject), true, GUILayout.Width(180));
+            RightFoot = (GameObject) EditorGUILayout.ObjectField(RightFoot, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //UpperLeftLeg
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Upper Left Leg Bone");
-            UpperLeftLeg = (GameObject)EditorGUILayout.ObjectField(UpperLeftLeg, typeof(GameObject), true, GUILayout.Width(180));
+            UpperLeftLeg = (GameObject) EditorGUILayout.ObjectField(UpperLeftLeg, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LowerLeftLeg
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Lower Left Leg Bone");
-            LowerLeftLeg = (GameObject)EditorGUILayout.ObjectField(LowerLeftLeg, typeof(GameObject), true, GUILayout.Width(180));
+            LowerLeftLeg = (GameObject) EditorGUILayout.ObjectField(LowerLeftLeg, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
             //LeftFoot
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Left Foot Bone");
-            LeftFoot = (GameObject)EditorGUILayout.ObjectField(LeftFoot, typeof(GameObject), true, GUILayout.Width(180));
+            LeftFoot = (GameObject) EditorGUILayout.ObjectField(LeftFoot, typeof(GameObject), true, GUILayout.Width(180));
             EditorGUILayout.EndHorizontal();
 
             //Button

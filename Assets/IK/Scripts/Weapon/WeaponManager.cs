@@ -23,12 +23,14 @@ public class WeaponManager : MonoBehaviour
             weaponLeft = hasWeaponOnLeft;
             weaponLeft.player = player;
         }
+
         Weapon hasWeaponOnRight = handRight.GetComponentInChildren<Weapon>();
         if (hasWeaponOnRight)
         {
             weaponRight = hasWeaponOnRight;
             weaponRight.player = player;
         }
+
         this.enabled = player != null;
     }
 
@@ -96,8 +98,10 @@ public class WeaponManager : MonoBehaviour
                     player.enabled = player.nearEnemies.Count > 0;
                 }
             }
+
             nearWeapons.Remove(nearWeapons[0]);
         }
+
         if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
         {
             if (weaponRight)
@@ -144,6 +148,7 @@ public class WeaponManager : MonoBehaviour
         {
             Drop(weaponRight);
         }
+
         if (weaponLeft)
         {
             Drop(weaponLeft);

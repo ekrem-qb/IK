@@ -7,8 +7,8 @@ public class HealthManager : MonoBehaviour
     Player player;
     Enemy enemy;
     WeaponManager weaponManager;
-    [SerializeField]
-    private float _health = 100;
+    [SerializeField] private float _health = 100;
+
     public float health
     {
         get => _health;
@@ -21,6 +21,7 @@ public class HealthManager : MonoBehaviour
                 {
                     textHealth.text = _health.ToString();
                 }
+
                 if (value == 0)
                 {
                     Death();
@@ -28,6 +29,7 @@ public class HealthManager : MonoBehaviour
             }
         }
     }
+
     public Text textHealth;
 
     void Awake()
@@ -36,6 +38,7 @@ public class HealthManager : MonoBehaviour
         {
             textHealth.text = _health.ToString();
         }
+
         APR_Controller = this.GetComponent<ARP.APR.Scripts.APRController>();
         player = APR_Controller.Root.GetComponent<Player>();
         enemy = APR_Controller.Root.GetComponent<Enemy>();
@@ -52,10 +55,12 @@ public class HealthManager : MonoBehaviour
         {
             Destroy(player);
         }
+
         if (enemy)
         {
             Destroy(enemy);
         }
+
         if (weaponManager)
         {
             weaponManager.DropAllWeapons();

@@ -21,6 +21,7 @@ public class RotationControl : MonoBehaviour
             {
                 targetPosition += Vector3.left * Input.GetAxisRaw(APR_Player.leftRight);
             }
+
             if (Input.GetAxisRaw(APR_Player.forwardBackward) != 0)
             {
                 targetPosition += Vector3.forward * Input.GetAxisRaw(APR_Player.forwardBackward);

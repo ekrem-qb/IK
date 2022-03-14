@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 
                     armLeft.targetRotation = newRot;
                 }
+
                 if (weaponManager.weaponRight is Gun)
                 {
                     nearEnemies.Sort(SortByDistanceToArmRight);
@@ -77,6 +78,7 @@ public class Player : MonoBehaviour
                 (weaponManager.weaponLeft as Gun).canShoot = true;
             }
         }
+
         if (weaponManager.weaponRight is Gun)
         {
             if (!APR_Player.punchingRight)
@@ -105,6 +107,7 @@ public class Player : MonoBehaviour
 
             (weaponManager.weaponLeft as Gun).canShoot = false;
         }
+
         if (weaponManager.weaponRight is Gun)
         {
             armRight.angularXDrive = APR_Player.PoseOn;
@@ -160,6 +163,7 @@ public class Player : MonoBehaviour
         {
             return 1;
         }
+
         return 0;
     }
 
@@ -173,6 +177,7 @@ public class Player : MonoBehaviour
         {
             return 1;
         }
+
         return 0;
     }
 }

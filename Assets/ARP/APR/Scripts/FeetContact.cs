@@ -2,16 +2,16 @@
 
 
 //-------------------------------------------------------------
-    //--APR Player
-    //--Feet Contact
-    //
-    //--Unity Asset Store - Version 1.0
-    //
-    //--By The Famous Mouse
-    //
-    //--Twitter @FamousMouse_Dev
-    //--Youtube TheFamouseMouse
-    //-------------------------------------------------------------
+//--APR Player
+//--Feet Contact
+//
+//--Unity Asset Store - Version 1.0
+//
+//--By The Famous Mouse
+//
+//--Twitter @FamousMouse_Dev
+//--Youtube TheFamouseMouse
+//-------------------------------------------------------------
 
 
 namespace ARP.APR.Scripts
@@ -19,13 +19,13 @@ namespace ARP.APR.Scripts
     public class FeetContact : MonoBehaviour
     {
         public APRController APR_Player;
-	
+
         //Alert APR player when feet colliders enter ground object layer
         void OnCollisionEnter(Collision col)
         {
-            if(!APR_Player.isJumping && APR_Player.inAir)
+            if (!APR_Player.isJumping && APR_Player.inAir)
             {
-                if(col.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                if (col.gameObject.layer == LayerMask.NameToLayer("Ground"))
                 {
                     APR_Player.PlayerLanded();
                 }

@@ -292,7 +292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524218778625165163}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.59, y: -0.24, z: 9.8}
+  m_LocalPosition: {x: 7.59, y: 0, z: 9.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 277378921490269426}
@@ -2862,6 +2862,9 @@ MonoBehaviour:
   - {fileID: 3010517879234311075}
   - {fileID: 7448797209081897723}
   loop: 1
+  minInterval: 2
+  maxInterval: 2
+  probabilityPercent: 50
 --- !u!1 &6644999386083356981
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,7 +2941,7 @@ MonoBehaviour:
   punchRight: e
   thisPlayerLayer: Player_1
   forwardIsCameraDirection: 0
-  moveSpeed: 5
+  moveSpeed: 10
   turnSpeed: 6
   jumpForce: 18
   autoGetUpWhenPossible: 1
@@ -2948,7 +2951,7 @@ MonoBehaviour:
   coreStrength: 2000
   limbStrength: 500
   StepDuration: 0.25
-  StepHeight: 0.85
+  StepHeight: 0.625
   FeetMountForce: 25
   reachSensitivity: 25
   armReachStiffness: 2000
@@ -4273,7 +4276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6963925953809012348}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.3400002, y: 2.0907485, z: 2.21}
+  m_LocalPosition: {x: -3.3400002, y: 0, z: 2.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3882119718157545802}
@@ -4374,7 +4377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7259876390502667632}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.72, y: -0.24, z: 7.91}
+  m_LocalPosition: {x: 1.72, y: 0, z: 7.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 277378921490269426}
@@ -4590,7 +4593,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7748260278958899774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.06, y: -0.24, z: -1.12}
+  m_LocalPosition: {x: 1.06, y: 0, z: -1.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 277378921490269426}
