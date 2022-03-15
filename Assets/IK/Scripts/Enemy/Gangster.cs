@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Gangster : Enemy
 {
-    [HideInInspector] public ARP.APR.Scripts.APRController APR;
-    ConfigurableJoint rootJoint;
-    Rigidbody rootRB;
-    [HideInInspector] public Player player;
     WeaponManager weaponManager;
-    public float attackDistance = 2;
+
     public float attackInterval = 0.5f;
     bool isAttacking;
 
@@ -17,16 +13,12 @@ public class Enemy : MonoBehaviour
     public bool loop = true;
     public float minInterval = 0.5f;
     public float maxInterval = 2;
-    [Range(0,100)]
-    public int probabilityPercent = 50;
+    [Range(0, 100)] public int probabilityPercent = 50;
     int nextPoint = 0;
     bool isWaiting = false;
 
-    void Awake()
+    void Start()
     {
-        APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
-        rootRB = APR.Root.GetComponent<Rigidbody>();
         weaponManager = APR.COMP.GetComponent<WeaponManager>();
     }
 
@@ -148,12 +140,6 @@ public class Enemy : MonoBehaviour
         isAttacking = false;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, attackDistance);
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
@@ -179,14 +165,6 @@ public class Enemy : MonoBehaviour
             {
                 Gizmos.DrawLine(path[path.Count - 1].position, path[0].position);
             }
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (player)
-        {
-            player.nearEnemies.Remove(this);
         }
     }
 }
