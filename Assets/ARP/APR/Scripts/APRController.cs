@@ -1099,16 +1099,19 @@ namespace ARP.APR.Scripts
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
 
-                if (!weaponManager.weaponRight)
+                if (weaponManager)
                 {
-                    UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
-                    LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
-                }
+                    if (!weaponManager.weaponRight)
+                    {
+                        UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
+                        LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
+                    }
 
-                if (!weaponManager.weaponLeft)
-                {
-                    UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
-                    LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+                    if (!weaponManager.weaponLeft)
+                    {
+                        UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
+                        LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+                    }
                 }
 
                 MouseYAxisArms = 0;

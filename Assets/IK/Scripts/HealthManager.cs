@@ -7,7 +7,7 @@ public class HealthManager : MonoBehaviour
     Player player;
     Enemy enemy;
     WeaponManager weaponManager;
-    [SerializeField] private float _health = 100;
+    [Range(0, 100)] [SerializeField] private float _health = 100;
 
     public float health
     {

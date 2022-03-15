@@ -2678,7 +2678,7 @@ GameObject:
   - component: {fileID: 6644999386083356908}
   - component: {fileID: 6644999386083356894}
   - component: {fileID: 5886860492039858083}
-  - component: {fileID: 1857931559041948521}
+  - component: {fileID: 1798217824735626460}
   m_Layer: 15
   m_Name: APR_Root
   m_TagString: CanBeGrabbed
@@ -2840,7 +2840,7 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1857931559041948521
+--- !u!114 &1798217824735626460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2849,7 +2849,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6644999386083356935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e981365d56aa394eab4aa9da95766bc, type: 3}
+  m_Script: {fileID: 11500000, guid: ea44bae3b9c5d6b4599aa9533d2f7be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   APR: {fileID: 0}
@@ -2862,7 +2862,7 @@ MonoBehaviour:
   - {fileID: 3010517879234311075}
   - {fileID: 7448797209081897723}
   loop: 1
-  minInterval: 2
+  minInterval: 0.5
   maxInterval: 2
   probabilityPercent: 50
 --- !u!1 &6644999386083356981
@@ -2877,7 +2877,7 @@ GameObject:
   - component: {fileID: 6644999386083356936}
   - component: {fileID: 2883684347619998783}
   m_Layer: 15
-  m_Name: Enemy
+  m_Name: Gangster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

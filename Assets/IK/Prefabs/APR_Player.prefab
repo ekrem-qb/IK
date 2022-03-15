@@ -2321,7 +2321,6 @@ MonoBehaviour:
   Alert_Leg_Left: 0
   balanced: 1
   GettingUp: 0
-  ResetPose: 0
   isRagdoll: 0
   isKeyDown: 0
   moveAxisUsed: 0
@@ -2333,6 +2332,18 @@ MonoBehaviour:
   inAir: 0
   punchingRight: 0
   punchingLeft: 0
+  HeadTarget: {x: 0, y: 0, z: 0, w: 0}
+  BodyTarget: {x: 0, y: 0, z: 0, w: 0}
+  UpperRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  LowerRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  UpperLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  LowerLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  RightHandTarget: {x: 0, y: 0, z: 0, w: 0}
+  LeftHandTarget: {x: 0, y: 0, z: 0, w: 0}
+  UpperRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
+  LowerRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
+  UpperLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
+  LowerLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
 --- !u!1 &1672284008971312062
 GameObject:
@@ -2507,7 +2518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 1672284008971312001}
   Left: 0
-  hasJoint: 0
+  joint: {fileID: 0}
 --- !u!1 &1672284008971312063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,7 +2692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 1672284008971312001}
   Left: 1
-  hasJoint: 0
+  joint: {fileID: 0}
 --- !u!1 &7057679607314383430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,9 +2702,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6838670342698459077}
-  - component: {fileID: 7057679607314383429}
-  - component: {fileID: 7057679607314383428}
-  - component: {fileID: 7057679607314383431}
   m_Layer: 10
   m_Name: APR_COMP
   m_TagString: Untagged
@@ -2715,40 +2723,3 @@ Transform:
   m_Father: {fileID: 1672284008971311659}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &7057679607314383429
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057679607314383430}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 15
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7057679607314383428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057679607314383430}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78e4298de9f8399489c244d0d3d69dde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7057679607314383431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7057679607314383430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047ddf52fc2c99047b09bdac58614254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
