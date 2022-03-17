@@ -1680,7 +1680,7 @@ MonoBehaviour:
   punchRight: e
   thisPlayerLayer: Player_1
   forwardIsCameraDirection: 0
-  moveSpeed: 20
+  moveSpeed: 30
   turnSpeed: 6
   jumpForce: 18
   autoGetUpWhenPossible: 1
@@ -3361,7 +3361,7 @@ MonoBehaviour:
   APR: {fileID: 0}
   player: {fileID: 0}
   attackDistance: 2.5
-  explosionForce: 5000
+  explosionForce: 4000
 --- !u!1 &6725652083966152895
 GameObject:
   m_ObjectHideFlags: 0

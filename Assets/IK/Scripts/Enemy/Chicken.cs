@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Chicken : Enemy
 {
-    public float explosionForce = 5000;
+    public float explosionForce = 4000;
 
     void FixedUpdate()
     {
@@ -73,6 +73,7 @@ public class Chicken : Enemy
 
             if (collider.attachedRigidbody)
             {
+                collider.attachedRigidbody.velocity = Vector3.zero;
                 collider.attachedRigidbody.AddExplosionForce(explosionForce, this.transform.position, attackDistance);
             }
         }

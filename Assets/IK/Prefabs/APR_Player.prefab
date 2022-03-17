@@ -2282,13 +2282,13 @@ MonoBehaviour:
   punchLeft: q
   punchRight: e
   thisPlayerLayer: Player_1
-  forwardIsCameraDirection: 1
+  forwardIsCameraDirection: 0
   moveSpeed: 10
   turnSpeed: 6
   jumpForce: 18
   autoGetUpWhenPossible: 1
   useStepPrediction: 1
-  balanceHeight: 2.5
+  balanceHeight: 7.5
   balanceStrength: 5000
   coreStrength: 2000
   limbStrength: 500
@@ -2297,7 +2297,7 @@ MonoBehaviour:
   FeetMountForce: 25
   reachSensitivity: 25
   armReachStiffness: 2000
-  canBeKnockoutByImpact: 1
+  canBeKnockoutByImpact: 0
   requiredForceToBeKO: 20
   canPunch: 1
   punchForce: 15
