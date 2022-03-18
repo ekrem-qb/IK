@@ -620,8 +620,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29f311ac692b6f94ab33566f3cd920c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   nearWeapons: []
   weaponLeft: {fileID: 0}
   weaponRight: {fileID: 0}
@@ -2503,8 +2503,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e3e4e74cd4fe284aa30b72beb915475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 6644999386083356936}
 --- !u!1 &6644999386083356934
 GameObject:
@@ -2679,6 +2679,7 @@ GameObject:
   - component: {fileID: 6644999386083356894}
   - component: {fileID: 5886860492039858083}
   - component: {fileID: 1798217824735626460}
+  - component: {fileID: 2831082174170893736}
   m_Layer: 15
   m_Name: APR_Root
   m_TagString: CanBeGrabbed
@@ -2850,12 +2851,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea44bae3b9c5d6b4599aa9533d2f7be0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR: {fileID: 0}
+  rootJoint: {fileID: 0}
+  rootRB: {fileID: 0}
   player: {fileID: 0}
   attackDistance: 2.5
   attackInterval: 0.5
+--- !u!114 &2831082174170893736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6644999386083356935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd9bcad009dcd54cb64f4c51ed19c41, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   path:
   - {fileID: 3882119718157545802}
   - {fileID: 9133823178994204410}
@@ -2865,6 +2880,7 @@ MonoBehaviour:
   minInterval: 0.5
   maxInterval: 2
   probabilityPercent: 50
+  isWaiting: 0
 --- !u!1 &6644999386083356981
 GameObject:
   m_ObjectHideFlags: 0
@@ -2911,8 +2927,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c20a6e1c3ec15cc4badfddc68720960c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   Root: {fileID: 6644999386083356935}
   Body: {fileID: 6644999386083356934}
   Head: {fileID: 6644999386083356933}
@@ -3013,8 +3029,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08b751964358dda438f78ff8e84823d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _health: 100
   textHealth: {fileID: 0}
 --- !u!1 &6644999386083356982
@@ -3187,8 +3203,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4df9e82ca43343af2ab82a1de4cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 6644999386083356936}
   Left: 1
   joint: {fileID: 0}
@@ -3362,8 +3378,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07c4df9e82ca43343af2ab82a1de4cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 6644999386083356936}
   Left: 0
   joint: {fileID: 0}
@@ -3537,8 +3553,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad81a557255ce5f40a5543de21640a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 6644999386083356936}
 --- !u!1 &6644999386083356988
 GameObject:
@@ -3710,8 +3726,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad81a557255ce5f40a5543de21640a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   APR_Player: {fileID: 6644999386083356936}
 --- !u!1 &6644999386083356989
 GameObject:

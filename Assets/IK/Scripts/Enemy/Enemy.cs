@@ -3,8 +3,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [HideInInspector] public ARP.APR.Scripts.APRController APR;
-    protected ConfigurableJoint rootJoint;
-    protected Rigidbody rootRB;
+    [HideInInspector] public ConfigurableJoint rootJoint;
+    [HideInInspector] public Rigidbody rootRB;
     [HideInInspector] public Player player;
     public float attackDistance = 2.5f;
 
