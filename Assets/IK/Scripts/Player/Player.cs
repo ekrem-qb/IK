@@ -28,14 +28,16 @@ public class Player : MonoBehaviour
             if (weaponManager.weaponLeft is Gun || weaponManager.weaponRight is Gun)
             {
                 Vector3 bodyBendingFactor = new Vector3(APR_Player.Body.transform.eulerAngles.x, APR_Player.Root.transform.localEulerAngles.y, 0);
+                Enemy nearestToArmLeft = null;
 
                 if (weaponManager.weaponLeft is Gun)
                 {
-                    nearEnemies.Sort(SortByDistanceToArmLeft);
+                    nearEnemies.SortByDistanceTo(armLeft.transform.position);
+                    nearestToArmLeft = nearEnemies[0];
 
-                    Debug.DrawLine(nearEnemies[0].APR.Body.transform.position, armLeft.transform.position, Color.red);
+                    Debug.DrawLine(nearestToArmLeft.APR.Body.transform.position, armLeft.transform.position, Color.red);
 
-                    Vector3 angles = Quaternion.LookRotation(nearEnemies[0].APR.Body.transform.position - armLeft.transform.position).eulerAngles;
+                    Vector3 angles = Quaternion.LookRotation(nearestToArmLeft.APR.Body.transform.position - armLeft.transform.position).eulerAngles;
                     angles -= bodyBendingFactor;
                     Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 270, angles.z);
 
@@ -44,11 +46,19 @@ public class Player : MonoBehaviour
 
                 if (weaponManager.weaponRight is Gun)
                 {
-                    nearEnemies.Sort(SortByDistanceToArmRight);
+                    nearEnemies.SortByDistanceTo(armRight.transform.position);
+                    Enemy nearestToArmRight = nearEnemies[0];
+                    if (nearEnemies.Count > 1)
+                    {
+                        if (nearestToArmRight == nearestToArmLeft)
+                        {
+                            nearestToArmRight = nearEnemies[1];
+                        }
+                    }
 
-                    Debug.DrawLine(nearEnemies[0].APR.Body.transform.position, armRight.transform.position, Color.yellow);
+                    Debug.DrawLine(nearestToArmRight.APR.Body.transform.position, armRight.transform.position, Color.yellow);
 
-                    Vector3 angles = Quaternion.LookRotation(nearEnemies[0].APR.Body.transform.position - armRight.transform.position).eulerAngles;
+                    Vector3 angles = Quaternion.LookRotation(nearestToArmRight.APR.Body.transform.position - armRight.transform.position).eulerAngles;
                     angles -= bodyBendingFactor;
                     Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
 
@@ -151,33 +161,5 @@ public class Player : MonoBehaviour
                 }
             }
         }
-    }
-
-    int SortByDistanceToArmLeft(Enemy a, Enemy b)
-    {
-        if (Vector3.Distance(a.transform.position, armLeft.transform.position) < Vector3.Distance(b.transform.position, armLeft.transform.position))
-        {
-            return -1;
-        }
-        else if (Vector3.Distance(a.transform.position, armLeft.transform.position) > Vector3.Distance(b.transform.position, armLeft.transform.position))
-        {
-            return 1;
-        }
-
-        return 0;
-    }
-
-    int SortByDistanceToArmRight(Enemy a, Enemy b)
-    {
-        if (Vector3.Distance(a.transform.position, armRight.transform.position) < Vector3.Distance(b.transform.position, armRight.transform.position))
-        {
-            return -1;
-        }
-        else if (Vector3.Distance(a.transform.position, armRight.transform.position) > Vector3.Distance(b.transform.position, armRight.transform.position))
-        {
-            return 1;
-        }
-
-        return 0;
     }
 }
