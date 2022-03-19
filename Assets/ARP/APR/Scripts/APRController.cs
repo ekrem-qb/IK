@@ -128,8 +128,12 @@ namespace ARP.APR.Scripts
         private float
             timer,
             Step_R_timer,
-            Step_L_timer,
-            MouseYAxisArms,
+            Step_L_timer;
+
+        public float
+            MouseYAxisArms;
+
+        private float
             MouseXAxisArms,
             MouseYAxisBody;
 

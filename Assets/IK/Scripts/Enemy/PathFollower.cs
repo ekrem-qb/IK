@@ -9,7 +9,7 @@ public class PathFollower : MonoBehaviour
     public float minInterval = 0.5f;
     public float maxInterval = 2;
     [Range(0, 100)] public int probabilityPercent = 50;
-    int nextPoint = 0;
+    [HideInInspector] public int nextPoint = 0;
     [HideInInspector] public bool isWaiting = false;
     Enemy enemy;
 
@@ -27,7 +27,7 @@ public class PathFollower : MonoBehaviour
 
             enemy.rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.rootJoint.transform.position));
 
-            if (Vector3.Distance(this.transform.position, target) > 0.1f)
+            if (Vector3.Distance(this.transform.position, target) > 0.5f)
             {
                 Vector3 direction = enemy.APR.Root.transform.forward;
                 direction.y = 0f;

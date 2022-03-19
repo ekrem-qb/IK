@@ -40,4 +40,27 @@ public static class UnityExtensions
             return 0;
         }
     }
+
+    /// <summary>
+    /// Extension method to draw arrow
+    /// </summary>
+    /// <param name="gizmos"></param>
+    /// <param name="position"></param>
+    /// <param name="direction"></param>
+    /// <param name="arrowHeadLength"></param>
+    /// <param name="arrowHeadAngle"></param>
+    /// <returns></returns>
+    public static void DrawArrow(this Gizmos gizmos, Vector3 position, Vector3 direction, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+    {
+        Gizmos.DrawRay(position, direction);
+
+        Vector3 top = Quaternion.LookRotation(direction) * Quaternion.Euler(-90 + arrowHeadAngle, 0, 0) * new Vector3(0, 1, 0);
+        Gizmos.DrawRay(position + direction, top * arrowHeadLength);
+        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+        Gizmos.DrawRay(position + direction, left * arrowHeadLength);
+        Vector3 bottom = Quaternion.LookRotation(direction) * Quaternion.Euler(-90 - arrowHeadAngle, 0, 0) * new Vector3(0, 1, 0);
+        Gizmos.DrawRay(position + direction, bottom * arrowHeadLength);
+        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+        Gizmos.DrawRay(position + direction, right * arrowHeadLength);
+    }
 }
