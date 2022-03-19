@@ -3764,7 +3764,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4658623728827717463
 MonoBehaviour:
@@ -3783,6 +3783,7 @@ MonoBehaviour:
   rootRB: {fileID: 0}
   player: {fileID: 0}
   attackDistance: 0
+  pickUpDelay: 0.065
 --- !u!114 &4936355600723285689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3798,10 +3799,11 @@ MonoBehaviour:
   path:
   - {fileID: 0}
   - {fileID: 8016715332540454576}
-  loop: 1
+  loop: 0
   minInterval: 0
   maxInterval: 0
   probabilityPercent: 0
+  nextPoint: 0
   isWaiting: 0
 --- !u!1 &6974771330786837054
 GameObject:

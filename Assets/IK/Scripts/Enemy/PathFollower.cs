@@ -10,7 +10,7 @@ public class PathFollower : MonoBehaviour
     public float maxInterval = 2;
     [Range(0, 100)] public int probabilityPercent = 50;
     [HideInInspector] public int nextPoint = 0;
-    [HideInInspector] public bool isWaiting = false;
+    public bool isWaiting = false;
     Enemy enemy;
 
     void Awake()
@@ -20,53 +20,56 @@ public class PathFollower : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isWaiting && !enemy.player)
+        if (!isWaiting)
         {
-            Vector3 target = path[nextPoint].position;
-            target.y = this.transform.position.y;
-
-            enemy.rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.rootJoint.transform.position));
-
-            if (Vector3.Distance(this.transform.position, target) > 0.5f)
+            if (!enemy.player)
             {
-                Vector3 direction = enemy.APR.Root.transform.forward;
-                direction.y = 0f;
-                direction *= enemy.APR.moveSpeed / 4;
+                Vector3 target = path[nextPoint].position;
+                target.y = this.transform.position.y;
 
-                enemy.rootRB.velocity = Vector3.Lerp(enemy.rootRB.velocity, direction + new Vector3(0, enemy.rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
-
-                if (enemy.APR.balanced)
+                if (Vector3.Distance(this.transform.position, target) > 0.5f)
                 {
-                    if (!enemy.APR.WalkForward && !enemy.APR.moveAxisUsed)
+                    enemy.rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.rootJoint.transform.position));
+
+                    Vector3 direction = enemy.APR.Root.transform.forward;
+                    direction.y = 0f;
+                    direction *= enemy.APR.moveSpeed / 4;
+
+                    enemy.rootRB.velocity = Vector3.Lerp(enemy.rootRB.velocity, direction + new Vector3(0, enemy.rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
+
+                    if (enemy.APR.balanced)
                     {
-                        enemy.APR.WalkForward = true;
-                        enemy.APR.moveAxisUsed = true;
-                        enemy.APR.isKeyDown = true;
+                        if (!enemy.APR.WalkForward && !enemy.APR.moveAxisUsed)
+                        {
+                            enemy.APR.WalkForward = true;
+                            enemy.APR.moveAxisUsed = true;
+                            enemy.APR.isKeyDown = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (enemy.APR.WalkForward && enemy.APR.moveAxisUsed)
+                    {
+                        enemy.APR.WalkForward = false;
+                        enemy.APR.moveAxisUsed = false;
+                        enemy.APR.isKeyDown = false;
+                    }
+
+                    if (nextPoint < path.Count - 1)
+                    {
+                        nextPoint++;
+                        StartCoroutine(WaitForIntervalBetweenPoints());
+                    }
+                    else if (loop)
+                    {
+                        nextPoint = 0;
+                        StartCoroutine(WaitForIntervalBetweenPoints());
                     }
                 }
             }
-            else
-            {
-                if (enemy.APR.WalkForward && enemy.APR.moveAxisUsed)
-                {
-                    enemy.APR.WalkForward = false;
-                    enemy.APR.moveAxisUsed = false;
-                    enemy.APR.isKeyDown = false;
-                }
-
-                if (nextPoint < path.Count - 1)
-                {
-                    nextPoint++;
-                    StartCoroutine(WaitForIntervalBetweenPoints());
-                }
-                else if (loop)
-                {
-                    nextPoint = 0;
-                    StartCoroutine(WaitForIntervalBetweenPoints());
-                }
-            }
         }
-        else if (enemy.APR.WalkForward && enemy.APR.moveAxisUsed)
+        else
         {
             enemy.APR.WalkForward = false;
             enemy.APR.moveAxisUsed = false;

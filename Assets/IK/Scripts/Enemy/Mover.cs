@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Mover : Enemy
 {
+    public float pickUpDelay = 0.065f;
     PathFollower pathFollower;
-    public float pickUpDelay;
     GameObject box;
+    SphereCollider trigger;
+    FixedJoint jointLeft, jointRight;
+    Transform target;
 
     void OnDrawGizmosSelected()
     {
@@ -15,18 +18,24 @@ public class Mover : Enemy
     private void Start()
     {
         pathFollower = this.GetComponent<PathFollower>();
+        trigger = this.GetComponent<SphereCollider>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!box)
         {
-            if (other.CompareTag("CanBeGrabbed"))
+            if (other.name == "Box")
             {
-                if (other.transform.root != this.transform.root)
-                {
-                    StartCoroutine(PickUp(other));
-                }
+                StartCoroutine(PickUp(other));
+            }
+        }
+        else
+        {
+            Conveyor conveyor = other.GetComponent<Conveyor>();
+            if (conveyor)
+            {
+                StartCoroutine(Drop(conveyor));
             }
         }
     }
@@ -34,6 +43,10 @@ public class Mover : Enemy
     IEnumerator PickUp(Collider coll)
     {
         pathFollower.isWaiting = true;
+
+        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(coll.transform.position - this.transform.position));
+
+        yield return new WaitForSeconds(pickUpDelay * 10);
 
         if (APR.MouseYAxisArms <= 1.2f && APR.MouseYAxisArms >= -1.2f)
         {
@@ -86,13 +99,62 @@ public class Mover : Enemy
 
         yield return new WaitForSeconds(pickUpDelay);
 
-        FixedJoint joint = APR.LeftHand.gameObject.AddComponent<FixedJoint>();
-        joint.breakForce = Mathf.Infinity;
-        joint.connectedBody = coll.attachedRigidbody;
+        jointLeft = APR.LeftHand.gameObject.AddComponent<FixedJoint>();
+        jointLeft.breakForce = Mathf.Infinity;
+        jointLeft.connectedBody = coll.attachedRigidbody;
+
+        jointRight = APR.RightHand.gameObject.AddComponent<FixedJoint>();
+        jointRight.breakForce = Mathf.Infinity;
+        jointRight.connectedBody = coll.attachedRigidbody;
 
         box = coll.gameObject;
+        trigger.radius = 2;
 
         pathFollower.nextPoint++;
+        pathFollower.isWaiting = false;
+    }
+
+    IEnumerator Drop(Conveyor conveyor)
+    {
+        pathFollower.isWaiting = true;
+
+        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(conveyor.transform.position - this.transform.position));
+
+        yield return new WaitForSeconds(pickUpDelay * 10);
+
+        if (APR.reachLeftAxisUsed)
+        {
+            if (APR.balanced)
+            {
+                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+
+                APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+            }
+            else if (!APR.balanced)
+            {
+                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
+                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
+                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+            }
+
+            APR.ResetPlayerPose();
+            APR.reachLeftAxisUsed = false;
+        }
+
+        yield return new WaitForSeconds(pickUpDelay);
+
+        Destroy(jointLeft);
+        Destroy(jointRight);
+
+        box = null;
+        trigger.radius = 1;
+
+        pathFollower.nextPoint = 0;
         pathFollower.isWaiting = false;
     }
 }
