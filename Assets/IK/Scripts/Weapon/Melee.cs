@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Melee : Weapon
 {
-    ARP.APR.Scripts.APRController APR;
+    ARP.APR.Scripts.APRController aprController;
     ConfigurableJoint arm, armLow, hand;
     public float force = 50;
     bool isInHook;
@@ -23,18 +23,18 @@ public class Melee : Weapon
     {
         if (this.transform.parent)
         {
-            APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+            aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
             if (isLeft)
             {
-                arm = APR.UpperLeftArm.GetComponent<ConfigurableJoint>();
-                armLow = APR.LowerLeftArm.GetComponent<ConfigurableJoint>();
-                hand = APR.LeftHand.GetComponent<ConfigurableJoint>();
+                arm = aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
+                armLow = aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
+                hand = aprController.LeftHand.GetComponent<ConfigurableJoint>();
             }
             else
             {
-                arm = APR.UpperRightArm.GetComponent<ConfigurableJoint>();
-                armLow = APR.LowerRightArm.GetComponent<ConfigurableJoint>();
-                hand = APR.RightHand.GetComponent<ConfigurableJoint>();
+                arm = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
+                armLow = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
+                hand = aprController.RightHand.GetComponent<ConfigurableJoint>();
             }
         }
     }
@@ -82,15 +82,15 @@ public class Melee : Weapon
         yield return new WaitForSeconds(0.25f);
         if (isLeft)
         {
-            arm.targetRotation = APR.UpperLeftArmTarget;
-            armLow.targetRotation = APR.LowerLeftArmTarget;
-            hand.targetRotation = APR.LeftHandTarget;
+            arm.targetRotation = aprController.UpperLeftArmTarget;
+            armLow.targetRotation = aprController.LowerLeftArmTarget;
+            hand.targetRotation = aprController.LeftHandTarget;
         }
         else
         {
-            arm.targetRotation = APR.UpperRightArmTarget;
-            armLow.targetRotation = APR.LowerRightArmTarget;
-            hand.targetRotation = APR.RightHandTarget;
+            arm.targetRotation = aprController.UpperRightArmTarget;
+            armLow.targetRotation = aprController.LowerRightArmTarget;
+            hand.targetRotation = aprController.RightHandTarget;
         }
 
         isAttacking = false;

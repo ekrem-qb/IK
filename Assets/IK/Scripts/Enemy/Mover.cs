@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -34,7 +33,6 @@ public class Mover : Enemy
 
     SphereCollider trigger;
     FixedJoint jointLeft, jointRight;
-    Transform target;
 
     void OnDrawGizmosSelected()
     {
@@ -47,9 +45,9 @@ public class Mover : Enemy
         boxManager.boxes.CountChanged += OnBoxesCountChanged;
     }
 
-    void OnBoxesCountChanged(object sender, EventArgs e)
+    void OnBoxesCountChanged(int count)
     {
-        if (boxManager.boxes.Count > 0)
+        if (count > 0)
         {
             boxManager.boxes.SortByDistanceTo(this.transform.position);
             box = boxManager.boxes[0];
@@ -95,53 +93,53 @@ public class Mover : Enemy
         Vector3 targetPos = coll.transform.position;
         targetPos.y = this.transform.position.y;
         rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
-        bodyJoint.targetRotation = new Quaternion(APR.MouseYAxisBody, 0, 0, 1);
+        bodyJoint.targetRotation = new Quaternion(aprController.MouseYAxisBody, 0, 0, 1);
 
         yield return new WaitForSeconds(pickUpDelay * 5);
 
-        if (!APR.reachLeftAxisUsed)
+        if (!aprController.reachLeftAxisUsed)
         {
             //Adjust Left Arm joint strength
-            APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.ReachStiffness;
-            APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.ReachStiffness;
-            APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.ReachStiffness;
-            APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.ReachStiffness;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.ReachStiffness;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.ReachStiffness;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.ReachStiffness;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.ReachStiffness;
 
             //Adjust body joint strength
-            APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.CoreStiffness;
-            APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.CoreStiffness;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.CoreStiffness;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.CoreStiffness;
 
-            APR.reachLeftAxisUsed = true;
+            aprController.reachLeftAxisUsed = true;
         }
 
         //upper  left arm pose
-        APR.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - APR.MouseYAxisArms, 0.58f + APR.MouseYAxisArms, -0.8f, 1);
+        aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1);
 
-        if (!APR.reachRightAxisUsed)
+        if (!aprController.reachRightAxisUsed)
         {
             //Adjust Right Arm joint strength
-            APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.ReachStiffness;
-            APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.ReachStiffness;
-            APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.ReachStiffness;
-            APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.ReachStiffness;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.ReachStiffness;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.ReachStiffness;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.ReachStiffness;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.ReachStiffness;
 
             //Adjust body joint strength
-            APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.CoreStiffness;
-            APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.CoreStiffness;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.CoreStiffness;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.CoreStiffness;
 
-            APR.reachRightAxisUsed = true;
+            aprController.reachRightAxisUsed = true;
         }
 
         //upper  left arm pose
-        APR.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f - APR.MouseYAxisArms, 0.58f + APR.MouseYAxisArms, -0.8f, 1));
+        aprController.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1));
 
         yield return new WaitForSeconds(pickUpDelay);
 
-        jointLeft = APR.LeftHand.gameObject.AddComponent<FixedJoint>();
+        jointLeft = aprController.LeftHand.gameObject.AddComponent<FixedJoint>();
         jointLeft.breakForce = Mathf.Infinity;
         jointLeft.connectedBody = coll.attachedRigidbody;
 
-        jointRight = APR.RightHand.gameObject.AddComponent<FixedJoint>();
+        jointRight = aprController.RightHand.gameObject.AddComponent<FixedJoint>();
         jointRight.breakForce = Mathf.Infinity;
         jointRight.connectedBody = coll.attachedRigidbody;
 
@@ -168,52 +166,52 @@ public class Mover : Enemy
 
         yield return new WaitForSeconds(pickUpDelay * 5);
 
-        if (APR.reachLeftAxisUsed)
+        if (aprController.reachLeftAxisUsed)
         {
-            if (APR.balanced)
+            if (aprController.balanced)
             {
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
 
-                APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
             }
-            else if (!APR.balanced)
+            else if (!aprController.balanced)
             {
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
-                APR.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
-                APR.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
+                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
             }
 
-            APR.ResetPlayerPose();
-            APR.reachLeftAxisUsed = false;
+            aprController.ResetPlayerPose();
+            aprController.reachLeftAxisUsed = false;
         }
 
-        if (APR.reachRightAxisUsed)
+        if (aprController.reachRightAxisUsed)
         {
-            if (APR.balanced)
+            if (aprController.balanced)
             {
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
 
-                APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
-                APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+                aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
             }
-            else if (!APR.balanced)
+            else if (!aprController.balanced)
             {
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
-                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
-                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
+                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
             }
 
-            APR.ResetPlayerPose();
-            APR.reachRightAxisUsed = false;
+            aprController.ResetPlayerPose();
+            aprController.reachRightAxisUsed = false;
         }
 
         yield return new WaitForSeconds(pickUpDelay);

@@ -22,58 +22,55 @@ public class PathFollower : MonoBehaviour
     {
         if (!isWaiting && path.Count > 0)
         {
-            if (!enemy.player)
+            Vector3 target = path[nextPoint].position;
+            target.y = this.transform.position.y;
+
+            if (Vector3.Distance(this.transform.position, target) > 0.5f)
             {
-                Vector3 target = path[nextPoint].position;
-                target.y = this.transform.position.y;
+                enemy.rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.rootJoint.transform.position));
 
-                if (Vector3.Distance(this.transform.position, target) > 0.5f)
+                Vector3 direction = enemy.aprController.Root.transform.forward;
+                direction.y = 0f;
+                direction *= enemy.aprController.moveSpeed / 4;
+
+                enemy.rootRB.velocity = Vector3.Lerp(enemy.rootRB.velocity, direction + new Vector3(0, enemy.rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
+
+                if (enemy.aprController.balanced)
                 {
-                    enemy.rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.rootJoint.transform.position));
-
-                    Vector3 direction = enemy.APR.Root.transform.forward;
-                    direction.y = 0f;
-                    direction *= enemy.APR.moveSpeed / 4;
-
-                    enemy.rootRB.velocity = Vector3.Lerp(enemy.rootRB.velocity, direction + new Vector3(0, enemy.rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
-
-                    if (enemy.APR.balanced)
+                    if (!enemy.aprController.WalkForward && !enemy.aprController.moveAxisUsed)
                     {
-                        if (!enemy.APR.WalkForward && !enemy.APR.moveAxisUsed)
-                        {
-                            enemy.APR.WalkForward = true;
-                            enemy.APR.moveAxisUsed = true;
-                            enemy.APR.isKeyDown = true;
-                        }
+                        enemy.aprController.WalkForward = true;
+                        enemy.aprController.moveAxisUsed = true;
+                        enemy.aprController.isKeyDown = true;
                     }
                 }
-                else
+            }
+            else
+            {
+                if (enemy.aprController.WalkForward && enemy.aprController.moveAxisUsed)
                 {
-                    if (enemy.APR.WalkForward && enemy.APR.moveAxisUsed)
-                    {
-                        enemy.APR.WalkForward = false;
-                        enemy.APR.moveAxisUsed = false;
-                        enemy.APR.isKeyDown = false;
-                    }
+                    enemy.aprController.WalkForward = false;
+                    enemy.aprController.moveAxisUsed = false;
+                    enemy.aprController.isKeyDown = false;
+                }
 
-                    if (nextPoint < path.Count - 1)
-                    {
-                        nextPoint++;
-                        StartCoroutine(WaitForIntervalBetweenPoints());
-                    }
-                    else if (loop)
-                    {
-                        nextPoint = 0;
-                        StartCoroutine(WaitForIntervalBetweenPoints());
-                    }
+                if (nextPoint < path.Count - 1)
+                {
+                    nextPoint++;
+                    StartCoroutine(WaitForIntervalBetweenPoints());
+                }
+                else if (loop)
+                {
+                    nextPoint = 0;
+                    StartCoroutine(WaitForIntervalBetweenPoints());
                 }
             }
         }
         else
         {
-            enemy.APR.WalkForward = false;
-            enemy.APR.moveAxisUsed = false;
-            enemy.APR.isKeyDown = false;
+            enemy.aprController.WalkForward = false;
+            enemy.aprController.moveAxisUsed = false;
+            enemy.aprController.isKeyDown = false;
         }
     }
 

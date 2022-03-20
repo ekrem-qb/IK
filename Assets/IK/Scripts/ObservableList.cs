@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ObservableList<T> : List<T>
 {
-    public event EventHandler CountChanged;
+    public Action<int> CountChanged = i => { };
 
     public new void Add(T item)
     {
@@ -11,7 +11,7 @@ public class ObservableList<T> : List<T>
         base.Add(item);
         if (prevCount != this.Count)
         {
-            CountChanged(this, null);
+            CountChanged(this.Count);
         }
     }
 
@@ -21,20 +21,20 @@ public class ObservableList<T> : List<T>
         base.AddRange(collection);
         if (prevCount != this.Count)
         {
-            CountChanged(this, null);
+            CountChanged(this.Count);
         }
     }
 
     public new bool Remove(T item)
     {
         int prevCount = this.Count;
-        base.Remove(item);
+        bool isRemoved = base.Remove(item);
         if (prevCount != this.Count)
         {
-            CountChanged(this, null);
+            CountChanged(this.Count);
         }
 
-        return this.Contains(item);
+        return isRemoved;
     }
 
     public new void Clear()
@@ -43,7 +43,7 @@ public class ObservableList<T> : List<T>
         base.Clear();
         if (prevCount != this.Count)
         {
-            CountChanged(this, null);
+            CountChanged(this.Count);
         }
     }
 }

@@ -2,19 +2,34 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [HideInInspector] public ARP.APR.Scripts.APRController APR;
+    [HideInInspector] public ARP.APR.Scripts.APRController aprController;
     [HideInInspector] public ConfigurableJoint rootJoint;
     [HideInInspector] public ConfigurableJoint bodyJoint;
     [HideInInspector] public Rigidbody rootRB;
-    [HideInInspector] public Player player;
+    [SerializeField] Player _player;
+
+    public Player player
+    {
+        get => _player;
+        set
+        {
+            if (_player != value)
+            {
+                OnPlayerChanged(value);
+            }
+
+            _player = value;
+        }
+    }
+
     public float attackDistance = 2.5f;
 
     void Awake()
     {
-        APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
-        bodyJoint = APR.Body.GetComponent<ConfigurableJoint>();
-        rootRB = APR.Root.GetComponent<Rigidbody>();
+        aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        rootJoint = aprController.Root.GetComponent<ConfigurableJoint>();
+        bodyJoint = aprController.Body.GetComponent<ConfigurableJoint>();
+        rootRB = aprController.Root.GetComponent<Rigidbody>();
     }
 
     void OnDrawGizmosSelected()
@@ -29,5 +44,9 @@ public class Enemy : MonoBehaviour
         {
             player.nearEnemies.Remove(this);
         }
+    }
+
+    public virtual void OnPlayerChanged(Player newPlayer)
+    {
     }
 }

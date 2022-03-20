@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController APR_Controller;
+    ARP.APR.Scripts.APRController aprController;
     Player player;
     Enemy enemy;
     WeaponManager weaponManager;
@@ -39,18 +39,18 @@ public class HealthManager : MonoBehaviour
             textHealth.text = _health.ToString();
         }
 
-        APR_Controller = this.GetComponent<ARP.APR.Scripts.APRController>();
-        player = APR_Controller.Root.GetComponent<Player>();
-        enemy = APR_Controller.Root.GetComponent<Enemy>();
-        weaponManager = APR_Controller.COMP.GetComponent<WeaponManager>();
+        aprController = this.GetComponent<ARP.APR.Scripts.APRController>();
+        player = aprController.Root.GetComponent<Player>();
+        enemy = aprController.Root.GetComponent<Enemy>();
+        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
     }
 
     void Death()
     {
-        APR_Controller.ActivateRagdoll();
-        APR_Controller.autoGetUpWhenPossible = false;
-        APR_Controller.useControls = false;
-        APR_Controller.useStepPrediction = false;
+        aprController.ActivateRagdoll();
+        aprController.autoGetUpWhenPossible = false;
+        aprController.useControls = false;
+        aprController.useStepPrediction = false;
         if (player)
         {
             Destroy(player);

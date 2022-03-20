@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController APR_Player;
+    ARP.APR.Scripts.APRController aprController;
     Transform handLeft, handRight;
     Player player;
     public List<Weapon> nearWeapons = new List<Weapon>();
@@ -13,10 +13,10 @@ public class WeaponManager : MonoBehaviour
 
     void Awake()
     {
-        APR_Player = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        player = APR_Player.Root.GetComponent<Player>();
-        handLeft = APR_Player.LeftHand.transform.GetChild(0);
-        handRight = APR_Player.RightHand.transform.GetChild(0);
+        aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        player = aprController.Root.GetComponent<Player>();
+        handLeft = aprController.LeftHand.transform.GetChild(0);
+        handRight = aprController.RightHand.transform.GetChild(0);
         Weapon hasWeaponOnLeft = handLeft.GetComponentInChildren<Weapon>();
         if (hasWeaponOnLeft)
         {
@@ -68,7 +68,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && nearWeapons.Count > 0)
         {
-            APR_Player.ResetPlayerPose();
+            aprController.ResetPlayerPose();
 
             if (!weaponLeft)
             {
@@ -123,22 +123,22 @@ public class WeaponManager : MonoBehaviour
         if (weapon == weaponRight)
         {
             weaponRight = null;
-            APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
-            APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
-            APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
-            APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
-            APR_Player.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperRightArmTarget;
-            APR_Player.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerRightArmTarget;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.UpperRightArmTarget;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.LowerRightArmTarget;
         }
         else if (weapon == weaponLeft)
         {
             weaponLeft = null;
-            APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
-            APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
-            APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = APR_Player.PoseOn;
-            APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR_Player.PoseOn;
-            APR_Player.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.UpperLeftArmTarget;
-            APR_Player.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = APR_Player.LowerLeftArmTarget;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.UpperLeftArmTarget;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.LowerLeftArmTarget;
         }
     }
 

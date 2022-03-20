@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class Gangster : Enemy
 {
-    WeaponManager weaponManager;
     public float attackInterval = 0.5f;
     bool isAttacking;
+    WeaponManager weaponManager;
+    PathFollower pathFollower;
 
     void Start()
     {
-        weaponManager = APR.COMP.GetComponent<WeaponManager>();
+        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
+        pathFollower = this.GetComponent<PathFollower>();
     }
 
     void FixedUpdate()
@@ -23,32 +25,32 @@ public class Gangster : Enemy
 
             if (Vector3.Distance(this.transform.position, target) > attackDistance)
             {
-                Vector3 direction = APR.Root.transform.forward;
+                Vector3 direction = aprController.Root.transform.forward;
                 direction.y = 0f;
-                direction *= APR.moveSpeed;
+                direction *= aprController.moveSpeed;
 
                 rootRB.velocity = Vector3.Lerp(rootRB.velocity, direction + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
 
-                if (APR.balanced)
+                if (aprController.balanced)
                 {
-                    if (!APR.WalkForward && !APR.moveAxisUsed)
+                    if (!aprController.WalkForward && !aprController.moveAxisUsed)
                     {
-                        APR.WalkForward = true;
-                        APR.moveAxisUsed = true;
-                        APR.isKeyDown = true;
+                        aprController.WalkForward = true;
+                        aprController.moveAxisUsed = true;
+                        aprController.isKeyDown = true;
                     }
                 }
             }
             else
             {
-                if (APR.WalkForward && APR.moveAxisUsed)
+                if (aprController.WalkForward && aprController.moveAxisUsed)
                 {
-                    APR.WalkForward = false;
-                    APR.moveAxisUsed = false;
-                    APR.isKeyDown = false;
+                    aprController.WalkForward = false;
+                    aprController.moveAxisUsed = false;
+                    aprController.isKeyDown = false;
                 }
 
-                if (APR.balanced)
+                if (aprController.balanced)
                 {
                     if (!isAttacking)
                     {
@@ -75,5 +77,10 @@ public class Gangster : Enemy
 
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
+    }
+
+    public override void OnPlayerChanged(Player newPlayer)
+    {
+        pathFollower.enabled = !newPlayer;
     }
 }

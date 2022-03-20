@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   direction: {x: 0, y: 0, z: 1}
-  antiInertia: 0.75
+  antiInertia: 0.5
 --- !u!1 &4390099546583637047
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   direction: {x: 0, y: 0, z: 1}
-  antiInertia: 0.75
+  antiInertia: 0.5
 --- !u!1 &4390099546892441507
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   direction: {x: 0, y: 0, z: 1}
-  antiInertia: 0.75
+  antiInertia: 0.5
 --- !u!1 &4390099547877979253
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   direction: {x: 0, y: 0, z: 1}
-  antiInertia: 0.75
+  antiInertia: 0.5
 --- !u!1 &5370721080187688158
 GameObject:
   m_ObjectHideFlags: 0
