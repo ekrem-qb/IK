@@ -2764,6 +2764,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 489a8d92a4b760b4f8b6c126c3793f10, type: 3}
   SoundSource: {fileID: 5057779737880868123}
   MouseYAxisArms: 0
+  MouseYAxisBody: -0.45
   WalkForward: 0
   WalkBackward: 0
   StepRight: 0
@@ -3780,10 +3781,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   APR: {fileID: 0}
   rootJoint: {fileID: 0}
+  bodyJoint: {fileID: 0}
   rootRB: {fileID: 0}
   player: {fileID: 0}
   attackDistance: 0
   pickUpDelay: 0.065
+  conveyor: {fileID: 0}
+  boxManager: {fileID: 0}
 --- !u!114 &4936355600723285689
 MonoBehaviour:
   m_ObjectHideFlags: 0

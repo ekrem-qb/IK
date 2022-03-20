@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,17 +20,18 @@ public static class UnityExtensions
     /// <param name="list"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public static void SortByDistanceTo(this IList list, Vector3 target)
+    public static void SortByDistanceTo<T>(this List<T> list, Vector3 target)
     {
-        (list as List<MonoBehaviour>)?.Sort(OrderByDistance);
+        list.Sort(OrderByDistance);
 
-        int OrderByDistance(MonoBehaviour a, MonoBehaviour b)
+        int OrderByDistance(T a, T b)
         {
-            if (Vector3.Distance(a.transform.position, target) < Vector3.Distance(b.transform.position, target))
+            if (Vector3.Distance((a as MonoBehaviour).transform.position, target) < Vector3.Distance((b as MonoBehaviour).transform.position, target))
             {
                 return -1;
             }
-            else if (Vector3.Distance(a.transform.position, target) > Vector3.Distance(b.transform.position, target))
+
+            if (Vector3.Distance((a as MonoBehaviour).transform.position, target) > Vector3.Distance((b as MonoBehaviour).transform.position, target))
             {
                 return 1;
             }

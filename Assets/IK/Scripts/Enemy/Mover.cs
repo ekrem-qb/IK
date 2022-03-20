@@ -5,8 +5,33 @@ using UnityEngine;
 public class Mover : Enemy
 {
     public float pickUpDelay = 0.065f;
+    public Conveyor conveyor;
+    public BoxManager boxManager;
     PathFollower pathFollower;
-    GameObject box;
+    Box _box;
+
+    Box box
+    {
+        get => _box;
+        set
+        {
+            if (_box)
+            {
+                pathFollower.path.Remove(_box.transform);
+            }
+
+            if (value)
+            {
+                if (!pathFollower.path.Contains(value.transform))
+                {
+                    pathFollower.path.Add(value.transform);
+                }
+            }
+
+            _box = value;
+        }
+    }
+
     SphereCollider trigger;
     FixedJoint jointLeft, jointRight;
     Transform target;
@@ -19,23 +44,45 @@ public class Mover : Enemy
     {
         pathFollower = this.GetComponent<PathFollower>();
         trigger = this.GetComponent<SphereCollider>();
+        boxManager.boxes.CountChanged += OnBoxesCountChanged;
+    }
+
+    void OnBoxesCountChanged(object sender, EventArgs e)
+    {
+        if (boxManager.boxes.Count > 0)
+        {
+            boxManager.boxes.SortByDistanceTo(this.transform.position);
+            box = boxManager.boxes[0];
+        }
+        else
+        {
+            box = null;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!box)
+        if (pathFollower.path.Count > 0)
         {
-            if (other.name == "Box")
+            if (pathFollower.path[0] == conveyor.transform)
             {
-                StartCoroutine(PickUp(other));
+                if (other.transform == conveyor.transform)
+                {
+                    StartCoroutine(Drop());
+                }
             }
-        }
-        else
-        {
-            Conveyor conveyor = other.GetComponent<Conveyor>();
-            if (conveyor)
+            else if (box)
             {
-                StartCoroutine(Drop(conveyor));
+                if (pathFollower.path[0] == box.transform)
+                {
+                    if (other.transform == box.transform)
+                    {
+                        if (!jointLeft && !jointRight)
+                        {
+                            StartCoroutine(PickUp(other));
+                        }
+                    }
+                }
             }
         }
     }
@@ -43,23 +90,14 @@ public class Mover : Enemy
     IEnumerator PickUp(Collider coll)
     {
         pathFollower.isWaiting = true;
+        box = null;
 
-        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(coll.transform.position - this.transform.position));
+        Vector3 targetPos = coll.transform.position;
+        targetPos.y = this.transform.position.y;
+        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
+        bodyJoint.targetRotation = new Quaternion(APR.MouseYAxisBody, 0, 0, 1);
 
-        yield return new WaitForSeconds(pickUpDelay * 10);
-
-        if (APR.MouseYAxisArms <= 1.2f && APR.MouseYAxisArms >= -1.2f)
-        {
-            APR.MouseYAxisArms = APR.MouseYAxisArms + (Input.GetAxis("Mouse Y") / APR.reachSensitivity);
-        }
-        else if (APR.MouseYAxisArms > 1.2f)
-        {
-            APR.MouseYAxisArms = 1.2f;
-        }
-        else if (APR.MouseYAxisArms < -1.2f)
-        {
-            APR.MouseYAxisArms = -1.2f;
-        }
+        yield return new WaitForSeconds(pickUpDelay * 5);
 
         if (!APR.reachLeftAxisUsed)
         {
@@ -107,20 +145,28 @@ public class Mover : Enemy
         jointRight.breakForce = Mathf.Infinity;
         jointRight.connectedBody = coll.attachedRigidbody;
 
-        box = coll.gameObject;
-        trigger.radius = 2;
+        bodyJoint.targetRotation = new Quaternion(0, 0, 0, 1);
 
-        pathFollower.nextPoint++;
+        yield return new WaitForSeconds(pickUpDelay * 5);
+
+        if (!pathFollower.path.Contains(conveyor.transform))
+        {
+            pathFollower.path.Insert(0, conveyor.transform);
+        }
+
         pathFollower.isWaiting = false;
+        trigger.radius = 1.5f;
     }
 
-    IEnumerator Drop(Conveyor conveyor)
+    IEnumerator Drop()
     {
         pathFollower.isWaiting = true;
 
-        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(conveyor.transform.position - this.transform.position));
+        Vector3 targetPos = conveyor.transform.position;
+        targetPos.y = this.transform.position.y;
+        rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
 
-        yield return new WaitForSeconds(pickUpDelay * 10);
+        yield return new WaitForSeconds(pickUpDelay * 5);
 
         if (APR.reachLeftAxisUsed)
         {
@@ -146,15 +192,53 @@ public class Mover : Enemy
             APR.reachLeftAxisUsed = false;
         }
 
+        if (APR.reachRightAxisUsed)
+        {
+            if (APR.balanced)
+            {
+                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+
+                APR.Body.GetComponent<ConfigurableJoint>().angularXDrive = APR.PoseOn;
+                APR.Body.GetComponent<ConfigurableJoint>().angularYZDrive = APR.PoseOn;
+            }
+            else if (!APR.balanced)
+            {
+                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
+                APR.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = APR.DriveOff;
+                APR.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = APR.DriveOff;
+            }
+
+            APR.ResetPlayerPose();
+            APR.reachRightAxisUsed = false;
+        }
+
         yield return new WaitForSeconds(pickUpDelay);
 
         Destroy(jointLeft);
         Destroy(jointRight);
 
-        box = null;
-        trigger.radius = 1;
-
-        pathFollower.nextPoint = 0;
         pathFollower.isWaiting = false;
+        pathFollower.path.Remove(conveyor.transform);
+
+        trigger.radius = 1;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (pathFollower)
+        {
+            if (pathFollower.path.Count > 0)
+            {
+                if (pathFollower.path[0])
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawLine(this.transform.position, pathFollower.path[0].position);
+                }
+            }
+        }
     }
 }

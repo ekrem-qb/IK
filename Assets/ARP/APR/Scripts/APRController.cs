@@ -134,7 +134,9 @@ namespace ARP.APR.Scripts
             MouseYAxisArms;
 
         private float
-            MouseXAxisArms,
+            MouseXAxisArms;
+
+        public float
             MouseYAxisBody;
 
         [HideInInspector] public bool

@@ -20,7 +20,7 @@ public class PathFollower : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isWaiting)
+        if (!isWaiting && path.Count > 0)
         {
             if (!enemy.player)
             {

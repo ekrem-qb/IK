@@ -4,6 +4,7 @@ public class Enemy : MonoBehaviour
 {
     [HideInInspector] public ARP.APR.Scripts.APRController APR;
     [HideInInspector] public ConfigurableJoint rootJoint;
+    [HideInInspector] public ConfigurableJoint bodyJoint;
     [HideInInspector] public Rigidbody rootRB;
     [HideInInspector] public Player player;
     public float attackDistance = 2.5f;
@@ -12,6 +13,7 @@ public class Enemy : MonoBehaviour
     {
         APR = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         rootJoint = APR.Root.GetComponent<ConfigurableJoint>();
+        bodyJoint = APR.Body.GetComponent<ConfigurableJoint>();
         rootRB = APR.Root.GetComponent<Rigidbody>();
     }
 
