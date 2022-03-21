@@ -3774,20 +3774,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6974771330786837053}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55a12968fccf16745aa302835781d388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  APR: {fileID: 0}
+  aprController: {fileID: 0}
   rootJoint: {fileID: 0}
-  bodyJoint: {fileID: 0}
   rootRB: {fileID: 0}
-  player: {fileID: 0}
-  attackDistance: 0
+  _player: {fileID: 0}
+  attackDistance: 10
   pickUpDelay: 0.065
   conveyor: {fileID: 0}
   boxManager: {fileID: 0}
+  switcher: {fileID: 0}
 --- !u!114 &4936355600723285689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3800,9 +3800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd9bcad009dcd54cb64f4c51ed19c41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path:
-  - {fileID: 0}
-  - {fileID: 8016715332540454576}
+  path: []
   loop: 0
   minInterval: 0
   maxInterval: 0

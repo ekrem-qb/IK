@@ -6,7 +6,9 @@ public class Mover : Enemy
     public float pickUpDelay = 0.065f;
     public Conveyor conveyor;
     public BoxManager boxManager;
-    PathFollower pathFollower;
+    public Switch switcher;
+    SphereCollider trigger;
+    FixedJoint jointLeft, jointRight;
     Box _box;
 
     Box box
@@ -31,18 +33,30 @@ public class Mover : Enemy
         }
     }
 
-    SphereCollider trigger;
-    FixedJoint jointLeft, jointRight;
-
-    void OnDrawGizmosSelected()
+    protected override void Awake()
     {
-    }
-
-    private void Start()
-    {
-        pathFollower = this.GetComponent<PathFollower>();
+        base.Awake();
         trigger = this.GetComponent<SphereCollider>();
         boxManager.boxes.CountChanged += OnBoxesCountChanged;
+        switcher.Toggle += OnSwitchToggle;
+    }
+
+    void OnSwitchToggle(bool isOn)
+    {
+        if (isOn) 
+        {
+            if (player)
+            {
+                pathFollower.enabled = false;
+                this.enabled = true;
+                StartCoroutine(Drop());
+            }
+        }
+        else
+        {
+            pathFollower.enabled = true;
+            this.enabled = false;
+        }
     }
 
     void OnBoxesCountChanged(int count)
@@ -58,7 +72,7 @@ public class Mover : Enemy
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (pathFollower.path.Count > 0)
         {
@@ -225,7 +239,7 @@ public class Mover : Enemy
         trigger.radius = 1;
     }
 
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         if (pathFollower)
         {
@@ -237,6 +251,24 @@ public class Mover : Enemy
                     Gizmos.DrawLine(this.transform.position, pathFollower.path[0].position);
                 }
             }
+        }
+    }
+    
+    protected override void OnPlayerChanged(Player newPlayer)
+    {
+        if (newPlayer) 
+        {
+            if (switcher.isOn)
+            {
+                pathFollower.enabled = false;
+                this.enabled = true;
+                StartCoroutine(Drop());
+            }
+        }
+        else
+        {
+            pathFollower.enabled = true;
+            this.enabled = false;
         }
     }
 }
