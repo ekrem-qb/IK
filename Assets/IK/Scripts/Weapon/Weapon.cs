@@ -12,7 +12,7 @@ public class Weapon : MonoBehaviour
     Rigidbody rb;
     KeyCode fireKey;
 
-    void Awake()
+    protected virtual void Awake()
     {
         pickupTrigger = this.GetComponent<SphereCollider>();
         rb = this.GetComponent<Rigidbody>();
@@ -55,7 +55,7 @@ public class Weapon : MonoBehaviour
         rb = this.gameObject.AddComponent<Rigidbody>();
     }
 
-    public IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
+    IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
     {
         while (this.enabled && (Vector3.Distance(this.transform.localPosition, targetPosition) > 0.05f || Quaternion.Angle(this.transform.localRotation, targetRotation) > 0.05f))
         {

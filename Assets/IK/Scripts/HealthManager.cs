@@ -51,6 +51,7 @@ public class HealthManager : MonoBehaviour
         aprController.autoGetUpWhenPossible = false;
         aprController.useControls = false;
         aprController.useStepPrediction = false;
+
         if (player)
         {
             Destroy(player);

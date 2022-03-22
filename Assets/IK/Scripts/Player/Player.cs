@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -156,5 +157,10 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        nearEnemies.ForEach(enemy => enemy.player = null);
     }
 }

@@ -7,8 +7,10 @@ public class Mover : Enemy
     public Conveyor conveyor;
     public BoxManager boxManager;
     public Switch switcher;
+    public float attackInterval = 0.5f;
     SphereCollider trigger;
     FixedJoint jointLeft, jointRight;
+    WeaponManager weaponManager;
     Box _box;
 
     Box box
@@ -37,18 +39,38 @@ public class Mover : Enemy
     {
         base.Awake();
         trigger = this.GetComponent<SphereCollider>();
+        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
         boxManager.boxes.CountChanged += OnBoxesCountChanged;
         switcher.Toggle += OnSwitchToggle;
+        if (weaponManager.weaponLeft)
+        {
+            weaponManager.weaponLeft.gameObject.SetActive(false);
+        }
+
+        if (weaponManager.weaponRight)
+        {
+            weaponManager.weaponRight.gameObject.SetActive(false);
+        }
     }
 
     void OnSwitchToggle(bool isOn)
     {
-        if (isOn) 
+        if (isOn)
         {
             if (player)
             {
                 pathFollower.enabled = false;
                 this.enabled = true;
+                if (weaponManager.weaponLeft)
+                {
+                    weaponManager.weaponLeft.gameObject.SetActive(true);
+                }
+
+                if (weaponManager.weaponRight)
+                {
+                    weaponManager.weaponRight.gameObject.SetActive(true);
+                }
+
                 StartCoroutine(Drop());
             }
         }
@@ -56,6 +78,15 @@ public class Mover : Enemy
         {
             pathFollower.enabled = true;
             this.enabled = false;
+            if (weaponManager.weaponLeft)
+            {
+                weaponManager.weaponLeft.gameObject.SetActive(false);
+            }
+
+            if (weaponManager.weaponRight)
+            {
+                weaponManager.weaponRight.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -74,24 +105,27 @@ public class Mover : Enemy
 
     void OnTriggerEnter(Collider other)
     {
-        if (pathFollower.path.Count > 0)
+        if (pathFollower.enabled)
         {
-            if (pathFollower.path[0] == conveyor.transform)
+            if (pathFollower.path.Count > 0)
             {
-                if (other.transform == conveyor.transform)
+                if (pathFollower.path[0] == conveyor.transform)
                 {
-                    StartCoroutine(Drop());
-                }
-            }
-            else if (box)
-            {
-                if (pathFollower.path[0] == box.transform)
-                {
-                    if (other.transform == box.transform)
+                    if (other.transform == conveyor.transform)
                     {
-                        if (!jointLeft && !jointRight)
+                        StartCoroutine(Drop());
+                    }
+                }
+                else if (box)
+                {
+                    if (pathFollower.path[0] == box.transform)
+                    {
+                        if (other.transform == box.transform)
                         {
-                            StartCoroutine(PickUp(other));
+                            if (!jointLeft && !jointRight)
+                            {
+                                StartCoroutine(PickUp(other));
+                            }
                         }
                     }
                 }
@@ -253,15 +287,25 @@ public class Mover : Enemy
             }
         }
     }
-    
+
     protected override void OnPlayerChanged(Player newPlayer)
     {
-        if (newPlayer) 
+        if (newPlayer)
         {
             if (switcher.isOn)
             {
                 pathFollower.enabled = false;
                 this.enabled = true;
+                if (weaponManager.weaponLeft)
+                {
+                    weaponManager.weaponLeft.gameObject.SetActive(true);
+                }
+
+                if (weaponManager.weaponRight)
+                {
+                    weaponManager.weaponRight.gameObject.SetActive(true);
+                }
+
                 StartCoroutine(Drop());
             }
         }
@@ -269,6 +313,51 @@ public class Mover : Enemy
         {
             pathFollower.enabled = true;
             this.enabled = false;
+            if (weaponManager.weaponLeft)
+            {
+                weaponManager.weaponLeft.gameObject.SetActive(false);
+            }
+
+            if (weaponManager.weaponRight)
+            {
+                weaponManager.weaponRight.gameObject.SetActive(false);
+            }
         }
+    }
+
+    protected override IEnumerator Attack()
+    {
+        isAttacking = true;
+
+        if (weaponManager.weaponLeft)
+        {
+            if (weaponManager.weaponLeft is Thrower)
+            {
+                Thrower thrower = weaponManager.weaponLeft as Thrower;
+                thrower.Attack(player.transform.position);
+                yield return new WaitUntil(() => thrower.isAttacking);
+                thrower.meshRenderer.enabled = false;
+                yield return new WaitForSeconds(attackInterval * 4);
+                thrower.meshRenderer.enabled = true;
+            }
+        }
+
+        yield return new WaitForSeconds(attackInterval);
+
+        if (weaponManager.weaponRight)
+        {
+            if (weaponManager.weaponRight is Thrower)
+            {
+                Thrower thrower = weaponManager.weaponRight as Thrower;
+                thrower.Attack(player.transform.position);
+                yield return new WaitUntil(() => thrower.isAttacking);
+                thrower.meshRenderer.enabled = false;
+                yield return new WaitForSeconds(attackInterval * 4);
+                thrower.meshRenderer.enabled = true;
+            }
+        }
+
+        yield return new WaitForSeconds(attackInterval);
+        isAttacking = false;
     }
 }

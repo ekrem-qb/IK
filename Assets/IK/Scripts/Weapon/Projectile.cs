@@ -1,28 +1,29 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
-    Rigidbody rb;
-    public float force = 75;
-    public float timeout = 15;
+    public float speed = 5;
+    public float rotationSpeed = 25;
     [HideInInspector] public Transform owner;
+    [HideInInspector] public Vector3 target;
+    Rigidbody rb;
+    Transform child;
 
     void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
+        child = this.transform.GetChild(0);
     }
 
     void Start()
     {
-        rb.AddForce(this.transform.forward * force, ForceMode.Impulse);
-        StartCoroutine(SelfDestroy());
+        rb.AddForce((target - this.transform.position) * speed, ForceMode.Impulse);
     }
 
-    IEnumerator SelfDestroy()
+    void Update()
     {
-        yield return new WaitForSeconds(timeout);
-        Destroy(this.gameObject);
+        child.Rotate(transform.right * rotationSpeed * 100 * Time.deltaTime);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -35,9 +36,10 @@ public class Bullet : MonoBehaviour
                 enemy.health -= 10;
                 if (collision.rigidbody)
                 {
-                    collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);
+                    collision.rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);
                 }
 
+                child.transform.SetParent(collision.transform);
                 Destroy(this.gameObject);
             }
         }

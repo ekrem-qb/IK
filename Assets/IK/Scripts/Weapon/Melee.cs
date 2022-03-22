@@ -6,8 +6,8 @@ public class Melee : Weapon
     ARP.APR.Scripts.APRController aprController;
     ConfigurableJoint arm, armLow, hand;
     public float force = 50;
-    bool isInHook;
-    bool isAttacking;
+    protected bool isInHook;
+    [HideInInspector] public bool isAttacking;
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class Melee : Weapon
         }
     }
 
-    IEnumerator Hook()
+    protected IEnumerator Hook()
     {
         isInHook = true;
 
