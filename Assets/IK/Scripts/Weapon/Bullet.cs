@@ -32,6 +32,7 @@ public class Bullet : MonoBehaviour
             HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
             if (enemy)
             {
+                enemy.Hit();
                 enemy.health -= 10;
                 if (collision.rigidbody)
                 {

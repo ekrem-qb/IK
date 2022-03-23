@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
         bodyJoint = aprController.Body.GetComponent<ConfigurableJoint>();
         rootRB = aprController.Root.GetComponent<Rigidbody>();
         pathFollower = this.GetComponent<PathFollower>();
+        this.enabled = false;
     }
 
     void FixedUpdate()

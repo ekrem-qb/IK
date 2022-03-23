@@ -2206,6 +2206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1672284008971311659}
   - component: {fileID: 1672284008971312001}
+  - component: {fileID: 8635198368747403315}
   m_Layer: 10
   m_Name: APR_Player
   m_TagString: Player
@@ -2314,6 +2315,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 489a8d92a4b760b4f8b6c126c3793f10, type: 3}
   SoundSource: {fileID: 3588998641196690600}
   MouseYAxisArms: 0
+  MouseYAxisBody: 0
   WalkForward: 0
   WalkBackward: 0
   StepRight: 0
@@ -2346,6 +2348,20 @@ MonoBehaviour:
   UpperLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   LowerLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
+--- !u!114 &8635198368747403315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672284008971312060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b751964358dda438f78ff8e84823d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
+  textHealth: {fileID: 0}
 --- !u!1 &1672284008971312062
 GameObject:
   m_ObjectHideFlags: 0

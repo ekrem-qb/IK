@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class HealthManager : MonoBehaviour
     Enemy enemy;
     WeaponManager weaponManager;
     [Range(0, 100)] [SerializeField] float _health = 100;
+    public Action Hit = () => { };
 
     public float health
     {

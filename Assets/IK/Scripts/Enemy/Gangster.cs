@@ -21,6 +21,8 @@ public class Gangster : Enemy
             weaponManager.weaponLeft.Attack();
         }
 
+        yield return new WaitForSeconds(attackInterval);
+
         if (weaponManager.weaponRight)
         {
             weaponManager.weaponRight.Attack();

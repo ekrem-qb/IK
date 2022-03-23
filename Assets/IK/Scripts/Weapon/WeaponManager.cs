@@ -7,7 +7,7 @@ public class WeaponManager : MonoBehaviour
     Transform handLeft, handRight;
     Player player;
     public List<Weapon> nearWeapons = new List<Weapon>();
-    public Weapon weaponLeft, weaponRight;
+    [HideInInspector] public Weapon weaponLeft, weaponRight;
     public KeyCode keyPickUp = KeyCode.E;
     public KeyCode keyDrop = KeyCode.Q;
 
