@@ -139,7 +139,8 @@ namespace ARP.APR.Scripts
         public float
             MouseYAxisBody;
 
-        [HideInInspector] public bool
+        [HideInInspector]
+        public bool
             WalkForward,
             WalkBackward,
             StepRight,
@@ -155,7 +156,8 @@ namespace ARP.APR.Scripts
             reachLeftAxisUsed,
             reachRightAxisUsed;
 
-        [HideInInspector] public bool
+        [HideInInspector]
+        public bool
             jumping,
             isJumping,
             inAir,
@@ -172,7 +174,8 @@ namespace ARP.APR.Scripts
             BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
 
         //Original pose target rotation
-        [HideInInspector] public Quaternion
+        [HideInInspector]
+        public Quaternion
             //
             HeadTarget,
             BodyTarget,
@@ -1105,13 +1108,13 @@ namespace ARP.APR.Scripts
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
 
-                if (!weaponManager || (weaponManager && !weaponManager.weaponRight))
+                if (!weaponManager || (weaponManager && (!weaponManager.weaponRight || !weaponManager.weaponRight.gameObject.activeSelf)))
                 {
                     UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
                     LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
                 }
 
-                if (!weaponManager || (weaponManager && !weaponManager.weaponLeft))
+                if (!weaponManager || (weaponManager && (!weaponManager.weaponLeft || !weaponManager.weaponLeft.gameObject.activeSelf)))
                 {
                     UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
                     LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
