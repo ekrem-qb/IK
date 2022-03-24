@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     public Quaternion holdRotation;
     public float transitionSpeed = 15;
     public bool isLeft = true;
+    public float damage = 10;
     [HideInInspector] public Player player;
     SphereCollider pickupTrigger;
     Rigidbody rb;
@@ -33,7 +34,7 @@ public class Weapon : MonoBehaviour
     {
     }
 
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         pickupTrigger.enabled = false;
         Destroy(rb);
@@ -49,7 +50,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         pickupTrigger.enabled = true;
         rb = this.gameObject.AddComponent<Rigidbody>();

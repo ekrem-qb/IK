@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 5;
     public float rotationSpeed = 25;
+    public float damage = 10;
     [HideInInspector] public Transform owner;
     [HideInInspector] public Vector3 target;
     Rigidbody rb;
@@ -33,7 +34,7 @@ public class Projectile : MonoBehaviour
             HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
             if (enemy)
             {
-                enemy.health -= 10;
+                enemy.health -= damage;
                 if (collision.rigidbody)
                 {
                     collision.rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);

@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
     Rigidbody rb;
     public float force = 75;
     public float timeout = 15;
+    public float damage = 10;
     [HideInInspector] public Transform owner;
 
     void Awake()
@@ -32,8 +33,7 @@ public class Bullet : MonoBehaviour
             HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
             if (enemy)
             {
-                enemy.Hit();
-                enemy.health -= 10;
+                enemy.health -= damage;
                 if (collision.rigidbody)
                 {
                     collision.rigidbody.AddForce(this.transform.forward * force, ForceMode.Impulse);

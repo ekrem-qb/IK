@@ -16,6 +16,10 @@ public class HealthManager : MonoBehaviour
         get => _health;
         set
         {
+            if (value < _health)
+            {
+                Hit();
+            }
             if (value >= 0)
             {
                 _health = value;

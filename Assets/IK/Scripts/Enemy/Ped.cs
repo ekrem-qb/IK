@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ public class Ped : Enemy
     {
         if (!other.isTrigger)
         {
-            if (other.transform.root != this.transform.root) 
+            if (other.transform.root != this.transform.root)
             {
                 ARP.APR.Scripts.APRController playerApr = other.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
                 if (playerApr)
@@ -38,7 +37,7 @@ public class Ped : Enemy
                     if (player)
                     {
                         Annoy();
-                    } 
+                    }
                 }
             }
         }
@@ -46,7 +45,6 @@ public class Ped : Enemy
 
     void Annoy()
     {
-        print("Annoyed");
         if (player)
         {
             pathFollower.enabled = false;

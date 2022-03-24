@@ -1,16 +1,33 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Melee : Weapon
 {
     ARP.APR.Scripts.APRController aprController;
-    ConfigurableJoint arm, armLow, hand;
+    protected ConfigurableJoint arm, armLow, hand;
     public float force = 50;
-    protected bool isInHook;
     [HideInInspector] public bool isAttacking;
+    private bool _isInHook;
+    protected Action<bool> IsInHookChanged = newIsInHook => { };
 
-    void Start()
+    protected bool isInHook
     {
+        get => _isInHook;
+        set
+        {
+            if (_isInHook != value)
+            {
+                IsInHookChanged(value);
+            }
+
+            _isInHook = value;
+        }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
         ReassignToNewOwner();
     }
 
@@ -68,13 +85,19 @@ public class Melee : Weapon
         {
             arm.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
             armLow.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
-            hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
+            if (!(this is Fist))
+            {
+                hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
+            }
         }
         else
         {
             arm.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
             armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
-            hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
+            if (!(this is Fist))
+            {
+                hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
+            }
         }
 
         isAttacking = true;
@@ -110,7 +133,7 @@ public class Melee : Weapon
                         HealthManager enemy = other.transform.root.GetComponent<HealthManager>();
                         if (enemy)
                         {
-                            enemy.health -= 10;
+                            enemy.health -= damage;
                             Rigidbody rb = other.GetComponent<Rigidbody>();
                             if (rb)
                             {
