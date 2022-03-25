@@ -4,7 +4,7 @@ using UnityEngine;
 public class Mover : Enemy
 {
     public float pickUpDelay = 0.065f;
-    public Conveyor conveyor;
+    public Transform conveyorStart;
     public BoxManager boxManager;
     public Switch switcher;
     public float attackInterval = 0.5f;
@@ -109,9 +109,9 @@ public class Mover : Enemy
         {
             if (pathFollower.path.Count > 0)
             {
-                if (pathFollower.path[0] == conveyor.transform)
+                if (pathFollower.path[0] == conveyorStart)
                 {
-                    if (other.transform == conveyor.transform)
+                    if (other.GetComponent<Conveyor>())
                     {
                         StartCoroutine(Drop());
                     }
@@ -195,9 +195,9 @@ public class Mover : Enemy
 
         yield return new WaitForSeconds(pickUpDelay * 5);
 
-        if (!pathFollower.path.Contains(conveyor.transform))
+        if (!pathFollower.path.Contains(conveyorStart))
         {
-            pathFollower.path.Insert(0, conveyor.transform);
+            pathFollower.path.Insert(0, conveyorStart);
         }
 
         pathFollower.isWaiting = false;
@@ -208,7 +208,7 @@ public class Mover : Enemy
     {
         pathFollower.isWaiting = true;
 
-        Vector3 targetPos = conveyor.transform.position;
+        Vector3 targetPos = conveyorStart.position;
         targetPos.y = this.transform.position.y;
         rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
 
@@ -268,7 +268,7 @@ public class Mover : Enemy
         Destroy(jointRight);
 
         pathFollower.isWaiting = false;
-        pathFollower.path.Remove(conveyor.transform);
+        pathFollower.path.Remove(conveyorStart);
 
         trigger.radius = 1;
     }
