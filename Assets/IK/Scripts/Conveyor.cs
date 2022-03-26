@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Conveyor : MonoBehaviour
 {
-    public float speed = 18;
+    public float speed = 20;
     public Vector3 direction = Vector3.forward;
     [Range(0, 1)] public float antiInertia = 0.5f;
     public bool scrollTexture;
@@ -30,7 +30,7 @@ public class Conveyor : MonoBehaviour
             if (material)
             {
                 Vector2 offset = material.mainTextureOffset;
-                
+
                 if (offset.x >= 1 || offset.x <= -1)
                 {
                     offset.x = 0;
@@ -43,7 +43,7 @@ public class Conveyor : MonoBehaviour
 
                 offset.x += direction.x * speed * 0.1f * Time.deltaTime;
                 offset.y += direction.z * speed * 0.1f * Time.deltaTime;
-                
+
                 material.mainTextureOffset = offset;
             }
         }

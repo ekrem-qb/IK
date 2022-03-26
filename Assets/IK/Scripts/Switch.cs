@@ -22,6 +22,11 @@ public class Switch : MonoBehaviour
     public HingeJoint handle;
     public Action<bool> Toggle = b => { };
 
+    private void Awake()
+    {
+        Toggle(isOn);
+    }
+
     void FixedUpdate()
     {
         for (int axis = 0; axis < 3; axis++)
