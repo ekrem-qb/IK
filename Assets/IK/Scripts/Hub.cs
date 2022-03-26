@@ -51,4 +51,9 @@ public class Hub : MonoBehaviour
             _isInTransition = false;
         }
     }
+
+    private void OnDestroy()
+    {
+        toggler.Toggle -= OnSwitchToggle;
+    }
 }

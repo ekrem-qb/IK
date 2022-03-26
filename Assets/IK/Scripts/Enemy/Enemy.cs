@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(this.transform.position, attackDistance);
     }
 
-    void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (player)
         {

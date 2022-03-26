@@ -7,6 +7,7 @@ public class HealthManager : MonoBehaviour
     ARP.APR.Scripts.APRController aprController;
     Player player;
     Enemy enemy;
+    PathFollower pathFollower;
     WeaponManager weaponManager;
     [Range(0, 100)] [SerializeField] float _health = 100;
     public Action Hit = () => { };
@@ -48,23 +49,28 @@ public class HealthManager : MonoBehaviour
         aprController = this.GetComponent<ARP.APR.Scripts.APRController>();
         player = aprController.Root.GetComponent<Player>();
         enemy = aprController.Root.GetComponent<Enemy>();
+        pathFollower = aprController.Root.GetComponent<PathFollower>();
         weaponManager = aprController.COMP.GetComponent<WeaponManager>();
     }
 
     void Death()
     {
-        aprController.ActivateRagdoll();
-        aprController.autoGetUpWhenPossible = false;
-        aprController.useControls = false;
-        aprController.useStepPrediction = false;
-
         if (player)
         {
             Destroy(player);
         }
 
+        if (pathFollower)
+        {
+            Destroy(pathFollower);
+        }
+
         if (enemy)
         {
+            if (enemy is Mover)
+            {
+                StartCoroutine((enemy as Mover).Drop());
+            }
             Destroy(enemy);
         }
 
@@ -73,5 +79,10 @@ public class HealthManager : MonoBehaviour
             weaponManager.DropAllWeapons();
             Destroy(weaponManager);
         }
+        
+        aprController.ActivateRagdoll();
+        aprController.autoGetUpWhenPossible = false;
+        aprController.useControls = false;
+        aprController.useStepPrediction = false;
     }
 }

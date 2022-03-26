@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isOn: 0
+  invert: 0
   requiredObjectClass: {fileID: 0}
 --- !u!1 &8855624033039141969
 GameObject:
@@ -170,7 +171,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &9208215820827638061
 Transform:

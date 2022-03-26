@@ -71,4 +71,10 @@ public class Ped : Enemy
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
     }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        healthManager.Hit -= Annoy;
+    }
 }

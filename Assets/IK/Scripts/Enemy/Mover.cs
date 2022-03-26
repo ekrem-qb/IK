@@ -204,7 +204,7 @@ public class Mover : Enemy
         trigger.radius = 1.5f;
     }
 
-    IEnumerator Drop()
+    public IEnumerator Drop()
     {
         pathFollower.isWaiting = true;
 
@@ -359,5 +359,12 @@ public class Mover : Enemy
 
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        boxManager.boxes.CountChanged -= OnBoxesCountChanged;
+        toggler.Toggle -= OnSwitchToggle;
     }
 }

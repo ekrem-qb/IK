@@ -98,7 +98,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: d1e1703d51a6929478d3584472fbb6f7,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -238,7 +239,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!65 &64374304
 BoxCollider:
@@ -332,7 +333,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &101850534
 RectTransform:
@@ -411,7 +412,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &127393705
 RectTransform:
@@ -717,6 +718,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4658623728827717463, guid: 99948b3461fd924439f015841f4da9ec,
         type: 3}
+      propertyPath: toggler
+      value: 
+      objectReference: {fileID: 1613637859}
+    - target: {fileID: 4658623728827717463, guid: 99948b3461fd924439f015841f4da9ec,
+        type: 3}
       propertyPath: conveyor
       value: 
       objectReference: {fileID: 0}
@@ -724,7 +730,7 @@ PrefabInstance:
         type: 3}
       propertyPath: switcher
       value: 
-      objectReference: {fileID: 3436579245742706684}
+      objectReference: {fileID: 0}
     - target: {fileID: 4658623728827717463, guid: 99948b3461fd924439f015841f4da9ec,
         type: 3}
       propertyPath: boxManager
@@ -1031,7 +1037,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &373840437
 Transform:
@@ -1588,7 +1594,7 @@ GameObject:
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &626437201
 Transform:
@@ -1691,7 +1697,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!65 &655744893
 BoxCollider:
@@ -2073,9 +2079,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 970590261662515808, guid: 9cc86f3bdd5baae48b2c8e571874bb4d,
         type: 3}
+      propertyPath: toggler
+      value: 
+      objectReference: {fileID: 1613637859}
+    - target: {fileID: 970590261662515808, guid: 9cc86f3bdd5baae48b2c8e571874bb4d,
+        type: 3}
       propertyPath: switcher
       value: 
-      objectReference: {fileID: 3436579245742706684}
+      objectReference: {fileID: 0}
     - target: {fileID: 970590261662515808, guid: 9cc86f3bdd5baae48b2c8e571874bb4d,
         type: 3}
       propertyPath: transitionCurve.m_PreInfinity
@@ -2570,7 +2581,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &1388089744
 MonoBehaviour:
@@ -2640,7 +2651,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1550710628
 Transform:
@@ -2661,6 +2672,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1613637859 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3357804378409252245, guid: 170cc85a9c8a4c64f957de2faeaa2b5e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8393666686647936202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf578a119877754a869ba52eec939e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1649352534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5526178865867542957, guid: a0363134c8a7da04dbdfcecde7cbeff6,
@@ -2681,7 +2704,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1727192808
 Transform:
@@ -2726,7 +2749,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!65 &1791999654
 BoxCollider:
@@ -2821,7 +2844,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &1808051442
 MonoBehaviour:
@@ -2919,7 +2942,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &1879328327
 RectTransform:
@@ -2960,7 +2983,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1933591829
 Transform:
@@ -3067,7 +3090,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1959710437
 Transform:
@@ -3214,18 +3237,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69fa6903cb4fc394084cfd3df26cffa7, type: 3}
---- !u!114 &3436579245742706684 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7115441682466345946, guid: 170cc85a9c8a4c64f957de2faeaa2b5e,
-    type: 3}
-  m_PrefabInstance: {fileID: 8393666686647936202}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d70f3a21b6a231448128bd8ab66b43f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4029639136203291331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6126569446476853844, guid: 2d96d75e32cd55c4287337e77208ebdd,
