@@ -271,9 +271,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6259318877787899420}
-  - component: {fileID: 7115441682466345946}
+  - component: {fileID: 3357804378409252245}
   m_Layer: 0
-  m_Name: Switch
+  m_Name: Switcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,7 +295,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7115441682466345946
+--- !u!114 &3357804378409252245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6615055562903612211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d70f3a21b6a231448128bd8ab66b43f, type: 3}
+  m_Script: {fileID: 11500000, guid: ccf578a119877754a869ba52eec939e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isOn: 0

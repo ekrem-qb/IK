@@ -10,7 +10,7 @@ public class Hub : MonoBehaviour
         public Vector3 hubPosition, conveyorDirection;
     }
 
-    public Switcher switcher;
+    public Toggler toggler;
     public Conveyor conveyor;
     public float transitionSpeed = 15;
     public State on;
@@ -19,7 +19,7 @@ public class Hub : MonoBehaviour
 
     private void Awake()
     {
-        switcher.Toggle += OnSwitchToggle;
+        toggler.Toggle += OnSwitchToggle;
     }
 
     private void OnSwitchToggle(bool isOn)

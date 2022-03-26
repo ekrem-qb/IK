@@ -151,7 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isOn: 0
-  handle: {fileID: 0}
   requiredObjectClass: {fileID: 0}
 --- !u!1 &8855624033039141969
 GameObject:

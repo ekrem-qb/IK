@@ -6,7 +6,7 @@ public class Mover : Enemy
     public float pickUpDelay = 0.065f;
     public Transform conveyorStart;
     public BoxManager boxManager;
-    public Switcher switcher;
+    public Toggler toggler;
     public float attackInterval = 0.5f;
     SphereCollider trigger;
     FixedJoint jointLeft, jointRight;
@@ -41,7 +41,7 @@ public class Mover : Enemy
         trigger = this.GetComponent<SphereCollider>();
         weaponManager = aprController.COMP.GetComponent<WeaponManager>();
         boxManager.boxes.CountChanged += OnBoxesCountChanged;
-        switcher.Toggle += OnSwitchToggle;
+        toggler.Toggle += OnSwitchToggle;
         if (weaponManager.weaponLeft)
         {
             weaponManager.weaponLeft.gameObject.SetActive(false);
@@ -292,7 +292,7 @@ public class Mover : Enemy
     {
         if (newPlayer)
         {
-            if (switcher.isOn)
+            if (toggler.isOn)
             {
                 pathFollower.enabled = false;
                 this.enabled = true;

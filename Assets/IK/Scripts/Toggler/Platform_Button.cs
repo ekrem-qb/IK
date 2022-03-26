@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class Platform_Button : Switcher
+public class Platform_Button : Toggler
 {
     public MonoBehaviour requiredObjectClass;
-    internal override void FixedUpdate()
-    {
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
