@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 
-public class Switch : MonoBehaviour
+public class Switcher : MonoBehaviour
 {
-    [SerializeField] bool _isOn;
-
     public bool isOn
     {
         get => _isOn;
@@ -20,6 +18,7 @@ public class Switch : MonoBehaviour
     }
 
     public HingeJoint handle;
+    [SerializeField] bool _isOn;
     public Action<bool> Toggle = b => { };
 
     private void Awake()
@@ -27,7 +26,7 @@ public class Switch : MonoBehaviour
         Toggle(isOn);
     }
 
-    void FixedUpdate()
+    internal virtual void FixedUpdate()
     {
         for (int axis = 0; axis < 3; axis++)
         {

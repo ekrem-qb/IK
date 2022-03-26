@@ -10,7 +10,7 @@ public class Hub : MonoBehaviour
         public Vector3 hubPosition, conveyorDirection;
     }
 
-    public Switch switcher;
+    public Switcher switcher;
     public Conveyor conveyor;
     public float transitionSpeed = 15;
     public State on;

@@ -6,7 +6,7 @@ public class Mover : Enemy
     public float pickUpDelay = 0.065f;
     public Transform conveyorStart;
     public BoxManager boxManager;
-    public Switch switcher;
+    public Switcher switcher;
     public float attackInterval = 0.5f;
     SphereCollider trigger;
     FixedJoint jointLeft, jointRight;
