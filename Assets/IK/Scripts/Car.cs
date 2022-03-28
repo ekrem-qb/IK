@@ -15,7 +15,8 @@ public class Car : MonoBehaviour
 
     public Wheels wheels;
     public PathCreator path;
-    public float speed = 5;
+    public EndOfPathInstruction endOfPathInstruction;
+    public float speed = 15;
     
     private Rigidbody _rigidbody;
     private float _distanceTravelled;
@@ -40,11 +41,16 @@ public class Car : MonoBehaviour
     private void FixedUpdate()
     {
         _distanceTravelled += speed * Time.deltaTime;
-        this.transform.position = path.path.GetPointAtDistance(_distanceTravelled, EndOfPathInstruction.Stop);
-        this.transform.rotation = path.path.GetRotationAtDistance(_distanceTravelled, EndOfPathInstruction.Stop);
+        this.transform.position = path.path.GetPointAtDistance(_distanceTravelled, endOfPathInstruction);
+        this.transform.rotation = path.path.GetRotationAtDistance(_distanceTravelled, endOfPathInstruction);
     }
 
     private void OnPathChanged()
+    {
+        _distanceTravelled = path.path.GetClosestDistanceAlongPath(this.transform.position);
+    }
+
+    private void OnEnable()
     {
         _distanceTravelled = path.path.GetClosestDistanceAlongPath(this.transform.position);
     }

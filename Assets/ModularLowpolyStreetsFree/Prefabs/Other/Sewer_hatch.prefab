@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6181090049011305635}
   - component: {fileID: 410042626227725016}
   - component: {fileID: 1327849154844278147}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sewer_hatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -33,7 +33,7 @@ public class Toggler : MonoBehaviour
     public bool invert;
     public Action<bool> Toggle = b => { };
 
-    private void Awake()
+    private void Start()
     {
         Toggle(isOn);
     }
