@@ -89,6 +89,9 @@ namespace ARP.APR.Scripts
         //Balance
         public bool autoGetUpWhenPossible = true;
 
+        public float getUpDelay = 2;
+        public float fallDamage = 5;
+
         public bool useStepPrediction = true;
         public float balanceHeight = 2.5f;
         public float balanceStrength = 5000f;
@@ -139,8 +142,7 @@ namespace ARP.APR.Scripts
         public float
             MouseYAxisBody;
 
-        [HideInInspector]
-        public bool
+        [HideInInspector] public bool
             WalkForward,
             WalkBackward,
             StepRight,
@@ -156,8 +158,7 @@ namespace ARP.APR.Scripts
             reachLeftAxisUsed,
             reachRightAxisUsed;
 
-        [HideInInspector]
-        public bool
+        [HideInInspector] public bool
             jumping,
             isJumping,
             inAir,
@@ -174,8 +175,7 @@ namespace ARP.APR.Scripts
             BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
 
         //Original pose target rotation
-        [HideInInspector]
-        public Quaternion
+        [HideInInspector] public Quaternion
             //
             HeadTarget,
             BodyTarget,
@@ -194,7 +194,8 @@ namespace ARP.APR.Scripts
         //Debug
         public bool editorDebugMode;
 
-        WeaponManager weaponManager;
+        private WeaponManager _weaponManager;
+        [HideInInspector] public HealthManager healthManager;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -206,7 +207,8 @@ namespace ARP.APR.Scripts
         void Awake()
         {
             PlayerSetup();
-            weaponManager = COMP.GetComponent<WeaponManager>();
+            _weaponManager = COMP.GetComponent<WeaponManager>();
+            healthManager = this.GetComponent<HealthManager>();
         }
 
 
@@ -331,10 +333,7 @@ namespace ARP.APR.Scripts
             {
                 if (!balanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
                 {
-                    if (autoGetUpWhenPossible)
-                    {
-                        balanced = true;
-                    }
+                    StartCoroutine(GetUp());
                 }
             }
 
@@ -356,6 +355,17 @@ namespace ARP.APR.Scripts
             else if (!balanced && !isRagdoll)
             {
                 ActivateRagdoll();
+            }
+        }
+
+        IEnumerator GetUp()
+        {
+            yield return new WaitForSeconds(getUpDelay);
+
+            if (autoGetUpWhenPossible)
+            {
+                balanced = true;
+                DeactivateRagdoll();
             }
         }
 
@@ -617,9 +627,9 @@ namespace ARP.APR.Scripts
         ////////////////////
         public void PlayerReach()
         {
-            if (weaponManager)
+            if (_weaponManager)
             {
-                if (!weaponManager.weaponLeft && !weaponManager.weaponRight)
+                if (!_weaponManager.weaponLeft && !_weaponManager.weaponRight)
                 {
                     //Body Bending
                     if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
@@ -638,7 +648,7 @@ namespace ARP.APR.Scripts
                     Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
                 }
 
-                if (!weaponManager.weaponLeft)
+                if (!_weaponManager.weaponLeft)
                 {
                     //Reach Left
                     if (Input.GetAxisRaw(reachLeft) != 0 && !punchingLeft)
@@ -706,7 +716,7 @@ namespace ARP.APR.Scripts
                     }
                 }
 
-                if (!weaponManager.weaponRight)
+                if (!_weaponManager.weaponRight)
                 {
                     //Reach Right
                     if (Input.GetAxisRaw(reachRight) != 0 && !punchingRight)
@@ -1108,13 +1118,13 @@ namespace ARP.APR.Scripts
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
 
-                if (!weaponManager || (weaponManager && (!weaponManager.weaponRight || !weaponManager.weaponRight.gameObject.activeSelf)))
+                if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponRight || !_weaponManager.weaponRight.gameObject.activeSelf)))
                 {
                     UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
                     LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
                 }
 
-                if (!weaponManager || (weaponManager && (!weaponManager.weaponLeft || !weaponManager.weaponLeft.gameObject.activeSelf)))
+                if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponLeft || !_weaponManager.weaponLeft.gameObject.activeSelf)))
                 {
                     UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
                     LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;

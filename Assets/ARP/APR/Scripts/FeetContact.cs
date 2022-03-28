@@ -23,11 +23,21 @@ namespace ARP.APR.Scripts
         //Alert APR player when feet colliders enter ground object layer
         void OnCollisionEnter(Collision col)
         {
-            if (!APR_Player.isJumping && APR_Player.inAir)
+            if (!APR_Player.isJumping)
             {
-                if (col.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                if (APR_Player.inAir)
                 {
-                    APR_Player.PlayerLanded();
+                    if (col.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                    {
+                        APR_Player.PlayerLanded();
+                    }
+                }
+                else
+                {
+                    if (APR_Player.isRagdoll)
+                    {
+                        APR_Player.healthManager.health -= APR_Player.fallDamage / 2;
+                    }
                 }
             }
         }

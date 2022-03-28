@@ -206,10 +206,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.11608108
-  m_Height: 2.2376435
+  m_Radius: 0.2
+  m_Height: 2.5
   m_Direction: 1
-  m_Center: {x: -0.000000037252903, y: 1.081127, z: 0}
+  m_Center: {x: 0, y: 1.081127, z: 0}
 --- !u!54 &7625062353194654800
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -238,7 +238,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.001209261, y: -0.18463291, z: -0.013354303}
+  m_ConnectedAnchor: {x: -0.0012092243, y: -0.18463291, z: -0.013354491}
   m_UseSpring: 0
   m_Spring:
     spring: 0
