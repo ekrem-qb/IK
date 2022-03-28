@@ -1108,10 +1108,6 @@ PrefabInstance:
       propertyPath: path
       value: 
       objectReference: {fileID: 1048114610}
-    - target: {fileID: 434694370, guid: cf76f7b3aefbee14598448961679e739, type: 3}
-      propertyPath: speed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 1646981259178978, guid: cf76f7b3aefbee14598448961679e739, type: 3}
       propertyPath: m_Name
       value: Car_1

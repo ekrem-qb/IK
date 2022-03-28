@@ -54,4 +54,23 @@ public class Car : MonoBehaviour
     {
         _distanceTravelled = path.path.GetClosestDistanceAlongPath(this.transform.position);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (this.enabled)
+        {
+            if (this.transform.root != collision.transform.root)
+            {
+                HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
+                if (enemy)
+                {
+                    enemy.health = 0;
+                    if (collision.rigidbody)
+                    {
+                        collision.rigidbody.AddForce(this.transform.forward * speed * 2, ForceMode.Impulse);
+                    }
+                }
+            }
+        }
+    }
 }
