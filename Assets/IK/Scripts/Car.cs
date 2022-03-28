@@ -1,4 +1,5 @@
 using System;
+using PathCreation;
 using UnityEngine;
 
 public class Car : MonoBehaviour
@@ -12,26 +13,39 @@ public class Car : MonoBehaviour
         public Rigidbody backRight;
     }
 
-    public Rigidbody body;
     public Wheels wheels;
-    public float speed = 10;
+    public PathCreator path;
+    public float speed = 5;
+    
+    private Rigidbody _rigidbody;
+    private float _distanceTravelled;
     private const float MaxSpeed = 100;
 
     private void Awake()
     {
-        body.maxAngularVelocity = MaxSpeed;
-        
+        _rigidbody = this.GetComponent<Rigidbody>();
+        Vector3 centerOfMass = _rigidbody.centerOfMass;
+        centerOfMass.y /= 2;
+        _rigidbody.centerOfMass = centerOfMass;
+        _rigidbody.maxAngularVelocity = MaxSpeed;
+
         wheels.frontLeft.maxAngularVelocity = MaxSpeed;
         wheels.frontRight.maxAngularVelocity = MaxSpeed;
         wheels.backLeft.maxAngularVelocity = MaxSpeed;
         wheels.backRight.maxAngularVelocity = MaxSpeed;
+
+        path.pathUpdated += OnPathChanged;
     }
 
     private void FixedUpdate()
     {
-        wheels.frontLeft.AddTorque(wheels.frontLeft.transform.right * speed * 100 * Time.fixedDeltaTime);
-        wheels.frontRight.AddTorque(wheels.frontRight.transform.right * speed * 100 * Time.fixedDeltaTime);
-        wheels.backLeft.AddTorque(wheels.backLeft.transform.right * speed * 100 * Time.fixedDeltaTime);
-        wheels.backRight.AddTorque(wheels.backRight.transform.right * speed * 100 * Time.fixedDeltaTime);
+        _distanceTravelled += speed * Time.deltaTime;
+        this.transform.position = path.path.GetPointAtDistance(_distanceTravelled, EndOfPathInstruction.Stop);
+        this.transform.rotation = path.path.GetRotationAtDistance(_distanceTravelled, EndOfPathInstruction.Stop);
+    }
+
+    private void OnPathChanged()
+    {
+        _distanceTravelled = path.path.GetClosestDistanceAlongPath(this.transform.position);
     }
 }
