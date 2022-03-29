@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e967a6c220f8b484c856940eca552b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 15
   direction: {x: 0, y: 0, z: 1}
   antiInertia: 0.5
   scrollTexture: 0

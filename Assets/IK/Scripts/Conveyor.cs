@@ -51,10 +51,13 @@ public class Conveyor : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        if (collision.rigidbody)
+        if (collision.transform.root != this.transform.root)
         {
-            collision.rigidbody.velocity = Vector3.Slerp(collision.rigidbody.velocity, this.transform.rotation * direction * collision.rigidbody.velocity.magnitude, antiInertia);
-            collision.rigidbody.AddForce(this.transform.rotation * direction * speed, ForceMode.Acceleration);
+            if (collision.rigidbody)
+            {
+                collision.rigidbody.velocity = Vector3.Slerp(collision.rigidbody.velocity, this.transform.rotation * direction * collision.rigidbody.velocity.magnitude, antiInertia);
+                collision.rigidbody.AddForce(this.transform.rotation * direction * speed, ForceMode.Acceleration);
+            }
         }
     }
 

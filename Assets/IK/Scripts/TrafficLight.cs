@@ -49,4 +49,9 @@ public class TrafficLight : MonoBehaviour
             car.enabled = true;
         }
     }
+    
+    private void OnDestroy()
+    {
+        toggler.Toggle -= OnSwitchToggle;
+    }
 }
