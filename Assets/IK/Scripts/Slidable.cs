@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Slidable : MonoBehaviour
 {
+    private const float mass = 10000;
     public Toggler toggler;
     public ConfigurableJoint movingPart;
     public Vector3 movingPartToggleOffset;
     public float transitionSpeed = 15;
-    private const float mass = 10000;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class Slidable : MonoBehaviour
             positionDamper = mass,
             maximumForce = mass * 100 * transitionSpeed,
         };
-        if (movingPartToggleOffset.x > 0)
+        if (movingPartToggleOffset.x != 0)
         {
             movingPart.xMotion = ConfigurableJointMotion.Limited;
             movingPart.xDrive = drive;
@@ -31,7 +31,7 @@ public class Slidable : MonoBehaviour
             movingPart.xMotion = ConfigurableJointMotion.Locked;
         }
 
-        if (movingPartToggleOffset.y > 0)
+        if (movingPartToggleOffset.y != 0)
         {
             movingPart.yMotion = ConfigurableJointMotion.Limited;
             movingPart.yDrive = drive;
@@ -41,7 +41,7 @@ public class Slidable : MonoBehaviour
             movingPart.yMotion = ConfigurableJointMotion.Locked;
         }
 
-        if (movingPartToggleOffset.z > 0)
+        if (movingPartToggleOffset.z != 0)
         {
             movingPart.zMotion = ConfigurableJointMotion.Limited;
             movingPart.zDrive = drive;
@@ -61,6 +61,11 @@ public class Slidable : MonoBehaviour
         movingPart.linearLimit = limit;
     }
 
+    private void OnDestroy()
+    {
+        toggler.Toggle -= OnSwitchToggle;
+    }
+
     private void OnSwitchToggle(bool isOn)
     {
         if (isOn)
@@ -71,10 +76,5 @@ public class Slidable : MonoBehaviour
         {
             movingPart.targetPosition = Vector3.zero;
         }
-    }
-
-    private void OnDestroy()
-    {
-        toggler.Toggle -= OnSwitchToggle;
     }
 }

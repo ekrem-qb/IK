@@ -27,8 +27,8 @@ public class FallingPlatform : MonoBehaviour
 
     private void Update()
     {
-        var shake = Mathf.Sin(Time.time * shakeSpeed) * shakeAmount;
-        var newPosition = _originalPosition;
+        float shake = Mathf.Sin(Time.time * shakeSpeed) * shakeAmount;
+        Vector3 newPosition = _originalPosition;
         switch (shakeAxis)
         {
             case Axis.x:
@@ -48,16 +48,26 @@ public class FallingPlatform : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.isTrigger)
+        {
             if (other.transform.root.GetComponent<HealthManager>())
+            {
                 if (!_enemiesParts.Contains(other))
+                {
                     _enemiesParts.Add(other);
+                }
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.isTrigger)
+        {
             if (other.transform.root.GetComponent<HealthManager>())
+            {
                 _enemiesParts.Remove(other);
+            }
+        }
     }
 
     private void OnEnemiesPartsCountChanged(int count)
