@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     public Vector3 holdPosition;
     public Quaternion holdRotation;
@@ -30,9 +30,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public virtual void Attack()
-    {
-    }
+    public abstract void Attack();
 
     protected virtual void OnEnable()
     {

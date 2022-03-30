@@ -1,12 +1,12 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
     [HideInInspector] public ARP.APR.Scripts.APRController aprController;
     [HideInInspector] public ConfigurableJoint rootJoint;
     [HideInInspector] public Rigidbody rootRB;
+    [HideInInspector] public Transform target;
     [SerializeField] Player _player;
     protected ConfigurableJoint bodyJoint;
     protected PathFollower pathFollower;
@@ -33,11 +33,12 @@ public class Enemy : MonoBehaviour
         rootJoint = aprController.Root.GetComponent<ConfigurableJoint>();
         bodyJoint = aprController.Body.GetComponent<ConfigurableJoint>();
         rootRB = aprController.Root.GetComponent<Rigidbody>();
+        target = aprController.Body.transform;
         pathFollower = this.GetComponent<PathFollower>();
         this.enabled = false;
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         Vector3 target = player.transform.position;
         target.y = this.transform.position.y;
@@ -81,12 +82,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator Attack()
-    {
-        yield return null;
-    }
+    protected abstract IEnumerator Attack();
 
-    void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, attackDistance);
@@ -106,7 +104,7 @@ public class Enemy : MonoBehaviour
         this.enabled = newPlayer;
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         if (aprController.WalkForward && aprController.moveAxisUsed)
         {

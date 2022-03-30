@@ -9,7 +9,9 @@ public class HealthManager : MonoBehaviour
     Enemy enemy;
     PathFollower pathFollower;
     WeaponManager weaponManager;
-    [Range(0, 100)] [SerializeField] float _health = 100;
+    private const float _minHealth = 0;
+    private const float _maxHealth = 100;
+    [Range(_minHealth, _maxHealth)] [SerializeField] float _health = 100;
     public Action Hit = () => { };
 
     public float health
@@ -21,18 +23,17 @@ public class HealthManager : MonoBehaviour
             {
                 Hit();
             }
-            if (value >= 0)
-            {
-                _health = value;
-                if (textHealth)
-                {
-                    textHealth.text = _health.ToString();
-                }
+            
+            _health = Mathf.Clamp(value, _minHealth, _maxHealth);
 
-                if (value == 0)
-                {
-                    Death();
-                }
+            if (textHealth)
+            {
+                textHealth.text = _health.ToString();
+            }
+            
+            if (_health == 0)
+            {
+                Death();
             }
         }
     }
@@ -53,7 +54,7 @@ public class HealthManager : MonoBehaviour
         weaponManager = aprController.COMP.GetComponent<WeaponManager>();
     }
 
-    void Death()
+    protected virtual void Death()
     {
         if (player)
         {
@@ -71,6 +72,7 @@ public class HealthManager : MonoBehaviour
             {
                 StartCoroutine((enemy as Mover).Drop());
             }
+
             Destroy(enemy);
         }
 
@@ -79,7 +81,7 @@ public class HealthManager : MonoBehaviour
             weaponManager.DropAllWeapons();
             Destroy(weaponManager);
         }
-        
+
         aprController.ActivateRagdoll();
         aprController.autoGetUpWhenPossible = false;
         aprController.useControls = false;
