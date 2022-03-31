@@ -1,46 +1,57 @@
-using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 5;
-    public float rotationSpeed = 25;
-    public float damage = 10;
     [HideInInspector] public Transform owner;
-    [HideInInspector] public Vector3 target;
-    Rigidbody rb;
-    Transform child;
+    public float speed = 100;
+    public float damage = 10;
+    protected new Rigidbody rigidbody;
 
-    void Awake()
+    protected virtual void Awake()
     {
-        rb = this.GetComponent<Rigidbody>();
-        child = this.transform.GetChild(0);
+        rigidbody = this.GetComponent<Rigidbody>();
     }
 
-    void Start()
+    protected virtual void Start()
     {
-        rb.AddForce((target - this.transform.position) * speed, ForceMode.Impulse);
+        rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);
     }
 
-    void Update()
-    {
-        child.Rotate(transform.right * rotationSpeed * 100 * Time.deltaTime);
-    }
+    private void OnCollisionEnter(Collision collision) => Hit(collision.collider);
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other) => Hit(other);
+
+    protected virtual void Hit(Collider collider)
     {
-        if (owner != collision.transform.root)
+        if (!collider.isTrigger)
         {
-            HealthManager enemy = collision.transform.root.GetComponent<HealthManager>();
-            if (enemy)
+            if (owner != collider.transform.root)
             {
-                enemy.health -= damage;
-                if (collision.rigidbody)
+                HealthManager enemy = collider.transform.root.GetComponent<HealthManager>();
+                if (enemy)
                 {
-                    collision.rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);
+                    enemy.health -= damage;
+                    if (collider.attachedRigidbody)
+                    {
+                        collider.attachedRigidbody.AddForce(rigidbody.velocity, ForceMode.VelocityChange);
+                    }
+
+                    if (enemy.particlePrefab)
+                    {
+                        ParticleSystem[] particles = Instantiate(enemy.particlePrefab, collider.ClosestPointOnBounds(this.transform.position), Quaternion.identity).GetComponentsInChildren<ParticleSystem>();
+
+                        for (int i = 0; i < particles.Length; i++)
+                        {
+                            ParticleSystem.MainModule main = particles[i].main;
+                            main.startColor = enemy.particleColor;
+                        }
+
+                        particles[0].transform.SetParent(null);
+                        particles[0].transform.rotation = Quaternion.LookRotation(particles[0].transform.position - collider.transform.position);
+                        particles[0].Play();
+                    }
                 }
 
-                child.transform.SetParent(collision.transform);
                 Destroy(this.gameObject);
             }
         }

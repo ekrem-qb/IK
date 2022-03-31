@@ -9,8 +9,12 @@ public class Gun : Weapon
     {
         if (canShoot)
         {
-            Bullet bullet = Instantiate(bulletPrefab, this.transform.position, this.transform.rotation).GetComponent<Bullet>();
-            bullet.owner = this.transform.root;
+            Projectile projectile = Instantiate(bulletPrefab, this.transform.position, this.transform.rotation).GetComponent<Projectile>();
+            projectile.owner = this.transform.root;
+            if (particle)
+            {
+                particle.Play();
+            }
         }
     }
 }

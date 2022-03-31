@@ -4,14 +4,21 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController aprController;
-    Player player;
-    Enemy enemy;
-    PathFollower pathFollower;
-    WeaponManager weaponManager;
-    private const float _minHealth = 0;
-    private const float _maxHealth = 100;
-    [Range(_minHealth, _maxHealth)] [SerializeField] float _health = 100;
+    private const float MinHealth = 0;
+    private const float MaxHealth = 100;
+
+    [Range(MinHealth, MaxHealth)] [SerializeField]
+    private float _health = 100;
+
+    public GameObject particlePrefab;
+    public Color particleColor = Color.white;
+    public Text textHealth;
+
+    private ARP.APR.Scripts.APRController _aprController;
+    private Enemy _enemy;
+    private PathFollower _pathFollower;
+    private Player _player;
+    private WeaponManager _weaponManager;
     public Action Hit = () => { };
 
     public float health
@@ -23,22 +30,20 @@ public class HealthManager : MonoBehaviour
             {
                 Hit();
             }
-            
-            _health = Mathf.Clamp(value, _minHealth, _maxHealth);
+
+            _health = Mathf.Clamp(value, MinHealth, MaxHealth);
 
             if (textHealth)
             {
                 textHealth.text = _health.ToString();
             }
-            
+
             if (_health == 0)
             {
                 Death();
             }
         }
     }
-
-    public Text textHealth;
 
     void Awake()
     {
@@ -47,44 +52,44 @@ public class HealthManager : MonoBehaviour
             textHealth.text = _health.ToString();
         }
 
-        aprController = this.GetComponent<ARP.APR.Scripts.APRController>();
-        player = aprController.Root.GetComponent<Player>();
-        enemy = aprController.Root.GetComponent<Enemy>();
-        pathFollower = aprController.Root.GetComponent<PathFollower>();
-        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
+        _aprController = this.GetComponent<ARP.APR.Scripts.APRController>();
+        _player = _aprController.Root.GetComponent<Player>();
+        _enemy = _aprController.Root.GetComponent<Enemy>();
+        _pathFollower = _aprController.Root.GetComponent<PathFollower>();
+        _weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
     }
 
     protected virtual void Death()
     {
-        if (player)
+        if (_player)
         {
-            Destroy(player);
+            Destroy(_player);
         }
 
-        if (pathFollower)
+        if (_pathFollower)
         {
-            Destroy(pathFollower);
+            Destroy(_pathFollower);
         }
 
-        if (enemy)
+        if (_enemy)
         {
-            if (enemy is Mover)
+            if (_enemy is Mover mover)
             {
-                StartCoroutine((enemy as Mover).Drop());
+                StartCoroutine(mover.Drop());
             }
 
-            Destroy(enemy);
+            Destroy(_enemy);
         }
 
-        if (weaponManager)
+        if (_weaponManager)
         {
-            weaponManager.DropAllWeapons();
-            Destroy(weaponManager);
+            _weaponManager.DropAllWeapons();
+            Destroy(_weaponManager);
         }
 
-        aprController.ActivateRagdoll();
-        aprController.autoGetUpWhenPossible = false;
-        aprController.useControls = false;
-        aprController.useStepPrediction = false;
+        _aprController.ActivateRagdoll();
+        _aprController.autoGetUpWhenPossible = false;
+        _aprController.useControls = false;
+        _aprController.useStepPrediction = false;
     }
 }

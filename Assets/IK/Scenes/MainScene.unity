@@ -512,6 +512,11 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: 5.065722e-19
       objectReference: {fileID: 0}
+    - target: {fileID: 3655585322319397273, guid: 41440d037b0105247add1a2738935772,
+        type: 3}
+      propertyPath: stopAction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6725652083966152844, guid: 41440d037b0105247add1a2738935772,
         type: 3}
       propertyPath: m_Name
@@ -4322,6 +4327,21 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 7906404184727417634, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.0000000132345885
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906404184727417634, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.35000145
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906404184727417634, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.z
+      value: 0.0575
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6b248ede00241d4e976e4ea12ba4ee4, type: 3}
 --- !u!1001 &8393666686647936202
@@ -4331,16 +4351,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 338517054667278539, guid: 170cc85a9c8a4c64f957de2faeaa2b5e,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -0.001209261
-      objectReference: {fileID: 0}
-    - target: {fileID: 338517054667278539, guid: 170cc85a9c8a4c64f957de2faeaa2b5e,
-        type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -0.013354303
-      objectReference: {fileID: 0}
     - target: {fileID: 1682373337457090468, guid: 170cc85a9c8a4c64f957de2faeaa2b5e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

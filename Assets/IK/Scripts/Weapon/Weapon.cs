@@ -9,52 +9,54 @@ public abstract class Weapon : MonoBehaviour
     public bool isLeft = true;
     public float damage = 10;
     [HideInInspector] public Player player;
-    SphereCollider pickupTrigger;
-    Rigidbody rb;
-    KeyCode fireKey;
+    private KeyCode _fireKey;
+    private SphereCollider _pickupTrigger;
+    private Rigidbody _rigidbody;
+    protected ParticleSystem particle;
 
     protected virtual void Awake()
     {
-        pickupTrigger = this.GetComponent<SphereCollider>();
-        rb = this.GetComponent<Rigidbody>();
+        _pickupTrigger = this.GetComponent<SphereCollider>();
+        _rigidbody = this.GetComponent<Rigidbody>();
+        particle = this.GetComponentInChildren<ParticleSystem>();
     }
 
-    void Update()
+    private void Update()
     {
         if (player)
         {
-            if (Input.GetKeyDown(fireKey))
+            if (Input.GetKeyDown(_fireKey))
             {
                 Attack();
             }
         }
     }
 
-    public abstract void Attack();
-
     protected virtual void OnEnable()
     {
-        pickupTrigger.enabled = false;
-        Destroy(rb);
+        _pickupTrigger.enabled = false;
+        Destroy(_rigidbody);
         if (isLeft)
         {
-            fireKey = KeyCode.Mouse0;
+            _fireKey = KeyCode.Mouse0;
             StartCoroutine(TransitionToHold(holdPosition, holdRotation));
         }
         else
         {
-            fireKey = KeyCode.Mouse1;
+            _fireKey = KeyCode.Mouse1;
             StartCoroutine(TransitionToHold(new Vector3(-holdPosition.x, holdPosition.y, holdPosition.z), new Quaternion(holdRotation.x, -holdRotation.y, -holdRotation.z, holdRotation.w)));
         }
     }
 
     protected virtual void OnDisable()
     {
-        pickupTrigger.enabled = true;
-        rb = this.gameObject.AddComponent<Rigidbody>();
+        _pickupTrigger.enabled = true;
+        _rigidbody = this.gameObject.AddComponent<Rigidbody>();
     }
 
-    IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
+    public abstract void Attack();
+
+    private IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
     {
         while (this.enabled && (Vector3.Distance(this.transform.localPosition, targetPosition) > 0.05f || Quaternion.Angle(this.transform.localRotation, targetRotation) > 0.05f))
         {

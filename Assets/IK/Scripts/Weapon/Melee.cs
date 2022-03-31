@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Melee : Weapon
 {
-    ARP.APR.Scripts.APRController aprController;
-    protected ConfigurableJoint arm, armLow, hand;
     public float force = 50;
     [HideInInspector] public bool isAttacking;
+    private ARP.APR.Scripts.APRController _aprController;
+    private ConfigurableJoint _arm, _armLow;
     private bool _isInHook;
-    protected Action<bool> IsInHookChanged = newIsInHook => { };
+    protected ConfigurableJoint hand;
+    protected Action<bool> isInHookChanged = newIsInHook => { };
 
     protected bool isInHook
     {
@@ -18,7 +19,7 @@ public class Melee : Weapon
         {
             if (_isInHook != value)
             {
-                IsInHookChanged(value);
+                isInHookChanged(value);
             }
 
             _isInHook = value;
@@ -31,96 +32,12 @@ public class Melee : Weapon
         ReassignToNewOwner();
     }
 
-    void OnTransformParentChanged()
+    private void OnTransformParentChanged()
     {
         ReassignToNewOwner();
     }
 
-    void ReassignToNewOwner()
-    {
-        if (this.transform.parent)
-        {
-            aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-            if (isLeft)
-            {
-                arm = aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
-                armLow = aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
-                hand = aprController.LeftHand.GetComponent<ConfigurableJoint>();
-            }
-            else
-            {
-                arm = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-                armLow = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-                hand = aprController.RightHand.GetComponent<ConfigurableJoint>();
-            }
-        }
-    }
-
-    public override void Attack()
-    {
-        if (!isInHook)
-        {
-            StartCoroutine(Hook());
-        }
-    }
-
-    protected IEnumerator Hook()
-    {
-        isInHook = true;
-
-        if (isLeft)
-        {
-            arm.targetRotation = new Quaternion(-0.62f, -0.51f, -0.02f, 1);
-            armLow.targetRotation = new Quaternion(-1.31f, -0.5f, 0.5f, 1);
-        }
-        else
-        {
-            arm.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
-            armLow.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
-        }
-
-        yield return new WaitForSeconds(0.25f);
-
-        if (isLeft)
-        {
-            arm.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
-            armLow.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
-            if (!(this is Fist))
-            {
-                hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
-            }
-        }
-        else
-        {
-            arm.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
-            armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
-            if (!(this is Fist))
-            {
-                hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
-            }
-        }
-
-        isAttacking = true;
-
-        yield return new WaitForSeconds(0.25f);
-        if (isLeft)
-        {
-            arm.targetRotation = aprController.UpperLeftArmTarget;
-            armLow.targetRotation = aprController.LowerLeftArmTarget;
-            hand.targetRotation = aprController.LeftHandTarget;
-        }
-        else
-        {
-            arm.targetRotation = aprController.UpperRightArmTarget;
-            armLow.targetRotation = aprController.LowerRightArmTarget;
-            hand.targetRotation = aprController.RightHandTarget;
-        }
-
-        isAttacking = false;
-        isInHook = false;
-    }
-
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (isAttacking)
         {
@@ -140,9 +57,98 @@ public class Melee : Weapon
                                 rb.AddForce(this.transform.right * force, ForceMode.Impulse);
                             }
                         }
+
+                        if (particle)
+                        {
+                            particle.Play();
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void ReassignToNewOwner()
+    {
+        if (this.transform.parent)
+        {
+            _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+            if (isLeft)
+            {
+                _arm = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
+                _armLow = _aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
+                hand = _aprController.LeftHand.GetComponent<ConfigurableJoint>();
+            }
+            else
+            {
+                _arm = _aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
+                _armLow = _aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
+                hand = _aprController.RightHand.GetComponent<ConfigurableJoint>();
+            }
+        }
+    }
+
+    public override void Attack()
+    {
+        if (!isInHook)
+        {
+            StartCoroutine(Hook());
+        }
+    }
+
+    protected IEnumerator Hook()
+    {
+        isInHook = true;
+
+        if (isLeft)
+        {
+            _arm.targetRotation = new Quaternion(-0.62f, -0.51f, -0.02f, 1);
+            _armLow.targetRotation = new Quaternion(-1.31f, -0.5f, 0.5f, 1);
+        }
+        else
+        {
+            _arm.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
+            _armLow.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
+        }
+
+        yield return new WaitForSeconds(0.25f);
+
+        if (isLeft)
+        {
+            _arm.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
+            _armLow.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
+            if (!(this is Fist))
+            {
+                hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
+            }
+        }
+        else
+        {
+            _arm.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
+            _armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
+            if (!(this is Fist))
+            {
+                hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
+            }
+        }
+
+        isAttacking = true;
+
+        yield return new WaitForSeconds(0.25f);
+        if (isLeft)
+        {
+            _arm.targetRotation = _aprController.UpperLeftArmTarget;
+            _armLow.targetRotation = _aprController.LowerLeftArmTarget;
+            hand.targetRotation = _aprController.LeftHandTarget;
+        }
+        else
+        {
+            _arm.targetRotation = _aprController.UpperRightArmTarget;
+            _armLow.targetRotation = _aprController.LowerRightArmTarget;
+            hand.targetRotation = _aprController.RightHandTarget;
+        }
+
+        isAttacking = false;
+        isInHook = false;
     }
 }

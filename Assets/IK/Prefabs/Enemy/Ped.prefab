@@ -2745,6 +2745,7 @@ MonoBehaviour:
   aprController: {fileID: 0}
   rootJoint: {fileID: 0}
   rootRB: {fileID: 0}
+  target: {fileID: 0}
   _player: {fileID: 0}
   attackDistance: 2.5
   attackInterval: 0.5
@@ -4290,6 +4291,8 @@ MonoBehaviour:
   turnSpeed: 6
   jumpForce: 18
   autoGetUpWhenPossible: 1
+  getUpDelay: 2
+  fallDamage: 5
   useStepPrediction: 1
   balanceHeight: 7.5
   balanceStrength: 5000
@@ -4350,6 +4353,7 @@ MonoBehaviour:
   UpperLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   LowerLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
+  healthManager: {fileID: 0}
 --- !u!114 &-2612284738154071979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4363,6 +4367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 100
+  particlePrefab: {fileID: 8461654772099046307, guid: 8e41c7a5ec8e21843a7c0557a2a80e44,
+    type: 3}
+  particleColor: {r: 0.20000002, g: 0.47450984, b: 0.41960788, a: 1}
   textHealth: {fileID: 0}
 --- !u!114 &1596539574961129351
 MonoBehaviour:

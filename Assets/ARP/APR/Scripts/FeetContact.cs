@@ -19,6 +19,12 @@ namespace ARP.APR.Scripts
     public class FeetContact : MonoBehaviour
     {
         public APRController APR_Player;
+        private ParticleSystem _particle;
+
+        private void Awake()
+        {
+            _particle = this.GetComponentInChildren<ParticleSystem>();
+        }
 
         //Alert APR player when feet colliders enter ground object layer
         void OnCollisionEnter(Collision col)
@@ -37,6 +43,10 @@ namespace ARP.APR.Scripts
                     if (APR_Player.isRagdoll)
                     {
                         APR_Player.healthManager.health -= APR_Player.fallDamage / 2;
+                    }
+                    else if (_particle)
+                    {
+                        _particle.Play();
                     }
                 }
             }

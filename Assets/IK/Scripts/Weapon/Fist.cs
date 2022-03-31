@@ -7,8 +7,16 @@ public class Fist : Melee
     protected override void Awake()
     {
         base.Awake();
-        IsInHookChanged += ResizeFist;
+        isInHookChanged += ResizeFist;
         originalScale = hand.transform.localScale;
+    }
+
+    protected override void OnEnable()
+    {
+    }
+
+    protected override void OnDisable()
+    {
     }
 
     void ResizeFist(bool isInHook)
@@ -21,13 +29,5 @@ public class Fist : Melee
         {
             hand.transform.localScale = originalScale;
         }
-    }
-
-    protected override void OnEnable()
-    {
-    }
-
-    protected override void OnDisable()
-    {
     }
 }

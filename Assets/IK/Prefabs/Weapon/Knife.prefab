@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7110313974904477219}
   - component: {fileID: 5280593169927181104}
   - component: {fileID: 8977040892671023853}
-  - component: {fileID: 7186416467490998119}
+  - component: {fileID: 1949084982860227435}
   m_Layer: 16
   m_Name: Mesh
   m_TagString: Untagged
@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724716277627068570}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6236965756410756004}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!33 &5280593169927181104
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -82,7 +82,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7186416467490998119
+--- !u!65 &1949084982860227435
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,11 +90,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724716277627068570}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1135733, y: 0.3512123, z: 0.6813643}
-  m_Center: {x: -1.0468438e-16, y: -0.11763346, z: 0.5869501}
+  m_Size: {x: 0.11357333, y: 0.35121238, z: 0.68136436}
+  m_Center: {x: -1.04684167e-16, y: -0.11763348, z: 0.5869502}
 --- !u!1 &5670340682170588313
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6236965756410756004}
   - component: {fileID: 2451252603374147501}
-  - component: {fileID: 777227654862749935}
+  - component: {fileID: 5448077985802855748}
   - component: {fileID: 6681656187671215987}
   m_Layer: 16
   m_Name: Knife
@@ -144,8 +144,8 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!96 &777227654862749935
+  m_CollisionDetection: 0
+--- !u!96 &5448077985802855748
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
@@ -234,8 +234,8 @@ TrailRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 8
+    numCapVertices: 8
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
@@ -255,7 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257654f3ba575e84695f1bcdfa383288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
-  rotationSpeed: 25
   owner: {fileID: 0}
+  speed: 2.5
+  damage: 10
+  rotationSpeed: 25
   target: {x: 0, y: 0, z: 0}
