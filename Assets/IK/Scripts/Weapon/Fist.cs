@@ -8,7 +8,7 @@ public class Fist : Melee
     {
         base.Awake();
         isInHookChanged += ResizeFist;
-        originalScale = hand.transform.localScale;
+        originalScale = hand.rigidbody.transform.localScale;
     }
 
     protected override void OnEnable()
@@ -23,11 +23,11 @@ public class Fist : Melee
     {
         if (isInHook)
         {
-            hand.transform.localScale = originalScale * 2;
+            hand.rigidbody.transform.localScale = originalScale * 2;
         }
         else
         {
-            hand.transform.localScale = originalScale;
+            hand.rigidbody.transform.localScale = originalScale;
         }
     }
 }

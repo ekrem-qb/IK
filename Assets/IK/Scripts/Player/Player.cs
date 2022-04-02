@@ -1,14 +1,13 @@
-using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     ARP.APR.Scripts.APRController aprController;
-    WeaponManager weaponManager;
     ConfigurableJoint armLeft, armRight;
     ConfigurableJoint armLeftLow, armRightLow;
-    SphereCollider trigger;
     public ObservableList<Enemy> nearEnemies = new ObservableList<Enemy>();
+    SphereCollider trigger;
+    WeaponManager weaponManager;
 
     void Awake()
     {
@@ -80,8 +79,6 @@ public class Player : MonoBehaviour
                 armLeftLow.angularXDrive = aprController.ReachStiffness;
                 armLeftLow.angularYZDrive = aprController.ReachStiffness;
                 armLeftLow.targetRotation = Quaternion.identity;
-
-                (weaponManager.weaponLeft as Gun).canShoot = true;
             }
         }
 
@@ -94,8 +91,6 @@ public class Player : MonoBehaviour
                 armRightLow.angularXDrive = aprController.ReachStiffness;
                 armRightLow.angularYZDrive = aprController.ReachStiffness;
                 armRightLow.targetRotation = Quaternion.identity;
-
-                (weaponManager.weaponRight as Gun).canShoot = true;
             }
         }
     }
@@ -110,8 +105,6 @@ public class Player : MonoBehaviour
             armLeftLow.angularYZDrive = aprController.PoseOn;
             armLeft.targetRotation = aprController.UpperLeftArmTarget;
             armLeftLow.targetRotation = aprController.LowerLeftArmTarget;
-
-            (weaponManager.weaponLeft as Gun).canShoot = false;
         }
 
         if (weaponManager.weaponRight is Gun)
@@ -122,9 +115,12 @@ public class Player : MonoBehaviour
             armRightLow.angularYZDrive = aprController.PoseOn;
             armRight.targetRotation = aprController.UpperRightArmTarget;
             armRightLow.targetRotation = aprController.LowerRightArmTarget;
-
-            (weaponManager.weaponRight as Gun).canShoot = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        nearEnemies.ForEach(enemy => enemy.player = null);
     }
 
     void OnTriggerEnter(Collider other)
@@ -157,10 +153,5 @@ public class Player : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        nearEnemies.ForEach(enemy => enemy.player = null);
     }
 }

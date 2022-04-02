@@ -6,10 +6,7 @@ public class Melee : Weapon
 {
     public float force = 50;
     [HideInInspector] public bool isAttacking;
-    private ARP.APR.Scripts.APRController _aprController;
-    private ConfigurableJoint _arm, _armLow;
     private bool _isInHook;
-    protected ConfigurableJoint hand;
     protected Action<bool> isInHookChanged = newIsInHook => { };
 
     protected bool isInHook
@@ -24,17 +21,6 @@ public class Melee : Weapon
 
             _isInHook = value;
         }
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        ReassignToNewOwner();
-    }
-
-    private void OnTransformParentChanged()
-    {
-        ReassignToNewOwner();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,26 +54,6 @@ public class Melee : Weapon
         }
     }
 
-    private void ReassignToNewOwner()
-    {
-        if (this.transform.parent)
-        {
-            _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-            if (isLeft)
-            {
-                _arm = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
-                _armLow = _aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
-                hand = _aprController.LeftHand.GetComponent<ConfigurableJoint>();
-            }
-            else
-            {
-                _arm = _aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-                _armLow = _aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-                hand = _aprController.RightHand.GetComponent<ConfigurableJoint>();
-            }
-        }
-    }
-
     public override void Attack()
     {
         if (!isInHook)
@@ -102,33 +68,33 @@ public class Melee : Weapon
 
         if (isLeft)
         {
-            _arm.targetRotation = new Quaternion(-0.62f, -0.51f, -0.02f, 1);
-            _armLow.targetRotation = new Quaternion(-1.31f, -0.5f, 0.5f, 1);
+            arm.joint.targetRotation = new Quaternion(-0.62f, -0.51f, -0.02f, 1);
+            armLow.joint.targetRotation = new Quaternion(-1.31f, -0.5f, 0.5f, 1);
         }
         else
         {
-            _arm.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
-            _armLow.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
+            arm.joint.targetRotation = new Quaternion(-0.62f, 0.51f, 0.02f, 1);
+            armLow.joint.targetRotation = new Quaternion(1.31f, -0.5f, -0.5f, 1);
         }
 
         yield return new WaitForSeconds(0.25f);
 
         if (isLeft)
         {
-            _arm.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
-            _armLow.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
+            arm.joint.targetRotation = new Quaternion(0.3f, -0.64f, 0.3f, -0.5f);
+            armLow.joint.targetRotation = new Quaternion(-0.2f, 0, 0, 1);
             if (!(this is Fist))
             {
-                hand.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
+                hand.joint.targetRotation = new Quaternion(0.75f, -0.04f, 0.1f, 1);
             }
         }
         else
         {
-            _arm.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
-            _armLow.targetRotation = new Quaternion(0.2f, 0, 0, 1);
+            arm.joint.targetRotation = new Quaternion(0.3f, 0.64f, -0.3f, -0.5f);
+            armLow.joint.targetRotation = new Quaternion(0.2f, 0, 0, 1);
             if (!(this is Fist))
             {
-                hand.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
+                hand.joint.targetRotation = new Quaternion(-0.75f, -0.04f, -0.1f, 1);
             }
         }
 
@@ -137,15 +103,15 @@ public class Melee : Weapon
         yield return new WaitForSeconds(0.25f);
         if (isLeft)
         {
-            _arm.targetRotation = _aprController.UpperLeftArmTarget;
-            _armLow.targetRotation = _aprController.LowerLeftArmTarget;
-            hand.targetRotation = _aprController.LeftHandTarget;
+            arm.joint.targetRotation = aprController.UpperLeftArmTarget;
+            armLow.joint.targetRotation = aprController.LowerLeftArmTarget;
+            hand.joint.targetRotation = aprController.LeftHandTarget;
         }
         else
         {
-            _arm.targetRotation = _aprController.UpperRightArmTarget;
-            _armLow.targetRotation = _aprController.LowerRightArmTarget;
-            hand.targetRotation = _aprController.RightHandTarget;
+            arm.joint.targetRotation = aprController.UpperRightArmTarget;
+            armLow.joint.targetRotation = aprController.LowerRightArmTarget;
+            hand.joint.targetRotation = aprController.RightHandTarget;
         }
 
         isAttacking = false;

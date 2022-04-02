@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController aprController;
-    Transform handLeft, handRight;
-    Player player;
     public List<Weapon> nearWeapons = new List<Weapon>();
     [HideInInspector] public Weapon weaponLeft, weaponRight;
     public KeyCode keyPickUp = KeyCode.E;
     public KeyCode keyDrop = KeyCode.Q;
+    ARP.APR.Scripts.APRController aprController;
+    Transform handLeft, handRight;
+    Player player;
 
     void Awake()
     {
@@ -32,6 +32,55 @@ public class WeaponManager : MonoBehaviour
         }
 
         this.enabled = player != null;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && nearWeapons.Count > 0)
+        {
+            aprController.ResetPlayerPose();
+
+            if (!weaponLeft)
+            {
+                weaponLeft = nearWeapons[0];
+                weaponLeft.isLeft = true;
+                weaponLeft.transform.SetParent(handLeft);
+                weaponLeft.enabled = true;
+                weaponLeft.player = player;
+                if (weaponLeft is Gun)
+                {
+                    player.enabled = false;
+                    player.enabled = player.nearEnemies.Count > 0;
+                }
+            }
+            else if (!weaponRight)
+            {
+                weaponRight = nearWeapons[0];
+                weaponRight.isLeft = false;
+                weaponRight.transform.SetParent(handRight);
+                weaponRight.enabled = true;
+                weaponRight.player = player;
+                if (weaponRight is Gun)
+                {
+                    player.enabled = false;
+                    player.enabled = player.nearEnemies.Count > 0;
+                }
+            }
+
+            nearWeapons.Remove(nearWeapons[0]);
+        }
+
+        if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
+        {
+            if (weaponRight)
+            {
+                Drop(weaponRight);
+            }
+            else if (weaponLeft)
+            {
+                Drop(weaponLeft);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -60,57 +109,6 @@ public class WeaponManager : MonoBehaviour
             if (weapon)
             {
                 nearWeapons.Remove(weapon);
-            }
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && nearWeapons.Count > 0)
-        {
-            aprController.ResetPlayerPose();
-
-            if (!weaponLeft)
-            {
-                weaponLeft = nearWeapons[0];
-                weaponLeft.isLeft = true;
-                weaponLeft.transform.SetParent(handLeft);
-                weaponLeft.enabled = true;
-                weaponLeft.player = player;
-                if (weaponLeft is Gun)
-                {
-                    (weaponLeft as Gun).canShoot = player.nearEnemies.Count > 0;
-                    player.enabled = false;
-                    player.enabled = player.nearEnemies.Count > 0;
-                }
-            }
-            else if (!weaponRight)
-            {
-                weaponRight = nearWeapons[0];
-                weaponRight.isLeft = false;
-                weaponRight.transform.SetParent(handRight);
-                weaponRight.enabled = true;
-                weaponRight.player = player;
-                if (weaponRight is Gun)
-                {
-                    (weaponRight as Gun).canShoot = player.nearEnemies.Count > 0;
-                    player.enabled = false;
-                    player.enabled = player.nearEnemies.Count > 0;
-                }
-            }
-
-            nearWeapons.Remove(nearWeapons[0]);
-        }
-
-        if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
-        {
-            if (weaponRight)
-            {
-                Drop(weaponRight);
-            }
-            else if (weaponLeft)
-            {
-                Drop(weaponLeft);
             }
         }
     }

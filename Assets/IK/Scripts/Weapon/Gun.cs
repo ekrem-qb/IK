@@ -3,18 +3,16 @@ using UnityEngine;
 public class Gun : Weapon
 {
     public GameObject bulletPrefab;
-    [HideInInspector] public bool canShoot = false;
+    public float recoilForce = 50;
 
     public override void Attack()
     {
-        if (canShoot)
+        hand.rigidbody.AddForce(-this.transform.forward * recoilForce, ForceMode.Impulse);
+        Projectile projectile = Instantiate(bulletPrefab, this.transform.position, this.transform.rotation).GetComponent<Projectile>();
+        projectile.owner = this.transform.root;
+        if (particle)
         {
-            Projectile projectile = Instantiate(bulletPrefab, this.transform.position, this.transform.rotation).GetComponent<Projectile>();
-            projectile.owner = this.transform.root;
-            if (particle)
-            {
-                particle.Play();
-            }
+            particle.Play();
         }
     }
 }

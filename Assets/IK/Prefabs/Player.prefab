@@ -1795,6 +1795,7 @@ MonoBehaviour:
   turnSpeed: 6
   jumpForce: 18
   autoGetUpWhenPossible: 1
+  stunningParticle: {fileID: 8215529643289194760}
   getUpDelay: 2
   fallDamage: 5
   useStepPrediction: 1
@@ -1832,7 +1833,7 @@ MonoBehaviour:
   Alert_Leg_Right: 0
   Alert_Leg_Left: 0
   balanced: 1
-  GettingUp: 0
+  isGettingUp: 0
   isRagdoll: 0
   isKeyDown: 0
   moveAxisUsed: 0
@@ -1858,7 +1859,6 @@ MonoBehaviour:
   LowerLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
   healthManager: {fileID: 0}
-  stunningParticle: {fileID: 8215529643289194760}
 --- !u!114 &7096072420157911756
 MonoBehaviour:
   m_ObjectHideFlags: 0

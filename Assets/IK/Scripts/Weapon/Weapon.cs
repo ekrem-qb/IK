@@ -12,6 +12,8 @@ public abstract class Weapon : MonoBehaviour
     private KeyCode _fireKey;
     private SphereCollider _pickupTrigger;
     private Rigidbody _rigidbody;
+    protected ARP.APR.Scripts.APRController aprController;
+    protected BodyPart arm, armLow, hand;
     protected ParticleSystem particle;
 
     protected virtual void Awake()
@@ -19,6 +21,7 @@ public abstract class Weapon : MonoBehaviour
         _pickupTrigger = this.GetComponent<SphereCollider>();
         _rigidbody = this.GetComponent<Rigidbody>();
         particle = this.GetComponentInChildren<ParticleSystem>();
+        ReassignToNewOwner();
     }
 
     private void Update()
@@ -54,6 +57,37 @@ public abstract class Weapon : MonoBehaviour
         _rigidbody = this.gameObject.AddComponent<Rigidbody>();
     }
 
+    private void OnTransformParentChanged()
+    {
+        ReassignToNewOwner();
+    }
+
+    private void ReassignToNewOwner()
+    {
+        if (this.transform.parent)
+        {
+            aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+            if (isLeft)
+            {
+                arm.joint = aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
+                arm.rigidbody = aprController.UpperLeftArm.GetComponent<Rigidbody>();
+                armLow.joint = aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
+                armLow.rigidbody = aprController.LowerLeftArm.GetComponent<Rigidbody>();
+                hand.joint = aprController.LeftHand.GetComponent<ConfigurableJoint>();
+                hand.rigidbody = aprController.LeftHand.GetComponent<Rigidbody>();
+            }
+            else
+            {
+                arm.joint = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
+                arm.rigidbody = aprController.UpperRightArm.GetComponent<Rigidbody>();
+                armLow.joint = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
+                armLow.rigidbody = aprController.LowerRightArm.GetComponent<Rigidbody>();
+                hand.joint = aprController.RightHand.GetComponent<ConfigurableJoint>();
+                hand.rigidbody = aprController.RightHand.GetComponent<Rigidbody>();
+            }
+        }
+    }
+
     public abstract void Attack();
 
     private IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
@@ -64,5 +98,11 @@ public abstract class Weapon : MonoBehaviour
             this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, targetRotation, Time.deltaTime * transitionSpeed);
             yield return null;
         }
+    }
+
+    protected struct BodyPart
+    {
+        public ConfigurableJoint joint;
+        public Rigidbody rigidbody;
     }
 }

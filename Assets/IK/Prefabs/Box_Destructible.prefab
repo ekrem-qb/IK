@@ -3575,6 +3575,8 @@ MonoBehaviour:
   requiredFallSpeedToDestroy: 25
   explosionForce: 500
   explosionRadius: 5
+  spawnPrefab: {fileID: 8210723328586061643, guid: 69fa6903cb4fc394084cfd3df26cffa7,
+    type: 3}
 --- !u!114 &2947823663279080099
 MonoBehaviour:
   m_ObjectHideFlags: 0

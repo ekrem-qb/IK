@@ -7,6 +7,7 @@ public class Destructible : HealthManager
     public float requiredFallSpeedToDestroy = 25;
     public float explosionForce = 500;
     public float explosionRadius = 5;
+    public GameObject spawnPrefab;
     private Collider _collider;
     private Rigidbody _rigidbody;
     private Target _target;
@@ -20,31 +21,36 @@ public class Destructible : HealthManager
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (parts.Length > 0)
+        if (collision.transform.root != this.transform.root)
         {
-            if (collision.transform.root != this.transform.root)
+            if (collision.relativeVelocity.y > requiredFallSpeedToDestroy)
             {
-                if (collision.relativeVelocity.y > requiredFallSpeedToDestroy)
-                {
-                    Death();
-                }
+                Death();
             }
         }
     }
 
     protected override void Death()
     {
-        for (int i = 0; i < parts.Length; i++)
+        if (parts.Length > 0)
         {
-            Rigidbody partRigidbody = parts[i].gameObject.AddComponent<Rigidbody>();
-            partRigidbody.AddExplosionForce(explosionForce, this.transform.position, explosionRadius);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                Rigidbody partRigidbody = parts[i].gameObject.AddComponent<Rigidbody>();
+                partRigidbody.AddExplosionForce(explosionForce, this.transform.position, explosionRadius);
+            }
+
+            parts = Array.Empty<Collider>();
+
+            if (spawnPrefab)
+            {
+                Instantiate(spawnPrefab, this.transform.position, Quaternion.identity);
+            }
+
+            Destroy(_rigidbody);
+            Destroy(_collider);
+            Destroy(_target);
+            Destroy(this);
         }
-
-        parts = Array.Empty<Collider>();
-
-        Destroy(_rigidbody);
-        Destroy(_collider);
-        Destroy(_target);
-        Destroy(this);
     }
 }
