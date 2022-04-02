@@ -33,10 +33,7 @@ namespace ARP.APR.Scripts
             {
                 if (APR_Player.inAir)
                 {
-                    if (col.gameObject.layer == LayerMask.NameToLayer("Ground"))
-                    {
-                        APR_Player.PlayerLanded();
-                    }
+                    APR_Player.PlayerLanded();
                 }
                 else
                 {

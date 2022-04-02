@@ -7097,7 +7097,7 @@ GameObject:
   - component: {fileID: 442008441}
   - component: {fileID: 442008440}
   - component: {fileID: 442008439}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8612,9 +8612,9 @@ GameObject:
   - component: {fileID: 581268937}
   - component: {fileID: 581268936}
   - component: {fileID: 581268935}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Ground
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

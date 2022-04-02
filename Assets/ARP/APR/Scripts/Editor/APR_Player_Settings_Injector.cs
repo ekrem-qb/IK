@@ -19,25 +19,19 @@ namespace ARP.APR.Scripts.Editor
 {
     public class APR_Player_Settings_Injector : EditorWindow
     {
-        //Editor window
-        public Texture tex;
         private static APR_Player_Settings_Injector _instance;
 
-        [MenuItem("APR Player/APR Player Settings Injector")]
-        static void APRPlayerSettingsInjectorWindow()
-        {
-            if (!_instance)
-            {
-                APR_Player_Settings_Injector window = ScriptableObject.CreateInstance(typeof(APR_Player_Settings_Injector)) as APR_Player_Settings_Injector;
-                window.maxSize = new Vector2(350f, 190f);
-                window.minSize = window.maxSize;
-                window.ShowUtility();
-            }
-        }
+        //Editor window
+        public Texture tex;
 
         void OnEnable()
         {
             _instance = this;
+        }
+
+        void OnDisable()
+        {
+            _instance = null;
         }
 
 
@@ -89,7 +83,6 @@ namespace ARP.APR.Scripts.Editor
                 string layerName_2 = "Player_2";
                 string layerName_3 = "Player_3";
                 string layerName_4 = "Player_4";
-                string layerName_5 = "Ground";
 
                 SerializedProperty sp1 = layersProp.GetArrayElementAtIndex(10);
                 if (sp1 != null) sp1.stringValue = layerName_1;
@@ -103,9 +96,6 @@ namespace ARP.APR.Scripts.Editor
                 SerializedProperty sp4 = layersProp.GetArrayElementAtIndex(13);
                 if (sp4 != null) sp4.stringValue = layerName_4;
 
-                SerializedProperty sp5 = layersProp.GetArrayElementAtIndex(14);
-                if (sp5 != null) sp5.stringValue = layerName_5;
-
                 tagManager.ApplyModifiedProperties();
 
                 Debug.Log("APR Player project settings has been successfully injected");
@@ -114,9 +104,16 @@ namespace ARP.APR.Scripts.Editor
             }
         }
 
-        void OnDisable()
+        [MenuItem("APR Player/APR Player Settings Injector")]
+        static void APRPlayerSettingsInjectorWindow()
         {
-            _instance = null;
+            if (!_instance)
+            {
+                APR_Player_Settings_Injector window = ScriptableObject.CreateInstance(typeof(APR_Player_Settings_Injector)) as APR_Player_Settings_Injector;
+                window.maxSize = new Vector2(350f, 190f);
+                window.minSize = window.maxSize;
+                window.ShowUtility();
+            }
         }
     }
 }

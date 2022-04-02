@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 2814281781511005377}
   - component: {fileID: 2814281781511005376}
   - component: {fileID: 2814281781511005379}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Part
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,7 +962,7 @@ GameObject:
   - component: {fileID: 2814281782812177567}
   - component: {fileID: 2814281782812177566}
   - component: {fileID: 2814281782812177561}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: SlidingPlatform
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}

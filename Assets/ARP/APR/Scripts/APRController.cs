@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using EpicToonFX;
 using UnityEngine;
 
 
@@ -89,6 +90,7 @@ namespace ARP.APR.Scripts
         //Balance
         public bool autoGetUpWhenPossible = true;
 
+        public ParticleSystem stunningParticle;
         public float getUpDelay = 2;
         public float fallDamage = 5;
 
@@ -126,23 +128,13 @@ namespace ARP.APR.Scripts
         public AudioClip[] Hits;
         public AudioSource SoundSource;
 
-
-        //Hidden variables
-        private float
-            timer,
-            Step_R_timer,
-            Step_L_timer;
-
         public float
             MouseYAxisArms;
-
-        private float
-            MouseXAxisArms;
 
         public float
             MouseYAxisBody;
 
-        [HideInInspector] public bool
+        [ReadOnly] public bool
             WalkForward,
             WalkBackward,
             StepRight,
@@ -150,7 +142,7 @@ namespace ARP.APR.Scripts
             Alert_Leg_Right,
             Alert_Leg_Left,
             balanced = true,
-            GettingUp,
+            isGettingUp,
             isRagdoll,
             isKeyDown,
             moveAxisUsed,
@@ -158,21 +150,12 @@ namespace ARP.APR.Scripts
             reachLeftAxisUsed,
             reachRightAxisUsed;
 
-        [HideInInspector] public bool
+        [ReadOnly] public bool
             jumping,
             isJumping,
             inAir,
             punchingRight,
             punchingLeft;
-
-        private Camera cam;
-        private Vector3 Direction;
-        private Vector3 CenterOfMassPoint;
-
-        //Joint Drives on & off
-        public JointDrive
-            //
-            BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
 
         //Original pose target rotation
         [HideInInspector] public Quaternion
@@ -194,8 +177,29 @@ namespace ARP.APR.Scripts
         //Debug
         public bool editorDebugMode;
 
-        private WeaponManager _weaponManager;
         [HideInInspector] public HealthManager healthManager;
+        private ETFXRotation[] _stunningParticleRotations;
+
+        private WeaponManager _weaponManager;
+
+        //Joint Drives on & off
+        public JointDrive
+            //
+            BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
+
+        private Camera cam;
+        private Vector3 CenterOfMassPoint;
+        private Vector3 Direction;
+
+        private float
+            MouseXAxisArms;
+
+
+        //Hidden variables
+        private float
+            timer,
+            Step_R_timer,
+            Step_L_timer;
 
         //-------------------------------------------------------------
         //--Calling Functions
@@ -209,6 +213,10 @@ namespace ARP.APR.Scripts
             PlayerSetup();
             _weaponManager = COMP.GetComponent<WeaponManager>();
             healthManager = this.GetComponent<HealthManager>();
+            if (stunningParticle)
+            {
+                _stunningParticleRotations = stunningParticle.GetComponentsInChildren<ETFXRotation>();
+            }
         }
 
 
@@ -263,6 +271,28 @@ namespace ARP.APR.Scripts
                 if (useControls)
                 {
                     PlayerGetUpJumping();
+                }
+            }
+        }
+
+
+        //-------------------------------------------------------------
+        //--Debug
+        //-------------------------------------------------------------
+
+
+        //---Editor Debug Mode---//
+        //////////////////////////
+        void OnDrawGizmos()
+        {
+            if (editorDebugMode)
+            {
+                Debug.DrawRay(Root.transform.position, -Root.transform.up * balanceHeight, Color.green);
+
+                if (useStepPrediction)
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawWireSphere(COMP.position, 0.3f);
                 }
             }
         }
@@ -326,26 +356,19 @@ namespace ARP.APR.Scripts
         void GroundCheck()
         {
             Ray ray = new Ray(Root.transform.position, -Root.transform.up);
-            RaycastHit hit;
 
             //Balance when ground is detected
-            if (Physics.Raycast(ray, out hit, balanceHeight, 1 << LayerMask.NameToLayer("Ground")) && !inAir && !isJumping && !reachRightAxisUsed && !reachLeftAxisUsed)
+            if (Physics.Raycast(ray, out RaycastHit hit, balanceHeight))
             {
                 if (!balanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
                 {
                     StartCoroutine(GetUp());
                 }
             }
-
-            //Fall over when ground is not detected
-            else if (!Physics.Raycast(ray, out hit, balanceHeight, 1 << LayerMask.NameToLayer("Ground")))
+            else
             {
-                if (balanced)
-                {
-                    balanced = false;
-                }
+                balanced = false;
             }
-
 
             //Balance on/off
             if (balanced && isRagdoll)
@@ -360,12 +383,35 @@ namespace ARP.APR.Scripts
 
         IEnumerator GetUp()
         {
-            yield return new WaitForSeconds(getUpDelay);
-
             if (autoGetUpWhenPossible)
             {
-                balanced = true;
-                DeactivateRagdoll();
+                if (!isGettingUp)
+                {
+                    isGettingUp = true;
+                    if (stunningParticle)
+                    {
+                        stunningParticle.Play();
+                        for (int i = 0; i < _stunningParticleRotations.Length; i++)
+                        {
+                            _stunningParticleRotations[i].enabled = true;
+                        }
+                    }
+
+                    yield return new WaitForSeconds(getUpDelay);
+
+                    balanced = true;
+                    DeactivateRagdoll();
+
+                    isGettingUp = false;
+                    if (stunningParticle)
+                    {
+                        stunningParticle.Stop();
+                        for (int i = 0; i < _stunningParticleRotations.Length; i++)
+                        {
+                            _stunningParticleRotations[i].enabled = false;
+                        }
+                    }
+                }
             }
         }
 
@@ -1163,28 +1209,6 @@ namespace ARP.APR.Scripts
                  LeftFoot.GetComponent<Rigidbody>().mass);
 
             COMP.position = CenterOfMassPoint;
-        }
-
-
-        //-------------------------------------------------------------
-        //--Debug
-        //-------------------------------------------------------------
-
-
-        //---Editor Debug Mode---//
-        //////////////////////////
-        void OnDrawGizmos()
-        {
-            if (editorDebugMode)
-            {
-                Debug.DrawRay(Root.transform.position, -Root.transform.up * balanceHeight, Color.green);
-
-                if (useStepPrediction)
-                {
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawWireSphere(COMP.position, 0.3f);
-                }
-            }
         }
     }
 }

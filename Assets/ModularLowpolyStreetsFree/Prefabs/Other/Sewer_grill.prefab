@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8839979282704811069}
   - component: {fileID: 4513021667969988594}
   - component: {fileID: 439601017169254547}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sewer_grill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - CanBeGrabbed
-  - Ground
   layers:
   - Default
   - TransparentFX
@@ -21,7 +20,7 @@ TagManager:
   - Player_2
   - Player_3
   - Player_4
-  - Ground
+  - 
   - Enemy
   - Bullet
   - 

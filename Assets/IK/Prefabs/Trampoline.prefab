@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5229471723212318615}
   - component: {fileID: 8618397605884456684}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 824344473}
   - component: {fileID: 824344476}
   - component: {fileID: 9134988436939919270}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Trampoline
   m_TagString: CanBeGrabbed
   m_Icon: {fileID: 0}
