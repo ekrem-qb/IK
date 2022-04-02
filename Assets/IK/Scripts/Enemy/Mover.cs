@@ -8,10 +8,10 @@ public class Mover : Enemy
     public BoxManager boxManager;
     public Toggler toggler;
     public float attackInterval = 0.5f;
-    SphereCollider trigger;
-    FixedJoint jointLeft, jointRight;
-    WeaponManager weaponManager;
     Box _box;
+    FixedJoint jointLeft, jointRight;
+    SphereCollider trigger;
+    WeaponManager weaponManager;
 
     Box box
     {
@@ -50,6 +50,58 @@ public class Mover : Enemy
         if (weaponManager.weaponRight)
         {
             weaponManager.weaponRight.gameObject.SetActive(false);
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        boxManager.boxes.CountChanged -= OnBoxesCountChanged;
+        toggler.Toggle -= OnSwitchToggle;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (pathFollower)
+        {
+            if (pathFollower.path.Count > 0)
+            {
+                if (pathFollower.path[0])
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawLine(this.transform.position, pathFollower.path[0].position);
+                }
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (pathFollower.enabled)
+        {
+            if (pathFollower.path.Count > 0)
+            {
+                if (pathFollower.path[0] == conveyorStart)
+                {
+                    if (other.GetComponent<Conveyor>())
+                    {
+                        StartCoroutine(Drop());
+                    }
+                }
+                else if (box)
+                {
+                    if (pathFollower.path[0] == box.transform)
+                    {
+                        if (other.transform == box.transform)
+                        {
+                            if (!jointLeft && !jointRight)
+                            {
+                                StartCoroutine(PickUp(other));
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -100,36 +152,6 @@ public class Mover : Enemy
         else
         {
             box = null;
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (pathFollower.enabled)
-        {
-            if (pathFollower.path.Count > 0)
-            {
-                if (pathFollower.path[0] == conveyorStart)
-                {
-                    if (other.GetComponent<Conveyor>())
-                    {
-                        StartCoroutine(Drop());
-                    }
-                }
-                else if (box)
-                {
-                    if (pathFollower.path[0] == box.transform)
-                    {
-                        if (other.transform == box.transform)
-                        {
-                            if (!jointLeft && !jointRight)
-                            {
-                                StartCoroutine(PickUp(other));
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -216,23 +238,13 @@ public class Mover : Enemy
 
         if (aprController.reachLeftAxisUsed)
         {
-            if (aprController.balanced)
-            {
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+            aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+            aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
 
-                aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-            }
-            else if (!aprController.balanced)
-            {
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
-            }
+            aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
 
             aprController.ResetPlayerPose();
             aprController.reachLeftAxisUsed = false;
@@ -240,23 +252,13 @@ public class Mover : Enemy
 
         if (aprController.reachRightAxisUsed)
         {
-            if (aprController.balanced)
-            {
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+            aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
+            aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
 
-                aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-            }
-            else if (!aprController.balanced)
-            {
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.DriveOff;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.DriveOff;
-            }
+            aprController.Body.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
+            aprController.Body.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
 
             aprController.ResetPlayerPose();
             aprController.reachRightAxisUsed = false;
@@ -271,21 +273,6 @@ public class Mover : Enemy
         pathFollower.path.Remove(conveyorStart);
 
         trigger.radius = 1;
-    }
-
-    void OnDrawGizmos()
-    {
-        if (pathFollower)
-        {
-            if (pathFollower.path.Count > 0)
-            {
-                if (pathFollower.path[0])
-                {
-                    Gizmos.color = Color.cyan;
-                    Gizmos.DrawLine(this.transform.position, pathFollower.path[0].position);
-                }
-            }
-        }
     }
 
     protected override void OnPlayerChanged(Player newPlayer)
@@ -359,12 +346,5 @@ public class Mover : Enemy
 
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        boxManager.boxes.CountChanged -= OnBoxesCountChanged;
-        toggler.Toggle -= OnSwitchToggle;
     }
 }

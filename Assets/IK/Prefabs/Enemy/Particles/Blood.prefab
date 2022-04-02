@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 193062, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
       propertyPath: m_Name
-      value: BloodExplosionRoundAnimated
+      value: Blood
       objectReference: {fileID: 0}
     - target: {fileID: 470264, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
       propertyPath: m_RootOrder
@@ -54,6 +54,10 @@ PrefabInstance:
     - target: {fileID: 470264, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19867628, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 19867628, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
       propertyPath: playOnAwake

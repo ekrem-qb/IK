@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 188088, guid: 4924b9135249e0d448901a81875768c6, type: 3}
       propertyPath: m_Name
-      value: FeatherExplosion
+      value: Feathers
       objectReference: {fileID: 0}
     - target: {fileID: 428822, guid: 4924b9135249e0d448901a81875768c6, type: 3}
       propertyPath: m_RootOrder
@@ -62,6 +62,10 @@ PrefabInstance:
     - target: {fileID: 19828664, guid: 4924b9135249e0d448901a81875768c6, type: 3}
       propertyPath: moveWithTransform
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19846592, guid: 4924b9135249e0d448901a81875768c6, type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 19846592, guid: 4924b9135249e0d448901a81875768c6, type: 3}
       propertyPath: playOnAwake

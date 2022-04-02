@@ -66,6 +66,11 @@ public class Melee : Weapon
     {
         isInHook = true;
 
+        arm.joint.angularXDrive = aprController.ReachStiffness;
+        arm.joint.angularYZDrive = aprController.ReachStiffness;
+        armLow.joint.angularXDrive = aprController.ReachStiffness;
+        armLow.joint.angularYZDrive = aprController.ReachStiffness;
+
         if (isLeft)
         {
             arm.joint.targetRotation = new Quaternion(-0.62f, -0.51f, -0.02f, 1);
@@ -113,6 +118,11 @@ public class Melee : Weapon
             armLow.joint.targetRotation = aprController.LowerRightArmTarget;
             hand.joint.targetRotation = aprController.RightHandTarget;
         }
+
+        arm.joint.angularXDrive = aprController.DriveOff;
+        arm.joint.angularYZDrive = aprController.DriveOff;
+        armLow.joint.angularXDrive = aprController.DriveOff;
+        armLow.joint.angularYZDrive = aprController.DriveOff;
 
         isAttacking = false;
         isInHook = false;

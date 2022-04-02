@@ -99,22 +99,18 @@ public class Player : MonoBehaviour
     {
         if (weaponManager.weaponLeft is Gun)
         {
-            armLeft.angularXDrive = aprController.PoseOn;
-            armLeft.angularYZDrive = aprController.PoseOn;
-            armLeftLow.angularXDrive = aprController.PoseOn;
-            armLeftLow.angularYZDrive = aprController.PoseOn;
-            armLeft.targetRotation = aprController.UpperLeftArmTarget;
-            armLeftLow.targetRotation = aprController.LowerLeftArmTarget;
+            armLeft.angularXDrive = aprController.DriveOff;
+            armLeft.angularYZDrive = aprController.DriveOff;
+            armLeftLow.angularXDrive = aprController.DriveOff;
+            armLeftLow.angularYZDrive = aprController.DriveOff;
         }
 
         if (weaponManager.weaponRight is Gun)
         {
-            armRight.angularXDrive = aprController.PoseOn;
-            armRight.angularYZDrive = aprController.PoseOn;
-            armRightLow.angularXDrive = aprController.PoseOn;
-            armRightLow.angularYZDrive = aprController.PoseOn;
-            armRight.targetRotation = aprController.UpperRightArmTarget;
-            armRightLow.targetRotation = aprController.LowerRightArmTarget;
+            armRight.angularXDrive = aprController.DriveOff;
+            armRight.angularYZDrive = aprController.DriveOff;
+            armRightLow.angularXDrive = aprController.DriveOff;
+            armRightLow.angularYZDrive = aprController.DriveOff;
         }
     }
 

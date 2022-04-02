@@ -45,26 +45,20 @@ public class WeaponManager : MonoBehaviour
                 weaponLeft = nearWeapons[0];
                 weaponLeft.isLeft = true;
                 weaponLeft.transform.SetParent(handLeft);
-                weaponLeft.enabled = true;
-                weaponLeft.player = player;
-                if (weaponLeft is Gun)
-                {
-                    player.enabled = false;
-                    player.enabled = player.nearEnemies.Count > 0;
-                }
             }
             else if (!weaponRight)
             {
                 weaponRight = nearWeapons[0];
                 weaponRight.isLeft = false;
                 weaponRight.transform.SetParent(handRight);
-                weaponRight.enabled = true;
-                weaponRight.player = player;
-                if (weaponRight is Gun)
-                {
-                    player.enabled = false;
-                    player.enabled = player.nearEnemies.Count > 0;
-                }
+            }
+
+            nearWeapons[0].enabled = true;
+            nearWeapons[0].player = player;
+            if (nearWeapons[0] is Gun)
+            {
+                player.enabled = false;
+                player.enabled = player.nearEnemies.Count > 0;
             }
 
             nearWeapons.Remove(nearWeapons[0]);
@@ -123,22 +117,10 @@ public class WeaponManager : MonoBehaviour
             if (weapon == weaponRight)
             {
                 weaponRight = null;
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.UpperRightArmTarget;
-                aprController.LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.LowerRightArmTarget;
             }
             else if (weapon == weaponLeft)
             {
                 weaponLeft = null;
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = aprController.PoseOn;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = aprController.PoseOn;
-                aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.UpperLeftArmTarget;
-                aprController.LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = aprController.LowerLeftArmTarget;
             }
         }
     }
