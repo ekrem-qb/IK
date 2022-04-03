@@ -29,21 +29,30 @@ namespace ARP.APR.Scripts
         //Alert APR player when feet colliders enter ground object layer
         void OnCollisionEnter(Collision col)
         {
-            if (!APR_Player.isJumping)
+            if (col.transform.root != this.transform.root)
             {
-                if (APR_Player.inAir)
+                if (!APR_Player.isJumping)
                 {
-                    APR_Player.PlayerLanded();
-                }
-                else
-                {
-                    if (APR_Player.isRagdoll)
+                    if (APR_Player.inAir)
                     {
-                        APR_Player.healthManager.health -= APR_Player.fallDamage / 2;
+                        APR_Player.PlayerLanded();
                     }
-                    else if (_particle)
+                    else
                     {
-                        _particle.Play();
+                        if (APR_Player.isRagdoll)
+                        {
+                            if (!APR_Player.isGettingUp)
+                            {
+                                if (!col.transform.GetComponent<Trampoline>())
+                                {
+                                    APR_Player.healthManager.health -= APR_Player.fallDamage / 2;
+                                }
+                            }
+                        }
+                        else if (_particle)
+                        {
+                            _particle.Play();
+                        }
                     }
                 }
             }

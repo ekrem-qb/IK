@@ -361,9 +361,15 @@ namespace ARP.APR.Scripts
             //Balance when ground is detected
             if (Physics.Raycast(ray, out RaycastHit hit, balanceHeight))
             {
-                if (!balanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
+                if (hit.transform.root != this.transform.root)
                 {
-                    StartCoroutine(GetUp());
+                    if (!balanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
+                    {
+                        if (!hit.transform.GetComponent<Trampoline>())
+                        {
+                            StartCoroutine(GetUp());
+                        }
+                    }
                 }
             }
             else

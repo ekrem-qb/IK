@@ -23,13 +23,18 @@ public class Trampoline : MonoBehaviour
         if (!other.isTrigger)
         {
             _animation.Play();
+
             Rigidbody[] rigidbodies = other.transform.root.GetComponentsInChildren<Rigidbody>();
             if (rigidbodies.Length > 0)
             {
-                Rigidbody rootRigidbody = other.transform.root.GetComponentsInChildren<Rigidbody>()[0];
-                if (rootRigidbody)
+                for (int i = 0; i < rigidbodies.Length; i++)
                 {
-                    rootRigidbody.AddForce(this.transform.rotation * direction * springForce, ForceMode.VelocityChange);
+                    rigidbodies[i].isKinematic = true;
+                    rigidbodies[i].isKinematic = false;
+                    if (i == 0)
+                    {
+                        rigidbodies[i].AddForce(this.transform.rotation * direction * springForce, ForceMode.VelocityChange);
+                    }
                 }
             }
         }

@@ -191,5 +191,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f13130bbaeef6547a2f0ab4a89ec4f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  springForce: 100
+  springForce: 200
   direction: {x: 0, y: 1, z: 0}
