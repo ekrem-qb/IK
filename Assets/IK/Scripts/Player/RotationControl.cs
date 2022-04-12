@@ -2,47 +2,47 @@ using UnityEngine;
 
 public class RotationControl : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController aprController;
-    ConfigurableJoint rootJoint;
+    private ARP.APR.Scripts.APRController _aprController;
+    private ConfigurableJoint _rootJoint;
 
-    void Awake()
+    private void Awake()
     {
-        aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        rootJoint = aprController.Root.GetComponent<ConfigurableJoint>();
+        _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        _rootJoint = _aprController.Root.GetComponent<ConfigurableJoint>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (aprController.useControls)
+        if (_aprController.useControls)
         {
             Vector3 targetDirection = Vector3.zero;
 
-            if (Input.GetAxisRaw(aprController.leftRight) != 0)
+            if (Input.GetAxisRaw(_aprController.leftRight) != 0)
             {
-                targetDirection += Vector3.left * Input.GetAxisRaw(aprController.leftRight);
+                targetDirection += Vector3.left * Input.GetAxisRaw(_aprController.leftRight);
             }
 
-            if (Input.GetAxisRaw(aprController.forwardBackward) != 0)
+            if (Input.GetAxisRaw(_aprController.forwardBackward) != 0)
             {
-                targetDirection += Vector3.forward * Input.GetAxisRaw(aprController.forwardBackward);
+                targetDirection += Vector3.forward * Input.GetAxisRaw(_aprController.forwardBackward);
             }
 
-            if (aprController.joystick)
+            if (_aprController.joystick)
             {
-                if (aprController.joystick.Horizontal != 0)
+                if (_aprController.joystick.Horizontal != 0)
                 {
-                    targetDirection += Vector3.left * aprController.joystick.Horizontal;
+                    targetDirection += Vector3.left * _aprController.joystick.Horizontal;
                 }
 
-                if (aprController.joystick.Vertical != 0)
+                if (_aprController.joystick.Vertical != 0)
                 {
-                    targetDirection += Vector3.forward * aprController.joystick.Vertical;
+                    targetDirection += Vector3.forward * _aprController.joystick.Vertical;
                 }
             }
 
             if (targetDirection != Vector3.zero)
             {
-                rootJoint.targetRotation = Quaternion.LookRotation(targetDirection);
+                _rootJoint.targetRotation = Quaternion.LookRotation(targetDirection);
             }
         }
     }

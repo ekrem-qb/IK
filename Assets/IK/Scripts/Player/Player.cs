@@ -2,51 +2,51 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    ARP.APR.Scripts.APRController aprController;
-    ConfigurableJoint armLeft, armRight;
-    ConfigurableJoint armLeftLow, armRightLow;
+    private ARP.APR.Scripts.APRController _aprController;
+    private ConfigurableJoint _armLeft, _armRight;
+    private ConfigurableJoint _armLeftLow, _armRightLow;
+    private SphereCollider _trigger;
+    private WeaponManager _weaponManager;
     public ObservableList<Enemy> nearEnemies = new ObservableList<Enemy>();
-    SphereCollider trigger;
-    WeaponManager weaponManager;
 
-    void Awake()
+    private void Awake()
     {
-        aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
-        armLeft = aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
-        armRight = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-        armLeftLow = aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
-        armRightLow = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
-        trigger = this.GetComponent<SphereCollider>();
+        _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+        _armLeft = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
+        _armRight = _aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
+        _armLeftLow = _aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
+        _armRightLow = _aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
+        _weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
+        _trigger = this.GetComponent<SphereCollider>();
         nearEnemies.CountChanged += count => this.enabled = count > 0;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (aprController.useControls)
+        if (_aprController.useControls)
         {
-            if (weaponManager.weaponLeft is Gun || weaponManager.weaponRight is Gun)
+            if (_weaponManager.weaponLeft is Gun || _weaponManager.weaponRight is Gun)
             {
-                Vector3 bodyBendingFactor = new Vector3(aprController.Body.transform.eulerAngles.x, aprController.Root.transform.localEulerAngles.y, 0);
+                Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
                 Enemy nearestToArmLeft = null;
 
-                if (weaponManager.weaponLeft is Gun)
+                if (_weaponManager.weaponLeft is Gun)
                 {
-                    nearEnemies.SortByDistanceTo(armLeft.transform.position);
+                    nearEnemies.SortByDistanceTo(_armLeft.transform.position);
                     nearestToArmLeft = nearEnemies[0];
 
-                    Debug.DrawLine(nearestToArmLeft.target.position, armLeft.transform.position, Color.red);
+                    Debug.DrawLine(nearestToArmLeft.target.position, _armLeft.transform.position, Color.red);
 
-                    Vector3 angles = Quaternion.LookRotation(nearestToArmLeft.target.position - armLeft.transform.position).eulerAngles;
+                    Vector3 angles = Quaternion.LookRotation(nearestToArmLeft.target.position - _armLeft.transform.position).eulerAngles;
                     angles -= bodyBendingFactor;
                     Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 270, angles.z);
 
-                    armLeft.targetRotation = newRot;
+                    _armLeft.targetRotation = newRot;
                 }
 
-                if (weaponManager.weaponRight is Gun)
+                if (_weaponManager.weaponRight is Gun)
                 {
-                    nearEnemies.SortByDistanceTo(armRight.transform.position);
+                    nearEnemies.SortByDistanceTo(_armRight.transform.position);
                     Enemy nearestToArmRight = nearEnemies[0];
                     if (nearEnemies.Count > 1)
                     {
@@ -56,61 +56,61 @@ public class Player : MonoBehaviour
                         }
                     }
 
-                    Debug.DrawLine(nearestToArmRight.target.position, armRight.transform.position, Color.yellow);
+                    Debug.DrawLine(nearestToArmRight.target.position, _armRight.transform.position, Color.yellow);
 
-                    Vector3 angles = Quaternion.LookRotation(nearestToArmRight.target.position - armRight.transform.position).eulerAngles;
+                    Vector3 angles = Quaternion.LookRotation(nearestToArmRight.target.position - _armRight.transform.position).eulerAngles;
                     angles -= bodyBendingFactor;
                     Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
 
-                    armRight.targetRotation = newRot;
+                    _armRight.targetRotation = newRot;
                 }
             }
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        if (weaponManager.weaponLeft is Gun)
+        if (_weaponManager.weaponLeft is Gun)
         {
-            if (!aprController.punchingLeft)
+            if (!_aprController.punchingLeft)
             {
-                armLeft.angularXDrive = aprController.ReachStiffness;
-                armLeft.angularYZDrive = aprController.ReachStiffness;
-                armLeftLow.angularXDrive = aprController.ReachStiffness;
-                armLeftLow.angularYZDrive = aprController.ReachStiffness;
-                armLeftLow.targetRotation = Quaternion.identity;
+                _armLeft.angularXDrive = _aprController.ReachStiffness;
+                _armLeft.angularYZDrive = _aprController.ReachStiffness;
+                _armLeftLow.angularXDrive = _aprController.ReachStiffness;
+                _armLeftLow.angularYZDrive = _aprController.ReachStiffness;
+                _armLeftLow.targetRotation = Quaternion.identity;
             }
         }
 
-        if (weaponManager.weaponRight is Gun)
+        if (_weaponManager.weaponRight is Gun)
         {
-            if (!aprController.punchingRight)
+            if (!_aprController.punchingRight)
             {
-                armRight.angularXDrive = aprController.ReachStiffness;
-                armRight.angularYZDrive = aprController.ReachStiffness;
-                armRightLow.angularXDrive = aprController.ReachStiffness;
-                armRightLow.angularYZDrive = aprController.ReachStiffness;
-                armRightLow.targetRotation = Quaternion.identity;
+                _armRight.angularXDrive = _aprController.ReachStiffness;
+                _armRight.angularYZDrive = _aprController.ReachStiffness;
+                _armRightLow.angularXDrive = _aprController.ReachStiffness;
+                _armRightLow.angularYZDrive = _aprController.ReachStiffness;
+                _armRightLow.targetRotation = Quaternion.identity;
             }
         }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        if (weaponManager.weaponLeft is Gun)
+        if (_weaponManager.weaponLeft is Gun)
         {
-            armLeft.angularXDrive = aprController.DriveOff;
-            armLeft.angularYZDrive = aprController.DriveOff;
-            armLeftLow.angularXDrive = aprController.DriveOff;
-            armLeftLow.angularYZDrive = aprController.DriveOff;
+            _armLeft.angularXDrive = _aprController.DriveOff;
+            _armLeft.angularYZDrive = _aprController.DriveOff;
+            _armLeftLow.angularXDrive = _aprController.DriveOff;
+            _armLeftLow.angularYZDrive = _aprController.DriveOff;
         }
 
-        if (weaponManager.weaponRight is Gun)
+        if (_weaponManager.weaponRight is Gun)
         {
-            armRight.angularXDrive = aprController.DriveOff;
-            armRight.angularYZDrive = aprController.DriveOff;
-            armRightLow.angularXDrive = aprController.DriveOff;
-            armRightLow.angularYZDrive = aprController.DriveOff;
+            _armRight.angularXDrive = _aprController.DriveOff;
+            _armRight.angularYZDrive = _aprController.DriveOff;
+            _armRightLow.angularXDrive = _aprController.DriveOff;
+            _armRightLow.angularYZDrive = _aprController.DriveOff;
         }
     }
 
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         nearEnemies.ForEach(enemy => enemy.player = null);
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger)
         {
@@ -135,11 +135,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.isTrigger)
         {
-            if (trigger.radius <= Vector3.Distance(this.transform.position, other.transform.position))
+            if (_trigger.radius <= Vector3.Distance(this.transform.position, other.transform.position))
             {
                 Enemy enemy = other.GetComponent<Enemy>();
                 if (enemy)

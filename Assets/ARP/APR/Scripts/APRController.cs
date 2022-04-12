@@ -2,7 +2,6 @@
 using EpicToonFX;
 using UnityEngine;
 
-
 //-------------------------------------------------------------
 //--APR Player
 //--APRController (Main Player Controller)
@@ -15,19 +14,12 @@ using UnityEngine;
 //--Youtube TheFamouseMouse
 //-------------------------------------------------------------
 
-
 namespace ARP.APR.Scripts
 {
     public class APRController : MonoBehaviour
     {
-        //-------------------------------------------------------------
-        //--Variables
-        //-------------------------------------------------------------
-
-
         //Active Ragdoll Player parts
         public GameObject
-            //
             Root,
             Body,
             Head,
@@ -47,12 +39,6 @@ namespace ARP.APR.Scripts
 
         //Center of mass point
         public Transform COMP;
-
-        [Header("Hand Dependancies")]
-        //Hand Controller Scripts & dependancies
-        public HandContact GrabRight;
-
-        public HandContact GrabLeft;
 
         [Header("Input on this player")]
         //Enable controls
@@ -79,13 +65,8 @@ namespace ARP.APR.Scripts
         //Player layer name
         public string thisPlayerLayer = "Player_1";
 
-        [Header("Movement Properties")]
-        //Player properties
-        public bool forwardIsCameraDirection = true;
-
         //Movement
         public float moveSpeed = 10f;
-        public float turnSpeed = 6f;
         public float jumpForce = 18f;
 
         [Header("Balance Properties")]
@@ -137,12 +118,12 @@ namespace ARP.APR.Scripts
             MouseYAxisBody;
 
         [ReadOnly] public bool
-            WalkForward,
-            WalkBackward,
-            StepRight,
-            StepLeft,
-            Alert_Leg_Right,
-            Alert_Leg_Left,
+            walkForward,
+            walkBackward,
+            stepRight,
+            stepLeft,
+            alertLegRight,
+            alertLegLeft,
             balanced = true,
             isGettingUp,
             isRagdoll,
@@ -159,58 +140,55 @@ namespace ARP.APR.Scripts
             punchingRight,
             punchingLeft;
 
-        //Original pose target rotation
-        [HideInInspector] public Quaternion
-            //
-            HeadTarget,
-            BodyTarget,
-            UpperRightArmTarget,
-            LowerRightArmTarget,
-            UpperLeftArmTarget,
-            LowerLeftArmTarget,
-            RightHandTarget,
-            LeftHandTarget,
-            UpperRightLegTarget,
-            LowerRightLegTarget,
-            UpperLeftLegTarget,
-            LowerLeftLegTarget;
+        public Quaternion
+            upperRightArmTarget,
+            lowerRightArmTarget,
+            upperLeftArmTarget,
+            lowerLeftArmTarget,
+            rightHandTarget,
+            leftHandTarget;
 
-        [Header("Player Editor Debug Mode")]
-        //Debug
-        public bool editorDebugMode;
+        [Header("Player Editor Debug Mode")] public bool editorDebugMode;
 
         [HideInInspector] public HealthManager healthManager;
-        private ETFXRotation[] _stunningParticleRotations;
-
-        private WeaponManager _weaponManager;
 
         //Joint Drives on & off
-        public JointDrive
-            //
-            BalanceOn, PoseOn, CoreStiffness, ReachStiffness, DriveOff;
+        private JointDrive
+            _balanceOn;
 
-        private Camera cam;
-        private Vector3 CenterOfMassPoint;
-        private Vector3 Direction;
+        private Camera _cam;
+        private Vector3 _centerOfMassPoint;
+        private Vector3 _direction;
+
+        //Original pose target rotation
+        private Quaternion
+            _headTarget,
+            _bodyTarget,
+            _upperRightLegTarget,
+            _lowerRightLegTarget,
+            _upperLeftLegTarget,
+            _lowerLeftLegTarget;
 
         private float
-            MouseXAxisArms;
+            _mouseXAxisArms;
 
+        private ETFXRotation[] _stunningParticleRotations;
 
         //Hidden variables
         private float
-            timer,
-            Step_R_timer,
-            Step_L_timer;
+            _timer,
+            _stepRTimer,
+            _stepLTimer;
 
-        //-------------------------------------------------------------
-        //--Calling Functions
-        //-------------------------------------------------------------
+        private WeaponManager _weaponManager;
 
+        public JointDrive
+            PoseOn,
+            CoreStiffness,
+            ReachStiffness,
+            DriveOff;
 
-        //---Setup---//
-        //////////////
-        void Awake()
+        private void Awake()
         {
             PlayerSetup();
             DeactivateRagdoll();
@@ -222,10 +200,7 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Updates---//
-        ////////////////
-        void Update()
+        private void Update()
         {
             if (useControls)
             {
@@ -262,10 +237,7 @@ namespace ARP.APR.Scripts
             CenterOfMass();
         }
 
-
-        //---Fixed Updates---//
-        //////////////////////
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!isRagdoll && balanced)
             {
@@ -278,15 +250,7 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //-------------------------------------------------------------
-        //--Debug
-        //-------------------------------------------------------------
-
-
-        //---Editor Debug Mode---//
-        //////////////////////////
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (editorDebugMode)
             {
@@ -300,63 +264,62 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //-------------------------------------------------------------
-        //--Functions
-        //-------------------------------------------------------------
-
-
-        //---Player Setup--//
-        ////////////////////
-        void PlayerSetup()
+        private void PlayerSetup()
         {
-            cam = Camera.main;
+            _cam = Camera.main;
 
             //Setup joint drives
-            BalanceOn = new JointDrive();
-            BalanceOn.positionSpring = balanceStrength;
-            BalanceOn.positionDamper = 0;
-            BalanceOn.maximumForce = Mathf.Infinity;
+            _balanceOn = new JointDrive
+            {
+                positionSpring = balanceStrength,
+                positionDamper = 0,
+                maximumForce = Mathf.Infinity
+            };
 
-            PoseOn = new JointDrive();
-            PoseOn.positionSpring = limbStrength;
-            PoseOn.positionDamper = 0;
-            PoseOn.maximumForce = Mathf.Infinity;
+            PoseOn = new JointDrive
+            {
+                positionSpring = limbStrength,
+                positionDamper = 0,
+                maximumForce = Mathf.Infinity
+            };
 
-            CoreStiffness = new JointDrive();
-            CoreStiffness.positionSpring = coreStrength;
-            CoreStiffness.positionDamper = 0;
-            CoreStiffness.maximumForce = Mathf.Infinity;
+            CoreStiffness = new JointDrive
+            {
+                positionSpring = coreStrength,
+                positionDamper = 0,
+                maximumForce = Mathf.Infinity
+            };
 
-            ReachStiffness = new JointDrive();
-            ReachStiffness.positionSpring = armReachStiffness;
-            ReachStiffness.positionDamper = 0;
-            ReachStiffness.maximumForce = Mathf.Infinity;
+            ReachStiffness = new JointDrive
+            {
+                positionSpring = armReachStiffness,
+                positionDamper = 0,
+                maximumForce = Mathf.Infinity
+            };
 
-            DriveOff = new JointDrive();
-            DriveOff.positionSpring = 25;
-            DriveOff.positionDamper = 0;
-            DriveOff.maximumForce = Mathf.Infinity;
+            DriveOff = new JointDrive
+            {
+                positionSpring = 25,
+                positionDamper = 0,
+                maximumForce = Mathf.Infinity
+            };
 
             //Setup original pose for joint drives
-            BodyTarget = Body.GetComponent<ConfigurableJoint>().targetRotation;
-            HeadTarget = Head.GetComponent<ConfigurableJoint>().targetRotation;
-            UpperRightArmTarget = UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation;
-            LowerRightArmTarget = LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation;
-            UpperLeftArmTarget = UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
-            LowerLeftArmTarget = LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
-            RightHandTarget = RightHand.GetComponent<ConfigurableJoint>().targetRotation;
-            LeftHandTarget = LeftHand.GetComponent<ConfigurableJoint>().targetRotation;
-            UpperRightLegTarget = UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
-            LowerRightLegTarget = LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
-            UpperLeftLegTarget = UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation;
-            LowerLeftLegTarget = LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation;
+            _bodyTarget = Body.GetComponent<ConfigurableJoint>().targetRotation;
+            _headTarget = Head.GetComponent<ConfigurableJoint>().targetRotation;
+            upperRightArmTarget = UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation;
+            lowerRightArmTarget = LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation;
+            upperLeftArmTarget = UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
+            lowerLeftArmTarget = LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation;
+            rightHandTarget = RightHand.GetComponent<ConfigurableJoint>().targetRotation;
+            leftHandTarget = LeftHand.GetComponent<ConfigurableJoint>().targetRotation;
+            _upperRightLegTarget = UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
+            _lowerRightLegTarget = LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation;
+            _upperLeftLegTarget = UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation;
+            _lowerLeftLegTarget = LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation;
         }
 
-
-        //---Ground Check---//
-        /////////////////////
-        void GroundCheck()
+        private void GroundCheck()
         {
             Ray ray = new Ray(Root.transform.position, -Root.transform.up);
 
@@ -390,7 +353,7 @@ namespace ARP.APR.Scripts
             }
         }
 
-        IEnumerator GetUp()
+        private IEnumerator GetUp()
         {
             if (autoGetUpWhenPossible)
             {
@@ -424,106 +387,94 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Step Prediction---//
-        ////////////////////////
-        void StepPrediction()
+        private void StepPrediction()
         {
             //Reset variables when balanced
-            if (!WalkForward && !WalkBackward)
+            if (!walkForward && !walkBackward)
             {
-                StepRight = false;
-                StepLeft = false;
-                Step_R_timer = 0;
-                Step_L_timer = 0;
-                Alert_Leg_Right = false;
-                Alert_Leg_Left = false;
+                stepRight = false;
+                stepLeft = false;
+                _stepRTimer = 0;
+                _stepLTimer = 0;
+                alertLegRight = false;
+                alertLegLeft = false;
             }
 
             //Check direction to walk when off balance
             //Backwards
             if (COMP.position.z < RightFoot.transform.position.z && COMP.position.z < LeftFoot.transform.position.z)
             {
-                WalkBackward = true;
+                walkBackward = true;
             }
             else
             {
                 if (!isKeyDown)
                 {
-                    WalkBackward = false;
+                    walkBackward = false;
                 }
             }
 
             //Forward
             if (COMP.position.z > RightFoot.transform.position.z && COMP.position.z > LeftFoot.transform.position.z)
             {
-                WalkForward = true;
+                walkForward = true;
             }
             else
             {
                 if (!isKeyDown)
                 {
-                    WalkForward = false;
+                    walkForward = false;
                 }
             }
         }
 
-
-        //---Reset Walk Cycle---//
-        /////////////////////////
-        void ResetWalkCycle()
+        private void ResetWalkCycle()
         {
             //Reset variables when not moving
-            if (!WalkForward && !WalkBackward)
+            if (!walkForward && !walkBackward)
             {
-                StepRight = false;
-                StepLeft = false;
-                Step_R_timer = 0;
-                Step_L_timer = 0;
-                Alert_Leg_Right = false;
-                Alert_Leg_Left = false;
+                stepRight = false;
+                stepLeft = false;
+                _stepRTimer = 0;
+                _stepLTimer = 0;
+                alertLegRight = false;
+                alertLegLeft = false;
             }
         }
 
-
-        //---Player Movement---//
-        ////////////////////////
-        void PlayerMovement()
+        private void PlayerMovement()
         {
-            Direction = new Vector3(Input.GetAxisRaw(leftRight), 0.0f, Input.GetAxisRaw(forwardBackward));
+            _direction = new Vector3(Input.GetAxisRaw(leftRight), 0.0f, Input.GetAxisRaw(forwardBackward));
 
             if (joystick)
             {
-                Direction.x += joystick.Horizontal;
-                Direction.z += joystick.Vertical;
+                _direction.x += joystick.Horizontal;
+                _direction.z += joystick.Vertical;
             }
 
-            if (Direction != Vector3.zero && balanced)
+            if (_direction != Vector3.zero && balanced)
             {
-                if (!WalkForward && !moveAxisUsed)
+                if (!walkForward && !moveAxisUsed)
                 {
-                    WalkForward = true;
+                    walkForward = true;
                     moveAxisUsed = true;
                     isKeyDown = true;
                 }
             }
             else
             {
-                if (WalkForward && moveAxisUsed)
+                if (walkForward && moveAxisUsed)
                 {
-                    WalkForward = false;
+                    walkForward = false;
                     moveAxisUsed = false;
                     isKeyDown = false;
                 }
             }
 
-            Root.transform.GetComponent<Rigidbody>().velocity = Vector3.Lerp(Root.transform.GetComponent<Rigidbody>().velocity, (Direction * moveSpeed) + new Vector3(0, Root.transform.GetComponent<Rigidbody>().velocity.y, 0), 0.8f);
+            Root.transform.GetComponent<Rigidbody>().velocity = Vector3.Lerp(Root.transform.GetComponent<Rigidbody>().velocity, (_direction * moveSpeed) + new Vector3(0, Root.transform.GetComponent<Rigidbody>().velocity.y, 0), 0.8f);
         }
 
-
-        //---Player GetUp & Jumping---//
-        ///////////////////////////////
-        void PlayerGetUpJumping()
+        private void PlayerGetUpJumping()
         {
             if (Input.GetAxis(jump) > 0)
             {
@@ -561,11 +512,11 @@ namespace ARP.APR.Scripts
 
             if (isJumping)
             {
-                timer = timer + Time.fixedDeltaTime;
+                _timer += Time.fixedDeltaTime;
 
-                if (timer > 0.2f)
+                if (_timer > 0.2f)
                 {
-                    timer = 0.0f;
+                    _timer = 0.0f;
                     jumping = false;
                     isJumping = false;
                     inAir = true;
@@ -573,9 +524,6 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Player Landed---//
-        //////////////////////
         public void PlayerLanded()
         {
             if (inAir && !isJumping && !jumping)
@@ -585,10 +533,7 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Player Reach--//
-        ////////////////////
-        public void PlayerReach()
+        private void PlayerReach()
         {
             if (_weaponManager)
             {
@@ -597,7 +542,7 @@ namespace ARP.APR.Scripts
                     //Body Bending
                     if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
                     {
-                        MouseYAxisBody = MouseYAxisBody + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                        MouseYAxisBody += (Input.GetAxis("Mouse Y") / reachSensitivity);
                     }
                     else if (MouseYAxisBody > 0.9f)
                     {
@@ -633,7 +578,7 @@ namespace ARP.APR.Scripts
 
                         if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
                         {
-                            MouseYAxisArms = MouseYAxisArms + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                            MouseYAxisArms += (Input.GetAxis("Mouse Y") / reachSensitivity);
                         }
 
                         else if (MouseYAxisArms > 1.2f)
@@ -701,7 +646,7 @@ namespace ARP.APR.Scripts
 
                         if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
                         {
-                            MouseYAxisArms = MouseYAxisArms + (Input.GetAxis("Mouse Y") / reachSensitivity);
+                            MouseYAxisArms += (Input.GetAxis("Mouse Y") / reachSensitivity);
                         }
 
                         else if (MouseYAxisArms > 1.2f)
@@ -749,10 +694,7 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Player Punch---//
-        /////////////////////
-        void PlayerPunch()
+        private void PlayerPunch()
         {
             //punch right
             if (!punchingRight && Input.GetKey(punchRight))
@@ -786,8 +728,8 @@ namespace ARP.APR.Scripts
                     yield return new WaitForSeconds(0.3f);
                     if (!Input.GetKey(punchRight))
                     {
-                        UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
-                        LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
+                        UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = upperRightArmTarget;
+                        LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = lowerRightArmTarget;
                     }
                 }
             }
@@ -825,68 +767,65 @@ namespace ARP.APR.Scripts
                     yield return new WaitForSeconds(0.3f);
                     if (!Input.GetKey(punchLeft))
                     {
-                        UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
-                        LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+                        UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = upperLeftArmTarget;
+                        LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = lowerLeftArmTarget;
                     }
                 }
             }
         }
 
-
-        //---Player Walking---//
-        ///////////////////////
-        void Walking()
+        private void Walking()
         {
             if (!inAir)
             {
-                if (WalkForward)
+                if (walkForward)
                 {
                     //right leg
-                    if (RightFoot.transform.position.z < LeftFoot.transform.position.z && !StepLeft && !Alert_Leg_Right)
+                    if (RightFoot.transform.position.z < LeftFoot.transform.position.z && !stepLeft && !alertLegRight)
                     {
-                        StepRight = true;
-                        Alert_Leg_Right = true;
-                        Alert_Leg_Left = true;
+                        stepRight = true;
+                        alertLegRight = true;
+                        alertLegLeft = true;
                     }
 
                     //left leg
-                    if (RightFoot.transform.position.z > LeftFoot.transform.position.z && !StepRight && !Alert_Leg_Left)
+                    if (RightFoot.transform.position.z > LeftFoot.transform.position.z && !stepRight && !alertLegLeft)
                     {
-                        StepLeft = true;
-                        Alert_Leg_Left = true;
-                        Alert_Leg_Right = true;
+                        stepLeft = true;
+                        alertLegLeft = true;
+                        alertLegRight = true;
                     }
                 }
 
-                if (WalkBackward)
+                if (walkBackward)
                 {
                     //right leg
-                    if (RightFoot.transform.position.z > LeftFoot.transform.position.z && !StepLeft && !Alert_Leg_Right)
+                    if (RightFoot.transform.position.z > LeftFoot.transform.position.z && !stepLeft && !alertLegRight)
                     {
-                        StepRight = true;
-                        Alert_Leg_Right = true;
-                        Alert_Leg_Left = true;
+                        stepRight = true;
+                        alertLegRight = true;
+                        alertLegLeft = true;
                     }
 
                     //left leg
-                    if (RightFoot.transform.position.z < LeftFoot.transform.position.z && !StepRight && !Alert_Leg_Left)
+                    if (RightFoot.transform.position.z < LeftFoot.transform.position.z && !stepRight && !alertLegLeft)
                     {
-                        StepLeft = true;
-                        Alert_Leg_Left = true;
-                        Alert_Leg_Right = true;
+                        stepLeft = true;
+                        alertLegLeft = true;
+                        alertLegRight = true;
                     }
                 }
 
                 //Step right
-                if (StepRight)
+                if (stepRight)
                 {
-                    Step_R_timer += Time.fixedDeltaTime;
+                    _stepRTimer += Time.fixedDeltaTime;
 
                     //Right foot force down
                     RightFoot.GetComponent<Rigidbody>().AddForce(-Vector3.up * FeetMountForce * Time.deltaTime, ForceMode.Impulse);
 
                     //walk simulation
-                    if (WalkForward)
+                    if (walkForward)
                     {
                         UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.x + 0.09f * StepHeight, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                         LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.09f * StepHeight * 2, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.y, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.z, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
@@ -894,7 +833,7 @@ namespace ARP.APR.Scripts
                         UpperLeftLeg.GetComponent<ConfigurableJoint>().GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.12f * StepHeight / 2, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                     }
 
-                    if (WalkBackward)
+                    if (walkBackward)
                     {
                         UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.00f * StepHeight, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                         LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.07f * StepHeight * 2, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.y, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.z, LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
@@ -904,22 +843,22 @@ namespace ARP.APR.Scripts
 
 
                     //step duration
-                    if (Step_R_timer > StepDuration)
+                    if (_stepRTimer > StepDuration)
                     {
-                        Step_R_timer = 0;
-                        StepRight = false;
+                        _stepRTimer = 0;
+                        stepRight = false;
 
-                        if (WalkForward || WalkBackward)
+                        if (walkForward || walkBackward)
                         {
-                            StepLeft = true;
+                            stepLeft = true;
                         }
                     }
                 }
                 else
                 {
                     //reset to idle
-                    UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation, UpperRightLegTarget, (8f) * Time.fixedDeltaTime);
-                    LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation, LowerRightLegTarget, (17f) * Time.fixedDeltaTime);
+                    UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation, _upperRightLegTarget, (8f) * Time.fixedDeltaTime);
+                    LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(LowerRightLeg.GetComponent<ConfigurableJoint>().targetRotation, _lowerRightLegTarget, (17f) * Time.fixedDeltaTime);
 
                     //feet force down
                     RightFoot.GetComponent<Rigidbody>().AddForce(-Vector3.up * FeetMountForce * Time.deltaTime, ForceMode.Impulse);
@@ -928,15 +867,15 @@ namespace ARP.APR.Scripts
 
 
                 //Step left
-                if (StepLeft)
+                if (stepLeft)
                 {
-                    Step_L_timer += Time.fixedDeltaTime;
+                    _stepLTimer += Time.fixedDeltaTime;
 
                     //Left foot force down
                     LeftFoot.GetComponent<Rigidbody>().AddForce(-Vector3.up * FeetMountForce * Time.deltaTime, ForceMode.Impulse);
 
                     //walk simulation
-                    if (WalkForward)
+                    if (walkForward)
                     {
                         UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.x + 0.09f * StepHeight, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                         LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.09f * StepHeight * 2, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.y, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.z, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
@@ -944,7 +883,7 @@ namespace ARP.APR.Scripts
                         UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.12f * StepHeight / 2, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperRightLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                     }
 
-                    if (WalkBackward)
+                    if (walkBackward)
                     {
                         UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.00f * StepHeight, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.y, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.z, UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
                         LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.x - 0.07f * StepHeight * 2, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.y, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.z, LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation.w);
@@ -954,22 +893,22 @@ namespace ARP.APR.Scripts
 
 
                     //Step duration
-                    if (Step_L_timer > StepDuration)
+                    if (_stepLTimer > StepDuration)
                     {
-                        Step_L_timer = 0;
-                        StepLeft = false;
+                        _stepLTimer = 0;
+                        stepLeft = false;
 
-                        if (WalkForward || WalkBackward)
+                        if (walkForward || walkBackward)
                         {
-                            StepRight = true;
+                            stepRight = true;
                         }
                     }
                 }
                 else
                 {
                     //reset to idle
-                    UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation, UpperLeftLegTarget, (7f) * Time.fixedDeltaTime);
-                    LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation, LowerLeftLegTarget, (18f) * Time.fixedDeltaTime);
+                    UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(UpperLeftLeg.GetComponent<ConfigurableJoint>().targetRotation, _upperLeftLegTarget, (7f) * Time.fixedDeltaTime);
+                    LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Lerp(LowerLeftLeg.GetComponent<ConfigurableJoint>().targetRotation, _lowerLeftLegTarget, (18f) * Time.fixedDeltaTime);
 
                     //feet force down
                     RightFoot.GetComponent<Rigidbody>().AddForce(-Vector3.up * FeetMountForce * Time.deltaTime, ForceMode.Impulse);
@@ -978,9 +917,6 @@ namespace ARP.APR.Scripts
             }
         }
 
-
-        //---Activate Ragdoll---//
-        /////////////////////////
         public void ActivateRagdoll()
         {
             isRagdoll = true;
@@ -1024,17 +960,14 @@ namespace ARP.APR.Scripts
             LeftFoot.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
         }
 
-
-        //---Deactivate Ragdoll---//
-        ///////////////////////////
-        void DeactivateRagdoll()
+        private void DeactivateRagdoll()
         {
             isRagdoll = false;
             balanced = true;
 
             //Root
-            Root.GetComponent<ConfigurableJoint>().angularXDrive = BalanceOn;
-            Root.GetComponent<ConfigurableJoint>().angularYZDrive = BalanceOn;
+            Root.GetComponent<ConfigurableJoint>().angularXDrive = _balanceOn;
+            Root.GetComponent<ConfigurableJoint>().angularYZDrive = _balanceOn;
             //head
             Head.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
             Head.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
@@ -1072,37 +1005,31 @@ namespace ARP.APR.Scripts
             ResetPlayerPose();
         }
 
-
-        //---Reset Player Pose---//
-        //////////////////////////
         public void ResetPlayerPose()
         {
             if (!jumping)
             {
-                Body.GetComponent<ConfigurableJoint>().targetRotation = BodyTarget;
+                Body.GetComponent<ConfigurableJoint>().targetRotation = _bodyTarget;
 
                 if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponRight || !_weaponManager.weaponRight.gameObject.activeSelf)))
                 {
-                    UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = UpperRightArmTarget;
-                    LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = LowerRightArmTarget;
+                    UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = upperRightArmTarget;
+                    LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = lowerRightArmTarget;
                 }
 
                 if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponLeft || !_weaponManager.weaponLeft.gameObject.activeSelf)))
                 {
-                    UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = UpperLeftArmTarget;
-                    LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = LowerLeftArmTarget;
+                    UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = upperLeftArmTarget;
+                    LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = lowerLeftArmTarget;
                 }
 
                 MouseYAxisArms = 0;
             }
         }
 
-
-        //---Calculating Center of mass point---//
-        /////////////////////////////////////////
-        void CenterOfMass()
+        private void CenterOfMass()
         {
-            CenterOfMassPoint =
+            _centerOfMassPoint =
                 (Root.GetComponent<Rigidbody>().mass * Root.transform.position +
                  Body.GetComponent<Rigidbody>().mass * Body.transform.position +
                  Head.GetComponent<Rigidbody>().mass * Head.transform.position +
@@ -1125,7 +1052,7 @@ namespace ARP.APR.Scripts
                  LowerLeftLeg.GetComponent<Rigidbody>().mass + RightFoot.GetComponent<Rigidbody>().mass +
                  LeftFoot.GetComponent<Rigidbody>().mass);
 
-            COMP.position = CenterOfMassPoint;
+            COMP.position = _centerOfMassPoint;
         }
     }
 }

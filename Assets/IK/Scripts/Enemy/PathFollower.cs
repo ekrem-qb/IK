@@ -37,9 +37,9 @@ public class PathFollower : MonoBehaviour
 
                 if (enemy.aprController.balanced)
                 {
-                    if (!enemy.aprController.WalkForward && !enemy.aprController.moveAxisUsed)
+                    if (!enemy.aprController.walkForward && !enemy.aprController.moveAxisUsed)
                     {
-                        enemy.aprController.WalkForward = true;
+                        enemy.aprController.walkForward = true;
                         enemy.aprController.moveAxisUsed = true;
                         enemy.aprController.isKeyDown = true;
                     }
@@ -47,9 +47,9 @@ public class PathFollower : MonoBehaviour
             }
             else
             {
-                if (enemy.aprController.WalkForward && enemy.aprController.moveAxisUsed)
+                if (enemy.aprController.walkForward && enemy.aprController.moveAxisUsed)
                 {
-                    enemy.aprController.WalkForward = false;
+                    enemy.aprController.walkForward = false;
                     enemy.aprController.moveAxisUsed = false;
                     enemy.aprController.isKeyDown = false;
                 }
@@ -68,19 +68,9 @@ public class PathFollower : MonoBehaviour
         }
         else
         {
-            enemy.aprController.WalkForward = false;
+            enemy.aprController.walkForward = false;
             enemy.aprController.moveAxisUsed = false;
             enemy.aprController.isKeyDown = false;
-        }
-    }
-
-    IEnumerator WaitForIntervalBetweenPoints()
-    {
-        if (Random.Range(0, 101) <= probabilityPercent)
-        {
-            isWaiting = true;
-            yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
-            isWaiting = false;
         }
     }
 
@@ -109,6 +99,16 @@ public class PathFollower : MonoBehaviour
             {
                 Gizmos.DrawLine(path[path.Count - 1].position, path[0].position);
             }
+        }
+    }
+
+    IEnumerator WaitForIntervalBetweenPoints()
+    {
+        if (Random.Range(0, 101) <= probabilityPercent)
+        {
+            isWaiting = true;
+            yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+            isWaiting = false;
         }
     }
 }

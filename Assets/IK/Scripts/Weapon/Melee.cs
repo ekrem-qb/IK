@@ -108,15 +108,15 @@ public class Melee : Weapon
         yield return new WaitForSeconds(0.25f);
         if (isLeft)
         {
-            arm.joint.targetRotation = aprController.UpperLeftArmTarget;
-            armLow.joint.targetRotation = aprController.LowerLeftArmTarget;
-            hand.joint.targetRotation = aprController.LeftHandTarget;
+            arm.joint.targetRotation = aprController.upperLeftArmTarget;
+            armLow.joint.targetRotation = aprController.lowerLeftArmTarget;
+            hand.joint.targetRotation = aprController.leftHandTarget;
         }
         else
         {
-            arm.joint.targetRotation = aprController.UpperRightArmTarget;
-            armLow.joint.targetRotation = aprController.LowerRightArmTarget;
-            hand.joint.targetRotation = aprController.RightHandTarget;
+            arm.joint.targetRotation = aprController.upperRightArmTarget;
+            armLow.joint.targetRotation = aprController.lowerRightArmTarget;
+            hand.joint.targetRotation = aprController.rightHandTarget;
         }
 
         arm.joint.angularXDrive = aprController.DriveOff;

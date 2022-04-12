@@ -8,10 +8,10 @@ public abstract class Enemy : MonoBehaviour
     [HideInInspector] public Rigidbody rootRB;
     [HideInInspector] public Transform target;
     [SerializeField] Player _player;
-    protected ConfigurableJoint bodyJoint;
-    protected PathFollower pathFollower;
-    protected bool isAttacking;
     public float attackDistance = 2.5f;
+    protected ConfigurableJoint bodyJoint;
+    protected bool isAttacking;
+    protected PathFollower pathFollower;
 
     public Player player
     {
@@ -55,9 +55,9 @@ public abstract class Enemy : MonoBehaviour
 
             if (aprController.balanced)
             {
-                if (!aprController.WalkForward && !aprController.moveAxisUsed)
+                if (!aprController.walkForward && !aprController.moveAxisUsed)
                 {
-                    aprController.WalkForward = true;
+                    aprController.walkForward = true;
                     aprController.moveAxisUsed = true;
                     aprController.isKeyDown = true;
                 }
@@ -65,9 +65,9 @@ public abstract class Enemy : MonoBehaviour
         }
         else
         {
-            if (aprController.WalkForward && aprController.moveAxisUsed)
+            if (aprController.walkForward && aprController.moveAxisUsed)
             {
-                aprController.WalkForward = false;
+                aprController.walkForward = false;
                 aprController.moveAxisUsed = false;
                 aprController.isKeyDown = false;
             }
@@ -82,12 +82,14 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    protected abstract IEnumerator Attack();
-
-    protected virtual void OnDrawGizmosSelected()
+    protected virtual void OnDisable()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, attackDistance);
+        if (aprController.walkForward && aprController.moveAxisUsed)
+        {
+            aprController.walkForward = false;
+            aprController.moveAxisUsed = false;
+            aprController.isKeyDown = false;
+        }
     }
 
     protected virtual void OnDestroy()
@@ -98,19 +100,17 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    protected virtual void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, attackDistance);
+    }
+
+    protected abstract IEnumerator Attack();
+
     protected virtual void OnPlayerChanged(Player newPlayer)
     {
         pathFollower.enabled = !newPlayer;
         this.enabled = newPlayer;
-    }
-
-    protected virtual void OnDisable()
-    {
-        if (aprController.WalkForward && aprController.moveAxisUsed)
-        {
-            aprController.WalkForward = false;
-            aprController.moveAxisUsed = false;
-            aprController.isKeyDown = false;
-        }
     }
 }
