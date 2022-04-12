@@ -15,21 +15,34 @@ public class RotationControl : MonoBehaviour
     {
         if (aprController.useControls)
         {
-            Vector3 targetPosition = Vector3.zero;
+            Vector3 targetDirection = Vector3.zero;
 
             if (Input.GetAxisRaw(aprController.leftRight) != 0)
             {
-                targetPosition += Vector3.left * Input.GetAxisRaw(aprController.leftRight);
+                targetDirection += Vector3.left * Input.GetAxisRaw(aprController.leftRight);
             }
 
             if (Input.GetAxisRaw(aprController.forwardBackward) != 0)
             {
-                targetPosition += Vector3.forward * Input.GetAxisRaw(aprController.forwardBackward);
+                targetDirection += Vector3.forward * Input.GetAxisRaw(aprController.forwardBackward);
             }
 
-            if (targetPosition != Vector3.zero)
+            if (aprController.joystick)
             {
-                rootJoint.targetRotation = Quaternion.LookRotation(targetPosition);
+                if (aprController.joystick.Horizontal != 0)
+                {
+                    targetDirection += Vector3.left * aprController.joystick.Horizontal;
+                }
+
+                if (aprController.joystick.Vertical != 0)
+                {
+                    targetDirection += Vector3.forward * aprController.joystick.Vertical;
+                }
+            }
+
+            if (targetDirection != Vector3.zero)
+            {
+                rootJoint.targetRotation = Quaternion.LookRotation(targetDirection);
             }
         }
     }

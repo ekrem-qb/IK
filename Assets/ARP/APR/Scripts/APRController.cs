@@ -58,6 +58,8 @@ namespace ARP.APR.Scripts
         //Enable controls
         public bool useControls = true;
 
+        public Joystick joystick;
+
         [Header("Player Input Axis")]
         //Player Axis controls
         public string forwardBackward = "Vertical";
@@ -489,10 +491,14 @@ namespace ARP.APR.Scripts
         void PlayerMovement()
         {
             Direction = new Vector3(Input.GetAxisRaw(leftRight), 0.0f, Input.GetAxisRaw(forwardBackward));
-            Direction.y = 0f;
-            Root.transform.GetComponent<Rigidbody>().velocity = Vector3.Lerp(Root.transform.GetComponent<Rigidbody>().velocity, (Direction * moveSpeed) + new Vector3(0, Root.transform.GetComponent<Rigidbody>().velocity.y, 0), 0.8f);
 
-            if (Input.GetAxisRaw(leftRight) != 0 || Input.GetAxisRaw(forwardBackward) != 0 && balanced)
+            if (joystick)
+            {
+                Direction.x += joystick.Horizontal;
+                Direction.z += joystick.Vertical;
+            }
+
+            if (Direction != Vector3.zero && balanced)
             {
                 if (!WalkForward && !moveAxisUsed)
                 {
@@ -501,8 +507,7 @@ namespace ARP.APR.Scripts
                     isKeyDown = true;
                 }
             }
-
-            else if (Input.GetAxisRaw(leftRight) == 0 && Input.GetAxisRaw(forwardBackward) == 0)
+            else
             {
                 if (WalkForward && moveAxisUsed)
                 {
@@ -511,6 +516,8 @@ namespace ARP.APR.Scripts
                     isKeyDown = false;
                 }
             }
+
+            Root.transform.GetComponent<Rigidbody>().velocity = Vector3.Lerp(Root.transform.GetComponent<Rigidbody>().velocity, (Direction * moveSpeed) + new Vector3(0, Root.transform.GetComponent<Rigidbody>().velocity.y, 0), 0.8f);
         }
 
 
