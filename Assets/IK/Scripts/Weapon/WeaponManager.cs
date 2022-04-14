@@ -6,6 +6,9 @@ public class WeaponManager : MonoBehaviour
 {
     public KeyCode keyPickUp = KeyCode.E;
     public KeyCode keyDrop = KeyCode.Q;
+    public KeyCode keyAttackLeft = KeyCode.Keypad1;
+    public KeyCode keyAttackRight = KeyCode.Keypad3;
+    public Button buttonAttackLeft, buttonAttackRight;
     public Text ammoCountLeft, ammoCountRight;
     private ARP.APR.Scripts.APRController _aprController;
     private Transform _handLeft, _handRight;
@@ -19,19 +22,39 @@ public class WeaponManager : MonoBehaviour
         get => _weaponLeft;
         private set
         {
-            if (ammoCountLeft)
+            if (_weaponLeft != value)
             {
-                if (_weaponLeft != value)
+                if (value)
                 {
-                    if (value)
+                    if (buttonAttackLeft)
                     {
-                        if (value is Gun)
+                        buttonAttackLeft.transform.gameObject.SetActive(true);
+                    }
+
+                    if (value is Gun)
+                    {
+                        if (ammoCountLeft)
                         {
                             ammoCountLeft.transform.parent.gameObject.SetActive(true);
                             ammoCountLeft.text = (value as Gun).ammo.ToString();
                         }
                     }
                     else
+                    {
+                        if (ammoCountLeft)
+                        {
+                            ammoCountLeft.transform.parent.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                else
+                {
+                    if (buttonAttackLeft)
+                    {
+                        buttonAttackLeft.transform.gameObject.SetActive(false);
+                    }
+
+                    if (ammoCountLeft)
                     {
                         ammoCountLeft.transform.parent.gameObject.SetActive(false);
                     }
@@ -47,19 +70,39 @@ public class WeaponManager : MonoBehaviour
         get => _weaponRight;
         private set
         {
-            if (ammoCountRight)
+            if (_weaponRight != value)
             {
-                if (_weaponRight != value)
+                if (value)
                 {
-                    if (value)
+                    if (buttonAttackRight)
                     {
-                        if (value is Gun)
+                        buttonAttackRight.transform.gameObject.SetActive(true);
+                    }
+
+                    if (value is Gun)
+                    {
+                        if (ammoCountRight)
                         {
                             ammoCountRight.transform.parent.gameObject.SetActive(true);
                             ammoCountRight.text = (value as Gun).ammo.ToString();
                         }
                     }
                     else
+                    {
+                        if (ammoCountRight)
+                        {
+                            ammoCountRight.transform.parent.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                else
+                {
+                    if (buttonAttackRight)
+                    {
+                        buttonAttackRight.transform.gameObject.SetActive(false);
+                    }
+
+                    if (ammoCountRight)
                     {
                         ammoCountRight.transform.parent.gameObject.SetActive(false);
                     }
@@ -70,7 +113,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    void Awake()
+    private void Awake()
     {
         _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         _player = _aprController.Root.GetComponent<Player>();
@@ -90,12 +133,30 @@ public class WeaponManager : MonoBehaviour
             weaponRight.player = _player;
         }
 
+        if (buttonAttackLeft)
+        {
+            buttonAttackLeft.onClick.AddListener(AttackLeft);
+        }
+
+        if (buttonAttackRight)
+        {
+            buttonAttackRight.onClick.AddListener(AttackRight);
+        }
+
         this.enabled = _player != null;
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && _nearWeapons.Count > 0)
+        if (Input.GetKeyDown(keyAttackLeft))
+        {
+            AttackLeft();
+        }
+        else if (Input.GetKeyDown(keyAttackRight))
+        {
+            AttackRight();
+        }
+        else if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && _nearWeapons.Count > 0)
         {
             _aprController.ResetPlayerPose();
 
@@ -123,8 +184,7 @@ public class WeaponManager : MonoBehaviour
 
             _nearWeapons.Remove(_nearWeapons[0]);
         }
-
-        if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
+        else if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
         {
             if (weaponRight)
             {
@@ -137,7 +197,20 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnDestroy()
+    {
+        if (buttonAttackLeft)
+        {
+            buttonAttackLeft.onClick.RemoveListener(AttackLeft);
+        }
+
+        if (buttonAttackRight)
+        {
+            buttonAttackRight.onClick.RemoveListener(AttackRight);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger)
         {
@@ -160,7 +233,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.isTrigger)
         {
@@ -169,6 +242,22 @@ public class WeaponManager : MonoBehaviour
             {
                 _nearWeapons.Remove(weapon);
             }
+        }
+    }
+
+    private void AttackLeft()
+    {
+        if (weaponLeft)
+        {
+            weaponLeft.Attack();
+        }
+    }
+
+    private void AttackRight()
+    {
+        if (weaponRight)
+        {
+            weaponRight.Attack();
         }
     }
 
@@ -196,7 +285,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    void Drop(Weapon weapon)
+    private void Drop(Weapon weapon)
     {
         if (!(weapon is Fist))
         {

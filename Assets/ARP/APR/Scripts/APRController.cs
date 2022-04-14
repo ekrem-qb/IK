@@ -52,8 +52,8 @@ namespace ARP.APR.Scripts
 
         public string leftRight = "Horizontal";
         public string jump = "Jump";
-        public string reachLeft = "Fire1";
-        public string reachRight = "Fire2";
+        public KeyCode reachLeft = KeyCode.Keypad1;
+        public KeyCode reachRight = KeyCode.Keypad3;
 
         [Header("Player Input KeyCodes")]
         //Player KeyCode controls
@@ -140,7 +140,7 @@ namespace ARP.APR.Scripts
             punchingRight,
             punchingLeft;
 
-        public Quaternion
+        [HideInInspector] public Quaternion
             upperRightArmTarget,
             lowerRightArmTarget,
             upperLeftArmTarget,
@@ -559,7 +559,7 @@ namespace ARP.APR.Scripts
                 if (!_weaponManager.weaponLeft)
                 {
                     //Reach Left
-                    if (Input.GetAxisRaw(reachLeft) != 0 && !punchingLeft)
+                    if (Input.GetKey(reachLeft) && !punchingLeft)
                     {
                         if (!reachLeftAxisUsed)
                         {
@@ -595,7 +595,7 @@ namespace ARP.APR.Scripts
                         UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - MouseYAxisArms, 0.58f + MouseYAxisArms, -0.8f, 1);
                     }
 
-                    if (Input.GetAxisRaw(reachLeft) == 0 && !punchingLeft)
+                    if (!Input.GetKey(reachLeft) && !punchingLeft)
                     {
                         if (reachLeftAxisUsed)
                         {
@@ -627,7 +627,7 @@ namespace ARP.APR.Scripts
                 if (!_weaponManager.weaponRight)
                 {
                     //Reach Right
-                    if (Input.GetAxisRaw(reachRight) != 0 && !punchingRight)
+                    if (Input.GetKey(reachRight) && !punchingRight)
                     {
                         if (!reachRightAxisUsed)
                         {
@@ -663,7 +663,7 @@ namespace ARP.APR.Scripts
                         UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f + MouseYAxisArms, 0.58f + MouseYAxisArms, -0.8f, 1));
                     }
 
-                    if (Input.GetAxisRaw(reachRight) == 0 && !punchingRight)
+                    if (!Input.GetKey(reachRight) && !punchingRight)
                     {
                         if (reachRightAxisUsed)
                         {
