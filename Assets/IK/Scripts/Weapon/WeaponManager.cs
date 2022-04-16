@@ -6,9 +6,10 @@ public class WeaponManager : MonoBehaviour
 {
     public KeyCode keyPickUp = KeyCode.E;
     public KeyCode keyDrop = KeyCode.Q;
-    public KeyCode keyAttackLeft = KeyCode.Keypad1;
-    public KeyCode keyAttackRight = KeyCode.Keypad3;
-    public Button buttonAttackLeft, buttonAttackRight;
+    public KeyCode keyAttackGun = KeyCode.KeypadPlus;
+    public KeyCode keyAttackMelee = KeyCode.Keypad0;
+    public Button buttonAttackGun;
+    public Button buttonAttackMelee;
     public Text ammoCountLeft, ammoCountRight;
     private ARP.APR.Scripts.APRController _aprController;
     private Transform _handLeft, _handRight;
@@ -26,21 +27,26 @@ public class WeaponManager : MonoBehaviour
             {
                 if (value)
                 {
-                    if (buttonAttackLeft)
+                    if (value is Gun gun)
                     {
-                        buttonAttackLeft.transform.gameObject.SetActive(true);
-                    }
+                        if (buttonAttackGun)
+                        {
+                            buttonAttackGun.transform.gameObject.SetActive(true);
+                        }
 
-                    if (value is Gun)
-                    {
                         if (ammoCountLeft)
                         {
                             ammoCountLeft.transform.parent.gameObject.SetActive(true);
-                            ammoCountLeft.text = (value as Gun).ammo.ToString();
+                            ammoCountLeft.text = gun.ammo.ToString();
                         }
                     }
                     else
                     {
+                        if (buttonAttackMelee)
+                        {
+                            buttonAttackMelee.transform.gameObject.SetActive(true);
+                        }
+
                         if (ammoCountLeft)
                         {
                             ammoCountLeft.transform.parent.gameObject.SetActive(false);
@@ -49,9 +55,22 @@ public class WeaponManager : MonoBehaviour
                 }
                 else
                 {
-                    if (buttonAttackLeft)
+                    if (weaponLeft is Melee)
                     {
-                        buttonAttackLeft.transform.gameObject.SetActive(false);
+                        if (buttonAttackMelee)
+                        {
+                            buttonAttackMelee.transform.gameObject.SetActive(false);
+                        }
+                    }
+                    else if (weaponLeft is Gun)
+                    {
+                        if (!(weaponRight is Gun))
+                        {
+                            if (buttonAttackGun)
+                            {
+                                buttonAttackGun.transform.gameObject.SetActive(false);
+                            }
+                        }
                     }
 
                     if (ammoCountLeft)
@@ -74,21 +93,26 @@ public class WeaponManager : MonoBehaviour
             {
                 if (value)
                 {
-                    if (buttonAttackRight)
+                    if (value is Gun gun)
                     {
-                        buttonAttackRight.transform.gameObject.SetActive(true);
-                    }
+                        if (buttonAttackGun)
+                        {
+                            buttonAttackGun.transform.gameObject.SetActive(true);
+                        }
 
-                    if (value is Gun)
-                    {
                         if (ammoCountRight)
                         {
                             ammoCountRight.transform.parent.gameObject.SetActive(true);
-                            ammoCountRight.text = (value as Gun).ammo.ToString();
+                            ammoCountRight.text = gun.ammo.ToString();
                         }
                     }
                     else
                     {
+                        if (buttonAttackMelee)
+                        {
+                            buttonAttackMelee.transform.gameObject.SetActive(true);
+                        }
+
                         if (ammoCountRight)
                         {
                             ammoCountRight.transform.parent.gameObject.SetActive(false);
@@ -97,9 +121,22 @@ public class WeaponManager : MonoBehaviour
                 }
                 else
                 {
-                    if (buttonAttackRight)
+                    if (weaponRight is Melee)
                     {
-                        buttonAttackRight.transform.gameObject.SetActive(false);
+                        if (buttonAttackMelee)
+                        {
+                            buttonAttackMelee.transform.gameObject.SetActive(false);
+                        }
+                    }
+                    else if (weaponRight is Gun)
+                    {
+                        if (!(weaponLeft is Gun))
+                        {
+                            if (buttonAttackGun)
+                            {
+                                buttonAttackGun.transform.gameObject.SetActive(false);
+                            }
+                        }
                     }
 
                     if (ammoCountRight)
@@ -133,14 +170,14 @@ public class WeaponManager : MonoBehaviour
             weaponRight.player = _player;
         }
 
-        if (buttonAttackLeft)
+        if (buttonAttackGun)
         {
-            buttonAttackLeft.onClick.AddListener(AttackLeft);
+            buttonAttackGun.onClick.AddListener(AttackWithGun);
         }
 
-        if (buttonAttackRight)
+        if (buttonAttackMelee)
         {
-            buttonAttackRight.onClick.AddListener(AttackRight);
+            buttonAttackMelee.onClick.AddListener(AttackWithMelee);
         }
 
         this.enabled = _player != null;
@@ -148,16 +185,24 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(keyAttackLeft))
+        if (Input.GetKeyDown(keyAttackGun))
         {
-            AttackLeft();
+            AttackWithGun();
         }
-        else if (Input.GetKeyDown(keyAttackRight))
+        else if (Input.GetKeyDown(keyAttackMelee))
         {
-            AttackRight();
+            AttackWithMelee();
         }
         else if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && _nearWeapons.Count > 0)
         {
+            if (_nearWeapons[0] is Melee)
+            {
+                if (weaponLeft is Melee || weaponRight is Melee)
+                {
+                    return;
+                }
+            }
+
             _aprController.ResetPlayerPose();
 
             if (!weaponLeft)
@@ -175,11 +220,11 @@ public class WeaponManager : MonoBehaviour
 
             _nearWeapons[0].enabled = true;
             _nearWeapons[0].player = _player;
-            if (_nearWeapons[0] is Gun)
+            if (_nearWeapons[0] is Gun gun)
             {
                 _player.enabled = false;
                 _player.enabled = _player.nearEnemies.Count > 0;
-                (_nearWeapons[0] as Gun).AmmoCountChanged += OnAmmoCountChanged;
+                gun.AmmoCountChanged += OnAmmoCountChanged;
             }
 
             _nearWeapons.Remove(_nearWeapons[0]);
@@ -199,14 +244,14 @@ public class WeaponManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (buttonAttackLeft)
+        if (buttonAttackGun)
         {
-            buttonAttackLeft.onClick.RemoveListener(AttackLeft);
+            buttonAttackGun.onClick.RemoveListener(AttackWithGun);
         }
 
-        if (buttonAttackRight)
+        if (buttonAttackMelee)
         {
-            buttonAttackRight.onClick.RemoveListener(AttackRight);
+            buttonAttackMelee.onClick.RemoveListener(AttackWithMelee);
         }
     }
 
@@ -245,17 +290,26 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void AttackLeft()
+    private void AttackWithGun()
     {
-        if (weaponLeft)
+        if (weaponLeft is Gun)
         {
             weaponLeft.Attack();
         }
+
+        if (weaponRight is Gun)
+        {
+            weaponRight.Attack();
+        }
     }
 
-    private void AttackRight()
+    private void AttackWithMelee()
     {
-        if (weaponRight)
+        if (weaponLeft is Melee)
+        {
+            weaponLeft.Attack();
+        }
+        else if (weaponRight is Melee)
         {
             weaponRight.Attack();
         }
@@ -291,9 +345,9 @@ public class WeaponManager : MonoBehaviour
         {
             weapon.transform.SetParent(null);
             weapon.enabled = false;
-            if (weapon is Gun)
+            if (weapon is Gun gun)
             {
-                (weapon as Gun).AmmoCountChanged -= OnAmmoCountChanged;
+                gun.AmmoCountChanged -= OnAmmoCountChanged;
             }
 
             if (weapon == weaponRight)
