@@ -1812,14 +1812,16 @@ MonoBehaviour:
   joystick: {fileID: 0}
   forwardBackward: Vertical
   leftRight: Horizontal
-  jump: Jump
+  keyJump: 32
   reachLeft: 257
   reachRight: 259
   punchLeft: q
   punchRight: e
   thisPlayerLayer: Player_1
   moveSpeed: 10
-  jumpForce: 18
+  maxJumpStrength: 18
+  maxJumpRequiredSeconds: 1
+  jumpStrengthIndicator: {fileID: 0}
   autoGetUpWhenPossible: 1
   stunningParticle: {fileID: 8215529643289194760}
   getUpDelay: 2
@@ -1858,17 +1860,14 @@ MonoBehaviour:
   stepLeft: 0
   alertLegRight: 0
   alertLegLeft: 0
-  balanced: 1
+  isBalanced: 1
   isGettingUp: 0
   isRagdoll: 0
   isKeyDown: 0
   moveAxisUsed: 0
-  jumpAxisUsed: 0
   reachLeftAxisUsed: 0
   reachRightAxisUsed: 0
-  jumping: 0
-  isJumping: 0
-  inAir: 0
+  isInAir: 0
   punchingRight: 0
   punchingLeft: 0
   upperRightArmTarget: {x: 0, y: 0, z: 0, w: 0}

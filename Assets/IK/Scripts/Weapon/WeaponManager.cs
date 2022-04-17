@@ -193,41 +193,45 @@ public class WeaponManager : MonoBehaviour
         {
             AttackWithMelee();
         }
-        else if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight) && _nearWeapons.Count > 0)
+        else if (Input.GetKeyDown(keyPickUp) && (!weaponLeft || !weaponRight))
         {
-            if (_nearWeapons[0] is Melee)
+            for (int i = 0; i < _nearWeapons.Count; i++)
             {
-                if (weaponLeft is Melee || weaponRight is Melee)
+                if (_nearWeapons[i] is Melee)
                 {
-                    return;
+                    if (weaponLeft is Melee || weaponRight is Melee)
+                    {
+                        continue;
+                    }
                 }
-            }
 
-            _aprController.ResetPlayerPose();
+                _aprController.ResetPlayerPose();
 
-            if (!weaponLeft)
-            {
-                weaponLeft = _nearWeapons[0];
-                weaponLeft.isLeft = true;
-                weaponLeft.transform.SetParent(_handLeft);
-            }
-            else if (!weaponRight)
-            {
-                weaponRight = _nearWeapons[0];
-                weaponRight.isLeft = false;
-                weaponRight.transform.SetParent(_handRight);
-            }
+                if (!weaponLeft)
+                {
+                    weaponLeft = _nearWeapons[i];
+                    weaponLeft.isLeft = true;
+                    weaponLeft.transform.SetParent(_handLeft);
+                }
+                else if (!weaponRight)
+                {
+                    weaponRight = _nearWeapons[i];
+                    weaponRight.isLeft = false;
+                    weaponRight.transform.SetParent(_handRight);
+                }
 
-            _nearWeapons[0].enabled = true;
-            _nearWeapons[0].player = _player;
-            if (_nearWeapons[0] is Gun gun)
-            {
-                _player.enabled = false;
-                _player.enabled = _player.nearEnemies.Count > 0;
-                gun.AmmoCountChanged += OnAmmoCountChanged;
-            }
+                _nearWeapons[i].enabled = true;
+                _nearWeapons[i].player = _player;
+                if (_nearWeapons[i] is Gun gun)
+                {
+                    _player.enabled = false;
+                    _player.enabled = _player.nearEnemies.Count > i;
+                    gun.AmmoCountChanged += OnAmmoCountChanged;
+                }
 
-            _nearWeapons.Remove(_nearWeapons[0]);
+                _nearWeapons.Remove(_nearWeapons[i]);
+                break;
+            }
         }
         else if (Input.GetKeyDown(keyDrop) && (weaponLeft || weaponRight))
         {

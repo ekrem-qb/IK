@@ -53,7 +53,7 @@ public abstract class Enemy : MonoBehaviour
 
             rootRB.velocity = Vector3.Lerp(rootRB.velocity, direction + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
 
-            if (aprController.balanced)
+            if (aprController.isBalanced)
             {
                 if (!aprController.walkForward && !aprController.moveAxisUsed)
                 {
@@ -72,7 +72,7 @@ public abstract class Enemy : MonoBehaviour
                 aprController.isKeyDown = false;
             }
 
-            if (aprController.balanced)
+            if (aprController.isBalanced)
             {
                 if (!isAttacking)
                 {

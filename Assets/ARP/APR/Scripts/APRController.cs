@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using EpicToonFX;
 using UnityEngine;
+using UnityEngine.UI;
 
 //-------------------------------------------------------------
 //--APR Player
@@ -51,7 +52,7 @@ namespace ARP.APR.Scripts
         public string forwardBackward = "Vertical";
 
         public string leftRight = "Horizontal";
-        public string jump = "Jump";
+        public KeyCode keyJump = KeyCode.Space;
         public KeyCode reachLeft = KeyCode.Keypad1;
         public KeyCode reachRight = KeyCode.Keypad3;
 
@@ -66,8 +67,11 @@ namespace ARP.APR.Scripts
         public string thisPlayerLayer = "Player_1";
 
         //Movement
-        public float moveSpeed = 10f;
-        public float jumpForce = 18f;
+        public float moveSpeed = 10;
+        public float maxJumpStrength = 18;
+        public float maxJumpRequiredSeconds = 2;
+        public HoldButton jumpButton;
+        public Slider jumpStrengthIndicator;
 
         [Header("Balance Properties")]
         //Balance
@@ -112,9 +116,7 @@ namespace ARP.APR.Scripts
         public AudioSource SoundSource;
 
         public float
-            MouseYAxisArms;
-
-        public float
+            MouseYAxisArms,
             MouseYAxisBody;
 
         [ReadOnly] public bool
@@ -124,19 +126,16 @@ namespace ARP.APR.Scripts
             stepLeft,
             alertLegRight,
             alertLegLeft,
-            balanced = true,
+            isBalanced = true,
             isGettingUp,
             isRagdoll,
             isKeyDown,
             moveAxisUsed,
-            jumpAxisUsed,
             reachLeftAxisUsed,
             reachRightAxisUsed;
 
         [ReadOnly] public bool
-            jumping,
-            isJumping,
-            inAir,
+            isInAir,
             punchingRight,
             punchingLeft;
 
@@ -198,17 +197,33 @@ namespace ARP.APR.Scripts
             {
                 _stunningParticleRotations = stunningParticle.GetComponentsInChildren<ETFXRotation>();
             }
+
+            if (jumpStrengthIndicator)
+            {
+                jumpStrengthIndicator.minValue = 0;
+                jumpStrengthIndicator.maxValue = maxJumpStrength;
+            }
+
+            if (jumpButton)
+            {
+                jumpButton.onPress.AddListener(JumpPress);
+                jumpButton.onHold.AddListener(JumpHold);
+                jumpButton.onRelease.AddListener(JumpRelease);
+            }
+
+            // Root.GetComponent<Rigidbody>().maxAngularVelocity = Mathf.Infinity;
         }
 
         private void Update()
         {
             if (useControls)
             {
-                if (!inAir)
+                if (!isInAir)
                 {
-                    if (balanced)
+                    if (isBalanced)
                     {
                         PlayerMovement();
+                        Jumping();
                     }
 
                     if (canPunch)
@@ -222,7 +237,7 @@ namespace ARP.APR.Scripts
 
             if (useStepPrediction)
             {
-                if (balanced)
+                if (isBalanced)
                 {
                     StepPrediction();
                     CenterOfMass();
@@ -232,22 +247,17 @@ namespace ARP.APR.Scripts
             {
                 ResetWalkCycle();
             }
-
-            GroundCheck();
-            CenterOfMass();
         }
 
         private void FixedUpdate()
         {
-            if (!isRagdoll && balanced)
+            if (!isRagdoll && isBalanced)
             {
                 Walking();
-
-                if (useControls)
-                {
-                    PlayerGetUpJumping();
-                }
             }
+
+            GroundCheck();
+            CenterOfMass();
         }
 
         private void OnDrawGizmos()
@@ -328,7 +338,7 @@ namespace ARP.APR.Scripts
             {
                 if (hit.transform.root != this.transform.root)
                 {
-                    if (!balanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
+                    if (!isBalanced && Root.GetComponent<Rigidbody>().velocity.magnitude < 1f)
                     {
                         if (!hit.transform.GetComponent<Trampoline>())
                         {
@@ -339,15 +349,16 @@ namespace ARP.APR.Scripts
             }
             else
             {
-                balanced = false;
+                isBalanced = false;
+                isInAir = true;
             }
 
             //Balance on/off
-            if (balanced && isRagdoll)
+            if (isBalanced && isRagdoll)
             {
                 DeactivateRagdoll();
             }
-            else if (!balanced && !isRagdoll)
+            else if (!isBalanced && !isRagdoll)
             {
                 ActivateRagdoll();
             }
@@ -371,7 +382,7 @@ namespace ARP.APR.Scripts
 
                     yield return new WaitForSeconds(getUpDelay);
 
-                    balanced = true;
+                    isBalanced = true;
                     DeactivateRagdoll();
 
                     isGettingUp = false;
@@ -452,7 +463,7 @@ namespace ARP.APR.Scripts
                 _direction.z += joystick.Vertical;
             }
 
-            if (_direction != Vector3.zero && balanced)
+            if (_direction != Vector3.zero && isBalanced)
             {
                 if (!walkForward && !moveAxisUsed)
                 {
@@ -474,61 +485,77 @@ namespace ARP.APR.Scripts
             Root.transform.GetComponent<Rigidbody>().velocity = Vector3.Lerp(Root.transform.GetComponent<Rigidbody>().velocity, (_direction * moveSpeed) + new Vector3(0, Root.transform.GetComponent<Rigidbody>().velocity.y, 0), 0.8f);
         }
 
-        private void PlayerGetUpJumping()
+        private void Jumping()
         {
-            if (Input.GetAxis(jump) > 0)
+            if (Input.GetKeyDown(keyJump))
             {
-                if (!jumpAxisUsed)
-                {
-                    if (balanced && !inAir)
-                    {
-                        jumping = true;
-                    }
-
-                    else if (!balanced)
-                    {
-                        DeactivateRagdoll();
-                    }
-                }
-
-                jumpAxisUsed = true;
+                JumpPress();
             }
-
             else
             {
-                jumpAxisUsed = false;
-            }
-
-
-            if (jumping)
-            {
-                isJumping = true;
-
-                var v3 = Root.GetComponent<Rigidbody>().transform.up * jumpForce;
-                v3.x = Root.GetComponent<Rigidbody>().velocity.x;
-                v3.z = Root.GetComponent<Rigidbody>().velocity.z;
-                Root.GetComponent<Rigidbody>().velocity = v3;
-            }
-
-            if (isJumping)
-            {
-                _timer += Time.fixedDeltaTime;
-
-                if (_timer > 0.2f)
+                if (Input.GetKey(keyJump))
                 {
-                    _timer = 0.0f;
-                    jumping = false;
-                    isJumping = false;
-                    inAir = true;
+                    JumpHold();
+                }
+                else if (Input.GetKeyUp(keyJump))
+                {
+                    JumpRelease();
+                }
+            }
+        }
+
+        private void JumpPress()
+        {
+            if (isBalanced && !isInAir)
+            {
+                _timer = Time.time;
+
+                if (jumpStrengthIndicator)
+                {
+                    jumpStrengthIndicator.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        private void JumpHold()
+        {
+            if (isBalanced && !isInAir)
+            {
+                if (jumpStrengthIndicator)
+                {
+                    jumpStrengthIndicator.value = (Mathf.Clamp(Time.time - _timer, 0, maxJumpRequiredSeconds) / maxJumpRequiredSeconds) * maxJumpStrength;
+                }
+            }
+        }
+
+        private void JumpRelease()
+        {
+            if (isBalanced && !isInAir)
+            {
+                isInAir = true;
+
+                float strength = (Mathf.Clamp(Time.time - _timer, 0, maxJumpRequiredSeconds) / maxJumpRequiredSeconds);
+
+                if (strength > 0.75f)
+                {
+                    ActivateRagdoll();
+                }
+
+                Root.GetComponent<Rigidbody>().AddForce(Root.transform.up * strength * maxJumpStrength * 20, ForceMode.Impulse);
+
+                if (jumpStrengthIndicator)
+                {
+                    jumpStrengthIndicator.value = 0;
+                    jumpStrengthIndicator.gameObject.SetActive(false);
                 }
             }
         }
 
         public void PlayerLanded()
         {
-            if (inAir && !isJumping && !jumping)
+            if (isInAir)
             {
-                inAir = false;
+                isInAir = false;
                 ResetPlayerPose();
             }
         }
@@ -599,7 +626,7 @@ namespace ARP.APR.Scripts
                     {
                         if (reachLeftAxisUsed)
                         {
-                            if (balanced)
+                            if (isBalanced)
                             {
                                 UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
                                 UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -610,7 +637,7 @@ namespace ARP.APR.Scripts
                                 Body.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
                             }
 
-                            else if (!balanced)
+                            else if (!isBalanced)
                             {
                                 UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
                                 UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -667,7 +694,7 @@ namespace ARP.APR.Scripts
                     {
                         if (reachRightAxisUsed)
                         {
-                            if (balanced)
+                            if (isBalanced)
                             {
                                 UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
                                 UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -678,7 +705,7 @@ namespace ARP.APR.Scripts
                                 Body.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
                             }
 
-                            else if (!balanced)
+                            else if (!isBalanced)
                             {
                                 UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
                                 UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -776,7 +803,7 @@ namespace ARP.APR.Scripts
 
         private void Walking()
         {
-            if (!inAir)
+            if (!isInAir)
             {
                 if (walkForward)
                 {
@@ -920,7 +947,7 @@ namespace ARP.APR.Scripts
         public void ActivateRagdoll()
         {
             isRagdoll = true;
-            balanced = false;
+            isBalanced = false;
 
             //Root
             Root.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
@@ -963,7 +990,7 @@ namespace ARP.APR.Scripts
         private void DeactivateRagdoll()
         {
             isRagdoll = false;
-            balanced = true;
+            isBalanced = true;
 
             //Root
             Root.GetComponent<ConfigurableJoint>().angularXDrive = _balanceOn;
@@ -1007,7 +1034,7 @@ namespace ARP.APR.Scripts
 
         public void ResetPlayerPose()
         {
-            if (!jumping)
+            if (!isInAir)
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = _bodyTarget;
 

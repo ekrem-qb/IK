@@ -35,7 +35,7 @@ public class PathFollower : MonoBehaviour
 
                 enemy.rootRB.velocity = Vector3.Lerp(enemy.rootRB.velocity, direction + new Vector3(0, enemy.rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
 
-                if (enemy.aprController.balanced)
+                if (enemy.aprController.isBalanced)
                 {
                     if (!enemy.aprController.walkForward && !enemy.aprController.moveAxisUsed)
                     {
