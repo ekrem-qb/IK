@@ -200,6 +200,7 @@ namespace ARP.APR.Scripts
 
             if (jumpStrengthIndicator)
             {
+                jumpStrengthIndicator.gameObject.SetActive(false);
                 jumpStrengthIndicator.minValue = 0;
                 jumpStrengthIndicator.maxValue = maxJumpStrength;
             }
