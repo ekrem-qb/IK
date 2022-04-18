@@ -38,4 +38,23 @@ public class Gun : Weapon
             ammo--;
         }
     }
+
+    public void Strain()
+    {
+        arm.joint.angularXDrive = aprController.ReachStiffness;
+        arm.joint.angularYZDrive = aprController.ReachStiffness;
+        armLow.joint.angularXDrive = aprController.ReachStiffness;
+        armLow.joint.angularYZDrive = aprController.ReachStiffness;
+        armLow.joint.targetRotation = Quaternion.identity;
+    }
+
+    public void Relax()
+    {
+        arm.joint.angularXDrive = aprController.DriveOff;
+        arm.joint.angularYZDrive = aprController.DriveOff;
+        arm.joint.targetRotation = arm.originalRotation;
+        armLow.joint.angularXDrive = aprController.DriveOff;
+        armLow.joint.angularYZDrive = aprController.DriveOff;
+        armLow.joint.targetRotation = armLow.originalRotation;
+    }
 }

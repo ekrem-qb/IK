@@ -70,47 +70,33 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_weaponManager.weaponLeft is Gun)
+        if (_weaponManager.weaponLeft is Gun gunLeft)
         {
             if (!_aprController.punchingLeft)
             {
-                _armLeft.angularXDrive = _aprController.ReachStiffness;
-                _armLeft.angularYZDrive = _aprController.ReachStiffness;
-                _armLeftLow.angularXDrive = _aprController.ReachStiffness;
-                _armLeftLow.angularYZDrive = _aprController.ReachStiffness;
-                _armLeftLow.targetRotation = Quaternion.identity;
+                gunLeft.Strain();
             }
         }
 
-        if (_weaponManager.weaponRight is Gun)
+        if (_weaponManager.weaponRight is Gun gunRight)
         {
             if (!_aprController.punchingRight)
             {
-                _armRight.angularXDrive = _aprController.ReachStiffness;
-                _armRight.angularYZDrive = _aprController.ReachStiffness;
-                _armRightLow.angularXDrive = _aprController.ReachStiffness;
-                _armRightLow.angularYZDrive = _aprController.ReachStiffness;
-                _armRightLow.targetRotation = Quaternion.identity;
+                gunRight.Strain();
             }
         }
     }
 
     private void OnDisable()
     {
-        if (_weaponManager.weaponLeft is Gun)
+        if (_weaponManager.weaponLeft is Gun gunLeft)
         {
-            _armLeft.angularXDrive = _aprController.DriveOff;
-            _armLeft.angularYZDrive = _aprController.DriveOff;
-            _armLeftLow.angularXDrive = _aprController.DriveOff;
-            _armLeftLow.angularYZDrive = _aprController.DriveOff;
+            gunLeft.Relax();
         }
 
-        if (_weaponManager.weaponRight is Gun)
+        if (_weaponManager.weaponRight is Gun gunRight)
         {
-            _armRight.angularXDrive = _aprController.DriveOff;
-            _armRight.angularYZDrive = _aprController.DriveOff;
-            _armRightLow.angularXDrive = _aprController.DriveOff;
-            _armRightLow.angularYZDrive = _aprController.DriveOff;
+            gunRight.Relax();
         }
     }
 

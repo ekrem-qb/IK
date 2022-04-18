@@ -57,19 +57,25 @@ public abstract class Weapon : MonoBehaviour
             {
                 arm.joint = aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
                 arm.rigidbody = aprController.UpperLeftArm.GetComponent<Rigidbody>();
+                arm.originalRotation = aprController.upperLeftArmTarget;
                 armLow.joint = aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
                 armLow.rigidbody = aprController.LowerLeftArm.GetComponent<Rigidbody>();
+                armLow.originalRotation = aprController.lowerLeftArmTarget;
                 hand.joint = aprController.LeftHand.GetComponent<ConfigurableJoint>();
                 hand.rigidbody = aprController.LeftHand.GetComponent<Rigidbody>();
+                hand.originalRotation = aprController.leftHandTarget;
             }
             else
             {
                 arm.joint = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
                 arm.rigidbody = aprController.UpperRightArm.GetComponent<Rigidbody>();
+                arm.originalRotation = aprController.upperRightArmTarget;
                 armLow.joint = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
                 armLow.rigidbody = aprController.LowerRightArm.GetComponent<Rigidbody>();
+                armLow.originalRotation = aprController.lowerRightArmTarget;
                 hand.joint = aprController.RightHand.GetComponent<ConfigurableJoint>();
                 hand.rigidbody = aprController.RightHand.GetComponent<Rigidbody>();
+                hand.originalRotation = aprController.rightHandTarget;
             }
         }
     }
@@ -90,5 +96,6 @@ public abstract class Weapon : MonoBehaviour
     {
         public ConfigurableJoint joint;
         public Rigidbody rigidbody;
+        public Quaternion originalRotation;
     }
 }

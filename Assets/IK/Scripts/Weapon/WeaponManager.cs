@@ -347,12 +347,14 @@ public class WeaponManager : MonoBehaviour
     {
         if (!(weapon is Fist))
         {
-            weapon.transform.SetParent(null);
-            weapon.enabled = false;
             if (weapon is Gun gun)
             {
                 gun.AmmoCountChanged -= OnAmmoCountChanged;
+                gun.Relax();
             }
+
+            weapon.transform.SetParent(null);
+            weapon.enabled = false;
 
             if (weapon == weaponRight)
             {

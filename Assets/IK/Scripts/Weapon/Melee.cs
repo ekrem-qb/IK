@@ -106,18 +106,10 @@ public class Melee : Weapon
         isAttacking = true;
 
         yield return new WaitForSeconds(0.25f);
-        if (isLeft)
-        {
-            arm.joint.targetRotation = aprController.upperLeftArmTarget;
-            armLow.joint.targetRotation = aprController.lowerLeftArmTarget;
-            hand.joint.targetRotation = aprController.leftHandTarget;
-        }
-        else
-        {
-            arm.joint.targetRotation = aprController.upperRightArmTarget;
-            armLow.joint.targetRotation = aprController.lowerRightArmTarget;
-            hand.joint.targetRotation = aprController.rightHandTarget;
-        }
+
+        arm.joint.targetRotation = arm.originalRotation;
+        armLow.joint.targetRotation = armLow.originalRotation;
+        hand.joint.targetRotation = hand.originalRotation;
 
         arm.joint.angularXDrive = aprController.DriveOff;
         arm.joint.angularYZDrive = aprController.DriveOff;
