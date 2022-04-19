@@ -25,26 +25,12 @@ public class Player : MonoBehaviour
     {
         if (_aprController.useControls)
         {
-            if (_weaponManager.weaponLeft is Gun || _weaponManager.weaponRight is Gun)
+            if (_weaponManager.weapon is Gun)
             {
                 Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
                 Enemy nearestToArmLeft = null;
 
-                if (_weaponManager.weaponLeft is Gun)
-                {
-                    nearEnemies.SortByDistanceTo(_armLeft.transform.position);
-                    nearestToArmLeft = nearEnemies[0];
-
-                    Debug.DrawLine(nearestToArmLeft.target.position, _armLeft.transform.position, Color.red);
-
-                    Vector3 angles = Quaternion.LookRotation(nearestToArmLeft.target.position - _armLeft.transform.position).eulerAngles;
-                    angles -= bodyBendingFactor;
-                    Quaternion newRot = Quaternion.Euler(angles.x, angles.y - 270, angles.z);
-
-                    _armLeft.targetRotation = newRot;
-                }
-
-                if (_weaponManager.weaponRight is Gun)
+                if (_weaponManager.weapon is Gun)
                 {
                     nearEnemies.SortByDistanceTo(_armRight.transform.position);
                     Enemy nearestToArmRight = nearEnemies[0];
@@ -70,31 +56,15 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_weaponManager.weaponLeft is Gun gunLeft)
+        if (_weaponManager.weapon is Gun gunRight)
         {
-            if (!_aprController.punchingLeft)
-            {
-                gunLeft.Strain();
-            }
-        }
-
-        if (_weaponManager.weaponRight is Gun gunRight)
-        {
-            if (!_aprController.punchingRight)
-            {
-                gunRight.Strain();
-            }
+            gunRight.Strain();
         }
     }
 
     private void OnDisable()
     {
-        if (_weaponManager.weaponLeft is Gun gunLeft)
-        {
-            gunLeft.Relax();
-        }
-
-        if (_weaponManager.weaponRight is Gun gunRight)
+        if (_weaponManager.weapon is Gun gunRight)
         {
             gunRight.Relax();
         }

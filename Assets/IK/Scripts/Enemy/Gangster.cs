@@ -16,16 +16,9 @@ public class Gangster : Enemy
     {
         isAttacking = true;
 
-        if (weaponManager.weaponLeft)
+        if (weaponManager.weapon)
         {
-            weaponManager.weaponLeft.Attack();
-        }
-
-        yield return new WaitForSeconds(attackInterval);
-
-        if (weaponManager.weaponRight)
-        {
-            weaponManager.weaponRight.Attack();
+            weaponManager.weapon.Attack();
         }
 
         yield return new WaitForSeconds(attackInterval);

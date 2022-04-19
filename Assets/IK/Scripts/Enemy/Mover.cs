@@ -42,14 +42,10 @@ public class Mover : Enemy
         weaponManager = aprController.COMP.GetComponent<WeaponManager>();
         boxManager.boxes.CountChanged += OnBoxesCountChanged;
         toggler.Toggle += OnSwitchToggle;
-        if (weaponManager.weaponLeft)
-        {
-            weaponManager.weaponLeft.gameObject.SetActive(false);
-        }
 
-        if (weaponManager.weaponRight)
+        if (weaponManager.weapon)
         {
-            weaponManager.weaponRight.gameObject.SetActive(false);
+            weaponManager.weapon.gameObject.SetActive(false);
         }
     }
 
@@ -113,14 +109,10 @@ public class Mover : Enemy
             {
                 pathFollower.enabled = false;
                 this.enabled = true;
-                if (weaponManager.weaponLeft)
-                {
-                    weaponManager.weaponLeft.gameObject.SetActive(true);
-                }
 
-                if (weaponManager.weaponRight)
+                if (weaponManager.weapon)
                 {
-                    weaponManager.weaponRight.gameObject.SetActive(true);
+                    weaponManager.weapon.gameObject.SetActive(true);
                 }
 
                 StartCoroutine(Drop());
@@ -130,14 +122,10 @@ public class Mover : Enemy
         {
             pathFollower.enabled = true;
             this.enabled = false;
-            if (weaponManager.weaponLeft)
-            {
-                weaponManager.weaponLeft.gameObject.SetActive(false);
-            }
 
-            if (weaponManager.weaponRight)
+            if (weaponManager.weapon)
             {
-                weaponManager.weaponRight.gameObject.SetActive(false);
+                weaponManager.weapon.gameObject.SetActive(false);
             }
         }
     }
@@ -283,14 +271,10 @@ public class Mover : Enemy
             {
                 pathFollower.enabled = false;
                 this.enabled = true;
-                if (weaponManager.weaponLeft)
-                {
-                    weaponManager.weaponLeft.gameObject.SetActive(true);
-                }
 
-                if (weaponManager.weaponRight)
+                if (weaponManager.weapon)
                 {
-                    weaponManager.weaponRight.gameObject.SetActive(true);
+                    weaponManager.weapon.gameObject.SetActive(true);
                 }
 
                 StartCoroutine(Drop());
@@ -300,14 +284,10 @@ public class Mover : Enemy
         {
             pathFollower.enabled = true;
             this.enabled = false;
-            if (weaponManager.weaponLeft)
-            {
-                weaponManager.weaponLeft.gameObject.SetActive(false);
-            }
 
-            if (weaponManager.weaponRight)
+            if (weaponManager.weapon)
             {
-                weaponManager.weaponRight.gameObject.SetActive(false);
+                weaponManager.weapon.gameObject.SetActive(false);
             }
         }
     }
@@ -316,26 +296,11 @@ public class Mover : Enemy
     {
         isAttacking = true;
 
-        if (weaponManager.weaponLeft)
+        if (weaponManager.weapon)
         {
-            if (weaponManager.weaponLeft is Thrower)
+            if (weaponManager.weapon is Thrower)
             {
-                Thrower thrower = weaponManager.weaponLeft as Thrower;
-                thrower.Attack(player.transform.position);
-                yield return new WaitUntil(() => thrower.isAttacking);
-                thrower.meshRenderer.enabled = false;
-                yield return new WaitForSeconds(attackInterval * 4);
-                thrower.meshRenderer.enabled = true;
-            }
-        }
-
-        yield return new WaitForSeconds(attackInterval);
-
-        if (weaponManager.weaponRight)
-        {
-            if (weaponManager.weaponRight is Thrower)
-            {
-                Thrower thrower = weaponManager.weaponRight as Thrower;
+                Thrower thrower = weaponManager.weapon as Thrower;
                 thrower.Attack(player.transform.position);
                 yield return new WaitUntil(() => thrower.isAttacking);
                 thrower.meshRenderer.enabled = false;

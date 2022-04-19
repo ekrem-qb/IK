@@ -69,7 +69,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetKey(APR_Player.reachLeft) && !joint && !APR_Player.punchingLeft && !weaponManager.weaponLeft)
+                        if (Input.GetKey(APR_Player.reachLeft) && !joint && !APR_Player.punchingLeft && !(weaponManager.weapon is Gun))
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;
@@ -83,7 +83,7 @@ namespace ARP.APR.Scripts
                 {
                     if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
                     {
-                        if (Input.GetKey(APR_Player.reachRight) && !joint && !APR_Player.punchingRight && !weaponManager.weaponRight)
+                        if (Input.GetKey(APR_Player.reachRight) && !joint && !APR_Player.punchingRight && !weaponManager.weapon)
                         {
                             joint = this.gameObject.AddComponent<FixedJoint>();
                             joint.breakForce = Mathf.Infinity;

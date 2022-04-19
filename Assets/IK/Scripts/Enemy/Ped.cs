@@ -4,8 +4,8 @@ using UnityEngine;
 public class Ped : Enemy
 {
     public float attackInterval = 0.5f;
-    WeaponManager weaponManager;
     HealthManager healthManager;
+    WeaponManager weaponManager;
 
     protected override void Awake()
     {
@@ -15,13 +15,10 @@ public class Ped : Enemy
         healthManager.Hit += Annoy;
     }
 
-    protected override void OnPlayerChanged(Player newPlayer)
+    protected override void OnDestroy()
     {
-        if (!newPlayer)
-        {
-            pathFollower.enabled = true;
-            this.enabled = false;
-        }
+        base.OnDestroy();
+        healthManager.Hit -= Annoy;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,6 +40,15 @@ public class Ped : Enemy
         }
     }
 
+    protected override void OnPlayerChanged(Player newPlayer)
+    {
+        if (!newPlayer)
+        {
+            pathFollower.enabled = true;
+            this.enabled = false;
+        }
+    }
+
     void Annoy()
     {
         if (player)
@@ -56,25 +62,14 @@ public class Ped : Enemy
     {
         isAttacking = true;
 
-        if (weaponManager.weaponLeft)
-        {
-            weaponManager.weaponLeft.Attack();
-        }
-
         yield return new WaitForSeconds(attackInterval);
 
-        if (weaponManager.weaponRight)
+        if (weaponManager.weapon)
         {
-            weaponManager.weaponRight.Attack();
+            weaponManager.weapon.Attack();
         }
 
         yield return new WaitForSeconds(attackInterval);
         isAttacking = false;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        healthManager.Hit -= Annoy;
     }
 }

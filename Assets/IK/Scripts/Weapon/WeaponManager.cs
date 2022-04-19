@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,155 +14,62 @@ public class WeaponManager : MonoBehaviour
         key = KeyCode.Q
     };
 
-    public Control attackGun = new Control()
-    {
-        key = KeyCode.KeypadPlus
-    };
-
-    public Control attackMelee = new Control()
+    public Control attack = new Control()
     {
         key = KeyCode.Keypad0
     };
 
-    public Text ammoCountLeft, ammoCountRight;
+    public Text ammoCount;
     private ARP.APR.Scripts.APRController _aprController;
-    private Transform _handLeft, _handRight;
-    private List<Weapon> _nearWeapons = new List<Weapon>();
+    private Transform _handRight;
+    private ObservableList<Weapon> _nearWeapons = new ObservableList<Weapon>();
     private Player _player;
+    private Weapon _weapon;
 
-    private Weapon _weaponLeft, _weaponRight;
-
-    public Weapon weaponLeft
+    public Weapon weapon
     {
-        get => _weaponLeft;
+        get => _weapon;
         private set
         {
-            if (_weaponLeft != value)
+            if (_weapon != value)
             {
                 if (value)
                 {
+                    value.isLeft = false;
+                    value.transform.SetParent(_handRight);
+                    value.enabled = true;
+                    value.player = _player;
+
                     if (drop.button)
                     {
                         drop.button.gameObject.SetActive(true);
                     }
 
-                    if (value is Gun gun)
+                    if (attack.button)
                     {
-                        if (attackGun.button)
-                        {
-                            attackGun.button.transform.gameObject.SetActive(true);
-                        }
-
-                        if (ammoCountLeft)
-                        {
-                            ammoCountLeft.transform.parent.gameObject.SetActive(true);
-                            ammoCountLeft.text = gun.ammo.ToString();
-                        }
-                    }
-                    else
-                    {
-                        if (attackMelee.button)
-                        {
-                            attackMelee.button.transform.gameObject.SetActive(true);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!weaponRight)
-                    {
-                        if (drop.button)
-                        {
-                            drop.button.gameObject.SetActive(false);
-                        }
-                    }
-
-                    if (weaponLeft is Gun)
-                    {
-                        if (ammoCountLeft)
-                        {
-                            ammoCountLeft.transform.parent.gameObject.SetActive(false);
-                        }
-
-                        if (!(weaponRight is Gun))
-                        {
-                            if (attackGun.button)
-                            {
-                                attackGun.button.transform.gameObject.SetActive(false);
-                            }
-                        }
-                    }
-                }
-            }
-
-            _weaponLeft = value;
-        }
-    }
-
-    public Weapon weaponRight
-    {
-        get => _weaponRight;
-        private set
-        {
-            if (_weaponRight != value)
-            {
-                if (value)
-                {
-                    if (drop.button)
-                    {
-                        drop.button.gameObject.SetActive(true);
+                        attack.button.transform.gameObject.SetActive(true);
+                        attack.button.image.sprite = value.icon;
                     }
 
                     if (value is Gun gun)
                     {
-                        if (attackGun.button)
+                        if (ammoCount)
                         {
-                            attackGun.button.transform.gameObject.SetActive(true);
+                            ammoCount.transform.parent.gameObject.SetActive(true);
+                            ammoCount.text = gun.ammo.ToString();
                         }
 
-                        if (ammoCountRight)
+                        if (_player.enabled)
                         {
-                            ammoCountRight.transform.parent.gameObject.SetActive(true);
-                            ammoCountRight.text = gun.ammo.ToString();
-                        }
-                    }
-                    else
-                    {
-                        if (attackMelee.button)
-                        {
-                            attackMelee.button.transform.gameObject.SetActive(true);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!weaponLeft)
-                    {
-                        if (drop.button)
-                        {
-                            drop.button.gameObject.SetActive(false);
-                        }
-                    }
-
-                    if (weaponRight is Gun)
-                    {
-                        if (ammoCountRight)
-                        {
-                            ammoCountRight.transform.parent.gameObject.SetActive(false);
+                            gun.Strain();
                         }
 
-                        if (!(weaponLeft is Gun))
-                        {
-                            if (attackGun.button)
-                            {
-                                attackGun.button.transform.gameObject.SetActive(false);
-                            }
-                        }
+                        gun.AmmoCountChanged += OnAmmoCountChanged;
                     }
                 }
             }
 
-            _weaponRight = value;
+            _weapon = value;
         }
     }
 
@@ -171,58 +77,43 @@ public class WeaponManager : MonoBehaviour
     {
         _aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
         _player = _aprController.Root.GetComponent<Player>();
-        _handLeft = _aprController.LeftHand.transform.GetChild(0);
         _handRight = _aprController.RightHand.transform.GetChild(0);
 
-        if (attackGun.button)
+        if (attack.button)
         {
-            attackGun.button.onClick.AddListener(AttackWithGun);
-            attackGun.button.gameObject.SetActive(false);
-        }
-
-        if (attackMelee.button)
-        {
-            attackMelee.button.onClick.AddListener(AttackWithMelee);
-            attackMelee.button.gameObject.SetActive(false);
+            attack.button.onClick.AddListener(Attack);
+            attack.button.gameObject.SetActive(false);
         }
 
         if (pickUp.button)
         {
             pickUp.button.onClick.AddListener(PickUp);
+            pickUp.button.gameObject.SetActive(false);
         }
 
         if (drop.button)
         {
-            drop.button.onClick.AddListener(DropOneWeapon);
+            drop.button.onClick.AddListener(Drop);
             drop.button.gameObject.SetActive(false);
         }
 
-        Weapon hasWeaponOnLeft = _handLeft.GetComponentInChildren<Weapon>();
-        if (hasWeaponOnLeft)
+        Weapon hasWeapon = _handRight.GetComponentInChildren<Weapon>();
+        if (hasWeapon)
         {
-            weaponLeft = hasWeaponOnLeft;
-            weaponLeft.player = _player;
+            weapon = hasWeapon;
+            weapon.player = _player;
         }
 
-        Weapon hasWeaponOnRight = _handRight.GetComponentInChildren<Weapon>();
-        if (hasWeaponOnRight)
-        {
-            weaponRight = hasWeaponOnRight;
-            weaponRight.player = _player;
-        }
+        _nearWeapons.CountChanged += OnNearWeaponsCountChanged;
 
         this.enabled = _player != null;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(attackGun.key))
+        if (Input.GetKeyDown(attack.key))
         {
-            AttackWithGun();
-        }
-        else if (Input.GetKeyDown(attackMelee.key))
-        {
-            AttackWithMelee();
+            Attack();
         }
         else if (Input.GetKeyDown(pickUp.key))
         {
@@ -230,20 +121,15 @@ public class WeaponManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(drop.key))
         {
-            DropOneWeapon();
+            Drop();
         }
     }
 
     private void OnDestroy()
     {
-        if (attackGun.button)
+        if (attack.button)
         {
-            attackGun.button.onClick.RemoveListener(AttackWithGun);
-        }
-
-        if (attackMelee.button)
-        {
-            attackMelee.button.onClick.RemoveListener(AttackWithMelee);
+            attack.button.onClick.RemoveListener(Attack);
         }
 
         if (pickUp.button)
@@ -253,7 +139,7 @@ public class WeaponManager : MonoBehaviour
 
         if (drop.button)
         {
-            drop.button.onClick.AddListener(DropOneWeapon);
+            drop.button.onClick.AddListener(Drop);
         }
     }
 
@@ -295,166 +181,89 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void Drop(Weapon weapon)
+    private void OnNearWeaponsCountChanged(int count)
+    {
+        if (pickUp.button)
+        {
+            pickUp.button.gameObject.SetActive(count > 0 && !weapon);
+        }
+    }
+
+    public void Drop()
     {
         switch (weapon)
         {
-            case Fist:
+            case null:
             {
                 return;
             }
-            case Melee:
+            case Fist:
             {
-                if (attackMelee.button)
-                {
-                    attackMelee.button.transform.gameObject.SetActive(false);
-                }
-
-                break;
+                return;
             }
             case Gun gun:
             {
                 gun.AmmoCountChanged -= OnAmmoCountChanged;
                 gun.Relax();
 
+                if (ammoCount)
+                {
+                    ammoCount.transform.parent.gameObject.SetActive(false);
+                }
+
                 break;
             }
+        }
+
+        if (drop.button)
+        {
+            drop.button.gameObject.SetActive(false);
+        }
+
+        if (attack.button)
+        {
+            attack.button.transform.gameObject.SetActive(false);
         }
 
         weapon.transform.SetParent(null);
         weapon.enabled = false;
 
-        if (weapon == weaponRight)
-        {
-            weaponRight = null;
-        }
-        else if (weapon == weaponLeft)
-        {
-            weaponLeft = null;
-        }
+        weapon = null;
     }
 
     private void PickUp()
     {
-        if (!weaponLeft || !weaponRight)
+        if (_nearWeapons.Count > 0 && !weapon)
         {
-            for (int i = 0; i < _nearWeapons.Count; i++)
-            {
-                if (_nearWeapons[i] is Melee)
-                {
-                    if (weaponLeft is Melee || weaponRight is Melee)
-                    {
-                        continue;
-                    }
-                }
+            _aprController.ResetPlayerPose();
 
-                _aprController.ResetPlayerPose();
+            weapon = _nearWeapons[0];
 
-                if (!weaponLeft)
-                {
-                    weaponLeft = _nearWeapons[i];
-                    weaponLeft.isLeft = true;
-                    weaponLeft.transform.SetParent(_handLeft);
-                }
-                else if (!weaponRight)
-                {
-                    weaponRight = _nearWeapons[i];
-                    weaponRight.isLeft = false;
-                    weaponRight.transform.SetParent(_handRight);
-                }
-
-                _nearWeapons[i].enabled = true;
-                _nearWeapons[i].player = _player;
-
-                if (_nearWeapons[i] is Gun gun)
-                {
-                    if (_player.enabled)
-                    {
-                        gun.Strain();
-                    }
-
-                    gun.AmmoCountChanged += OnAmmoCountChanged;
-                }
-
-                _nearWeapons.Remove(_nearWeapons[i]);
-                break;
-            }
+            _nearWeapons.Remove(_nearWeapons[0]);
         }
     }
 
-    private void DropOneWeapon()
+    private void Attack()
     {
-        if (weaponRight)
+        if (weapon)
         {
-            Drop(weaponRight);
-            return;
-        }
-
-        if (weaponLeft)
-        {
-            Drop(weaponLeft);
-        }
-    }
-
-    private void AttackWithGun()
-    {
-        if (weaponLeft is Gun)
-        {
-            weaponLeft.Attack();
-        }
-
-        if (weaponRight is Gun)
-        {
-            weaponRight.Attack();
-        }
-    }
-
-    private void AttackWithMelee()
-    {
-        if (weaponLeft is Melee)
-        {
-            weaponLeft.Attack();
-        }
-        else if (weaponRight is Melee)
-        {
-            weaponRight.Attack();
+            weapon.Attack();
         }
     }
 
     private void OnAmmoCountChanged(Gun gun, int count)
     {
-        if (ammoCountLeft)
+        if (ammoCount)
         {
-            if (gun == weaponLeft)
+            if (gun == weapon)
             {
-                ammoCountLeft.text = count.ToString();
-            }
-        }
-
-        if (ammoCountRight)
-        {
-            if (gun == weaponRight)
-            {
-                ammoCountRight.text = count.ToString();
+                ammoCount.text = count.ToString();
             }
         }
 
         if (count <= 0)
         {
-            Drop(gun);
-        }
-    }
-
-    public void DropAllWeapons()
-    {
-        if (weaponRight)
-        {
-            Drop(weaponRight);
-        }
-
-        if (weaponLeft)
-        {
-            Drop(weaponLeft);
+            Drop();
         }
     }
 

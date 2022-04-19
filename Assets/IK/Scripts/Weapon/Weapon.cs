@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+    public Sprite icon;
     public Vector3 holdPosition;
     public Quaternion holdRotation;
     public float transitionSpeed = 15;

@@ -565,7 +565,7 @@ namespace ARP.APR.Scripts
         {
             if (_weaponManager)
             {
-                if (!_weaponManager.weaponLeft && !_weaponManager.weaponRight)
+                if (!_weaponManager.weapon)
                 {
                     //Body Bending
                     if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
@@ -584,7 +584,7 @@ namespace ARP.APR.Scripts
                     Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
                 }
 
-                if (!_weaponManager.weaponLeft)
+                if (!(_weaponManager.weapon is Gun))
                 {
                     //Reach Left
                     if (Input.GetKey(reachLeft) && !punchingLeft)
@@ -652,7 +652,7 @@ namespace ARP.APR.Scripts
                     }
                 }
 
-                if (!_weaponManager.weaponRight)
+                if (!_weaponManager.weapon)
                 {
                     //Reach Right
                     if (Input.GetKey(reachRight) && !punchingRight)
@@ -1039,13 +1039,13 @@ namespace ARP.APR.Scripts
             {
                 Body.GetComponent<ConfigurableJoint>().targetRotation = _bodyTarget;
 
-                if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponRight || !_weaponManager.weaponRight.gameObject.activeSelf)))
+                if (!_weaponManager || (_weaponManager && (!_weaponManager.weapon || !_weaponManager.weapon.gameObject.activeSelf)))
                 {
                     UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = upperRightArmTarget;
                     LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = lowerRightArmTarget;
                 }
 
-                if (!_weaponManager || (_weaponManager && (!_weaponManager.weaponLeft || !_weaponManager.weaponLeft.gameObject.activeSelf)))
+                if (!_weaponManager || (_weaponManager && (!(_weaponManager.weapon is Gun))))
                 {
                     UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = upperLeftArmTarget;
                     LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = lowerLeftArmTarget;

@@ -200,7 +200,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun
+      name: Pistol
       rect:
         serializedVersion: 2
         x: 247
@@ -276,10 +276,10 @@ TextureImporter:
       Up: -261615069
       Down: -2135980791
       Slider_Background: 1465686031
-      Gun: 1887509623
       Bat: -718308471
       Box: 1650206851
       Jump: 1049958166
+      Pistol: 1887509623
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
