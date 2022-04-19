@@ -32,6 +32,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0.2, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,6 +56,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -139,10 +141,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e5d1656dda87043a0a41311cb4c3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 0}
   holdPosition: {x: 0, y: 0.2, z: 0.05}
   holdRotation: {x: 0.7071068, y: 0, z: 0.7071068, w: 0}
   transitionSpeed: 15
-  isLeft: 1
-  player: {fileID: 0}
+  damage: 10
+  force: 50
+  isAttacking: 0
   projectilePrefab: {fileID: 5670340682170588313, guid: 5421703fa94d4b840a4822326b40ac0a,
     type: 3}
+  meshRenderer: {fileID: 0}

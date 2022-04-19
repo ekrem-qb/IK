@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7904531220679302959}
-  - component: {fileID: 4839178406629528336}
+  - component: {fileID: 7282735418382547245}
   - component: {fileID: 4683166205964718042}
   m_Layer: 15
   m_Name: Fist
@@ -28,13 +28,14 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.2, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6313704009173371645}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!135 &4839178406629528336
-SphereCollider:
+--- !u!65 &7282735418382547245
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -44,7 +45,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4683166205964718042
 MonoBehaviour:
@@ -58,12 +59,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad2e6e8af108e049931102be0cac13e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 0}
   holdPosition: {x: 0, y: 0, z: 0}
   holdRotation: {x: 0, y: 0, z: 0, w: 0}
   transitionSpeed: 15
-  isLeft: 1
   damage: 1
-  player: {fileID: 0}
   force: 50
   isAttacking: 0
 --- !u!1001 &6313704009173246219

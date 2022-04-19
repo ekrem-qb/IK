@@ -2,32 +2,28 @@ using UnityEngine;
 
 public class Fist : Melee
 {
-    Vector3 originalScale = Vector3.zero;
+	private Vector3 _originalScale = Vector3.zero;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        isInHookChanged += ResizeFist;
-        originalScale = hand.rigidbody.transform.localScale;
-    }
+	protected override void Awake()
+	{
+		base.Awake();
+		isInHookChanged += ResizeFist;
+		_originalScale = hand.rigidbody.transform.localScale;
+	}
 
-    protected override void OnEnable()
-    {
-    }
+	public override void Drop()
+	{
+	}
 
-    protected override void OnDisable()
-    {
-    }
-
-    void ResizeFist(bool isInHook)
-    {
-        if (isInHook)
-        {
-            hand.rigidbody.transform.localScale = originalScale * 2;
-        }
-        else
-        {
-            hand.rigidbody.transform.localScale = originalScale;
-        }
-    }
+	private void ResizeFist(bool isInHook)
+	{
+		if (isInHook)
+		{
+			hand.rigidbody.transform.localScale = _originalScale * 2;
+		}
+		else
+		{
+			hand.rigidbody.transform.localScale = _originalScale;
+		}
+	}
 }
