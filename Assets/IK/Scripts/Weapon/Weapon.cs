@@ -3,12 +3,13 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-	[HideInInspector] public bool isPickedUp;
-	public Sprite icon;
+	[Header("Weapon")] public Sprite icon;
+
 	public Vector3 holdPosition;
 	public Quaternion holdRotation;
 	public float transitionSpeed = 15;
 	public float damage = 10;
+	[HideInInspector] public bool isPickedUp;
 	private SphereCollider _pickupTrigger;
 	private Rigidbody _rigidbody;
 	protected ARP.APR.Scripts.APRController aprController;
@@ -42,18 +43,18 @@ public abstract class Weapon : MonoBehaviour
 		}
 	}
 
-	public void PickUp(ARP.APR.Scripts.APRController newAprController)
+	public virtual void PickUp(ARP.APR.Scripts.APRController newAprController)
 	{
 		aprController = newAprController;
-		arm.joint = aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-		arm.rigidbody = aprController.UpperRightArm.GetComponent<Rigidbody>();
-		arm.originalRotation = aprController.upperRightArmTarget;
-		armLow.joint = aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-		armLow.rigidbody = aprController.LowerRightArm.GetComponent<Rigidbody>();
-		armLow.originalRotation = aprController.lowerRightArmTarget;
-		hand.joint = aprController.RightHand.GetComponent<ConfigurableJoint>();
-		hand.rigidbody = aprController.RightHand.GetComponent<Rigidbody>();
-		hand.originalRotation = aprController.rightHandTarget;
+		arm.joint = newAprController.UpperRightArm.GetComponent<ConfigurableJoint>();
+		arm.rigidbody = newAprController.UpperRightArm.GetComponent<Rigidbody>();
+		arm.originalRotation = newAprController.upperRightArmTarget;
+		armLow.joint = newAprController.LowerRightArm.GetComponent<ConfigurableJoint>();
+		armLow.rigidbody = newAprController.LowerRightArm.GetComponent<Rigidbody>();
+		armLow.originalRotation = newAprController.lowerRightArmTarget;
+		hand.joint = newAprController.RightHand.GetComponent<ConfigurableJoint>();
+		hand.rigidbody = newAprController.RightHand.GetComponent<Rigidbody>();
+		hand.originalRotation = newAprController.rightHandTarget;
 
 		this.transform.SetParent(hand.rigidbody.transform.GetChild(0));
 
@@ -62,7 +63,11 @@ public abstract class Weapon : MonoBehaviour
 			_pickupTrigger.enabled = false;
 		}
 
-		Destroy(_rigidbody);
+		if (_rigidbody)
+		{
+			Destroy(_rigidbody);
+		}
+
 		if (!(this is Fist))
 		{
 			StartCoroutine(TransitionToHold(new Vector3(-holdPosition.x, holdPosition.y, holdPosition.z), new Quaternion(holdRotation.x, -holdRotation.y, -holdRotation.z, holdRotation.w)));
@@ -89,7 +94,7 @@ public abstract class Weapon : MonoBehaviour
 
 	public abstract void Attack();
 
-	private IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
+	protected virtual IEnumerator TransitionToHold(Vector3 targetPosition, Quaternion targetRotation)
 	{
 		while (Vector3.Distance(this.transform.localPosition, targetPosition) > 0.05f || Quaternion.Angle(this.transform.localRotation, targetRotation) > 0.05f)
 		{
@@ -99,7 +104,7 @@ public abstract class Weapon : MonoBehaviour
 		}
 	}
 
-	protected struct BodyPart
+	public struct BodyPart
 	{
 		public ConfigurableJoint joint;
 		public Rigidbody rigidbody;

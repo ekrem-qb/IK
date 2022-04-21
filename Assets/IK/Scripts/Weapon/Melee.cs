@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Melee : Weapon
 {
-	public float force = 50;
+	[Header("Melee")] public float force = 50;
+
 	[HideInInspector] public bool isAttacking;
 	private bool _isInHook;
 	protected Action<bool> isInHookChanged = newIsInHook => { };

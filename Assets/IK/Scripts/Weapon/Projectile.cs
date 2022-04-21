@@ -2,58 +2,60 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [HideInInspector] public Transform owner;
-    public float speed = 100;
-    public float damage = 10;
-    protected new Rigidbody rigidbody;
+	[Header("Projectile")] [HideInInspector]
+	public Transform owner;
 
-    protected virtual void Awake()
-    {
-        rigidbody = this.GetComponent<Rigidbody>();
-    }
+	public float speed = 100;
+	public float damage = 10;
+	protected new Rigidbody rigidbody;
 
-    protected virtual void Start()
-    {
-        rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);
-    }
+	protected virtual void Awake()
+	{
+		rigidbody = this.GetComponent<Rigidbody>();
+	}
 
-    private void OnCollisionEnter(Collision collision) => Hit(collision.collider);
+	protected virtual void Start()
+	{
+		rigidbody.AddForce(this.transform.forward * speed, ForceMode.Impulse);
+	}
 
-    private void OnTriggerEnter(Collider other) => Hit(other);
+	private void OnCollisionEnter(Collision collision) => Hit(collision.collider);
 
-    protected virtual void Hit(Collider collider)
-    {
-        if (!collider.isTrigger)
-        {
-            if (owner != collider.transform.root)
-            {
-                HealthManager enemy = collider.transform.root.GetComponent<HealthManager>();
-                if (enemy)
-                {
-                    enemy.health -= damage;
-                    if (collider.attachedRigidbody)
-                    {
-                        collider.attachedRigidbody.AddForce(rigidbody.velocity, ForceMode.VelocityChange);
-                    }
+	private void OnTriggerEnter(Collider other) => Hit(other);
 
-                    if (enemy.particlePrefab)
-                    {
-                        ParticleSystem[] particles = Instantiate(enemy.particlePrefab, collider.ClosestPointOnBounds(this.transform.position), Quaternion.identity).GetComponentsInChildren<ParticleSystem>();
+	protected virtual void Hit(Collider collider)
+	{
+		if (!collider.isTrigger)
+		{
+			if (owner != collider.transform.root)
+			{
+				HealthManager enemy = collider.transform.root.GetComponent<HealthManager>();
+				if (enemy)
+				{
+					enemy.health -= damage;
+					if (collider.attachedRigidbody)
+					{
+						collider.attachedRigidbody.AddForce(rigidbody.velocity, ForceMode.VelocityChange);
+					}
 
-                        for (int i = 0; i < particles.Length; i++)
-                        {
-                            ParticleSystem.MainModule main = particles[i].main;
-                            main.startColor = enemy.particleColor;
-                        }
+					if (enemy.particlePrefab)
+					{
+						ParticleSystem[] particles = Instantiate(enemy.particlePrefab, collider.ClosestPointOnBounds(this.transform.position), Quaternion.identity).GetComponentsInChildren<ParticleSystem>();
 
-                        particles[0].transform.SetParent(null);
-                        particles[0].transform.rotation = Quaternion.LookRotation(particles[0].transform.position - collider.transform.position);
-                        particles[0].Play();
-                    }
-                }
+						for (int i = 0; i < particles.Length; i++)
+						{
+							ParticleSystem.MainModule main = particles[i].main;
+							main.startColor = enemy.particleColor;
+						}
 
-                Destroy(this.gameObject);
-            }
-        }
-    }
+						particles[0].transform.SetParent(null);
+						particles[0].transform.rotation = Quaternion.LookRotation(particles[0].transform.position - collider.transform.position);
+						particles[0].Play();
+					}
+				}
+
+				Destroy(this.gameObject);
+			}
+		}
+	}
 }

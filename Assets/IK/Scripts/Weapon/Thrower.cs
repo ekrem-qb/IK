@@ -3,34 +3,35 @@ using UnityEngine;
 
 public class Thrower : Melee
 {
-    public GameObject projectilePrefab;
-    [HideInInspector] public MeshRenderer meshRenderer;
+	[Header("Thrower")] public GameObject projectilePrefab;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        meshRenderer = this.GetComponent<MeshRenderer>();
-    }
+	[HideInInspector] public MeshRenderer meshRenderer;
 
-    public override void Attack()
-    {
-        Attack(Vector3.zero);
-    }
+	protected override void Awake()
+	{
+		base.Awake();
+		meshRenderer = this.GetComponent<MeshRenderer>();
+	}
 
-    public void Attack(Vector3 target)
-    {
-        if (!isInHook)
-        {
-            StartCoroutine(Hook());
-            StartCoroutine(Throw(target));
-        }
-    }
+	public override void Attack()
+	{
+		Attack(Vector3.zero);
+	}
 
-    IEnumerator Throw(Vector3 target)
-    {
-        yield return new WaitUntil(() => isAttacking);
-        Knife knife = Instantiate(projectilePrefab, this.transform.position, Quaternion.identity).GetComponent<Knife>();
-        knife.target = target;
-        knife.owner = this.transform.root;
-    }
+	public void Attack(Vector3 target)
+	{
+		if (!isInHook)
+		{
+			StartCoroutine(Hook());
+			StartCoroutine(Throw(target));
+		}
+	}
+
+	IEnumerator Throw(Vector3 target)
+	{
+		yield return new WaitUntil(() => isAttacking);
+		Knife knife = Instantiate(projectilePrefab, this.transform.position, Quaternion.identity).GetComponent<Knife>();
+		knife.target = target;
+		knife.owner = this.transform.root;
+	}
 }

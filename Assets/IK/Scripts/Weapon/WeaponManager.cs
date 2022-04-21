@@ -143,22 +143,25 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (other.isTrigger)
 		{
-			Weapon nearWeapon = other.GetComponent<Weapon>();
-			if (nearWeapon)
+			if (other.transform.root != this.transform.root)
 			{
-				if (!nearWeapon.isPickedUp)
+				Weapon nearWeapon = other.GetComponent<Weapon>();
+				if (nearWeapon)
 				{
-					if (nearWeapon is Gun gun)
+					if (!nearWeapon.isPickedUp)
 					{
-						if (gun.ammo <= 0)
+						if (nearWeapon is Gun gun)
 						{
-							return;
+							if (gun.ammo <= 0)
+							{
+								return;
+							}
 						}
-					}
 
-					if (!_nearWeapons.Contains(nearWeapon))
-					{
-						_nearWeapons.Add(nearWeapon);
+						if (!_nearWeapons.Contains(nearWeapon))
+						{
+							_nearWeapons.Add(nearWeapon);
+						}
 					}
 				}
 			}
