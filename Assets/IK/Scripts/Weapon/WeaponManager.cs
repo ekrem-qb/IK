@@ -1,4 +1,5 @@
 using System;
+using ARP.APR.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,11 +21,13 @@ public class WeaponManager : MonoBehaviour
 	};
 
 	public Text ammoCount;
-	private ARP.APR.Scripts.APRController _aprController;
+	private APRController _aprController;
 	private Transform _handRight;
 	private ObservableList<Weapon> _nearWeapons = new ObservableList<Weapon>();
 	private Player _player;
 	private Weapon _weapon;
+
+	public Action WeaponChanged = () => { };
 
 	public Weapon weapon
 	{
@@ -58,21 +61,22 @@ public class WeaponManager : MonoBehaviour
 
 						if (_player.enabled)
 						{
-							gun.Strain();
+							_aprController.StrainArms(APRController.Arms.Both);
 						}
 
 						gun.AmmoCountChanged += OnAmmoCountChanged;
 					}
 				}
-			}
 
-			_weapon = value;
+				_weapon = value;
+				WeaponChanged();
+			}
 		}
 	}
 
 	private void Awake()
 	{
-		_aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+		_aprController = this.transform.root.GetComponent<APRController>();
 		_player = _aprController.Root.GetComponent<Player>();
 		_handRight = _aprController.RightHand.transform.GetChild(0);
 
@@ -203,7 +207,7 @@ public class WeaponManager : MonoBehaviour
 			case Gun gun:
 			{
 				gun.AmmoCountChanged -= OnAmmoCountChanged;
-				gun.Relax();
+				_aprController.RelaxArms(APRController.Arms.Both);
 
 				if (ammoCount)
 				{

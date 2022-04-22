@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.06540315, w: 0.997859}
   m_LocalPosition: {x: 0.022367656, y: 0.32101414, z: -0.2574368}
   m_LocalScale: {x: 1.0526317, y: 1.0526317, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966152879}
   m_RootOrder: 0
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0.0067451783, y: 0.26018003, z: 0}
   m_LocalScale: {x: 1.0526316, y: 1.0526316, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153043}
   m_Father: {fileID: 6725652083966153033}
@@ -88,6 +90,7 @@ Transform:
     w: 1}
   m_LocalPosition: {x: -0.0067451117, y: -0.019226328, z: 0.15386033}
   m_LocalScale: {x: 1.0526319, y: 1.0526319, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966152868}
   m_RootOrder: 0
@@ -118,6 +121,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.06540305, w: 0.997859}
   m_LocalPosition: {x: -0.038621545, y: 0.3188742, z: -0.2574588}
   m_LocalScale: {x: 1.0526313, y: 1.0526313, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966152873}
   m_RootOrder: 0
@@ -148,6 +152,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.0042372644, y: 0.26017997, z: 0}
   m_LocalScale: {x: 1.0526316, y: 1.0526316, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153039}
   m_Father: {fileID: 6725652083966153026}
@@ -182,6 +187,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.48993263, y: 0.0044138073, z: 5.405355e-19}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153057}
   m_Father: {fileID: 1960649277904305775}
@@ -229,7 +235,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.48993298, y: 0.0044138106, z: 5.4053585e-19}
+  m_ConnectedAnchor: {x: -0.48993298, y: 0.0044135842, z: 5.4050825e-19}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -289,6 +295,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.8485474e-16, y: 0.12371459, z: -0.15457782}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4784057761332440257}
   m_RootOrder: 4
@@ -319,6 +326,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.13303933, y: 0.023884544, z: 0.11464418}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4784057761332440257}
   m_RootOrder: 1
@@ -349,6 +357,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.675, z: 0}
   m_LocalScale: {x: 1.0526316, y: 1.0526316, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153060}
   m_Father: {fileID: 6725652084838748970}
@@ -380,6 +389,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966152987}
   m_RootOrder: 2
@@ -411,6 +421,7 @@ Transform:
     w: 1}
   m_LocalPosition: {x: 0.0042374837, y: -0.019226301, z: 0.15386033}
   m_LocalScale: {x: 1.0526319, y: 1.0526319, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966153053}
   m_RootOrder: 0
@@ -441,6 +452,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4892621, y: -3.469447e-18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7127211907082742601}
   - {fileID: 6725652083966153067}
@@ -477,6 +489,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4591736, y: 0.0041366993, z: 5.0659953e-19}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8825665691658339335}
   m_Father: {fileID: 2383575210906539228}
@@ -524,7 +537,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.45917395, y: 0.004136702, z: 5.065999e-19}
+  m_ConnectedAnchor: {x: -0.45917395, y: 0.0041364753, z: 5.065722e-19}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -584,6 +597,7 @@ Transform:
   m_LocalRotation: {x: 0.000000059604645, y: 3.061493e-17, z: -0, w: 1}
   m_LocalPosition: {x: -0.0059158737, y: 0.08766655, z: 0.0000000104506634}
   m_LocalScale: {x: 1.0526319, y: 1.052632, z: 1.0526319}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5632520325441586833}
   - {fileID: 2148683605462262151}
@@ -621,6 +635,7 @@ Transform:
     w: 0.9999601}
   m_LocalPosition: {x: -0.0067451242, y: -0.086699694, z: 0.0000000021818107}
   m_LocalScale: {x: 1.0526317, y: 1.0526317, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966152868}
   m_Father: {fileID: 6725652083966153043}
@@ -652,6 +667,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.06540307, w: 0.997859}
   m_LocalPosition: {x: 0.0053119445, y: 0.19887972, z: 0.21459071}
   m_LocalScale: {x: 1.0526317, y: 1.0526317, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153080}
   m_Father: {fileID: 6725652083966153086}
@@ -683,6 +699,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.5251412e-16, y: 0.25327247, z: -0.008555015}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4784057761332440257}
   m_RootOrder: 3
@@ -713,6 +730,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.065403104, w: 0.997859}
   m_LocalPosition: {x: -0.02159917, y: 0.20102376, z: 0.21459071}
   m_LocalScale: {x: 1.0526317, y: 1.0526317, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153076}
   m_Father: {fileID: 6725652083966153067}
@@ -744,6 +762,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.008927521, w: 0.9999601}
   m_LocalPosition: {x: 0.004237363, y: -0.086699694, z: 0}
   m_LocalScale: {x: 1.0526317, y: 1.0526317, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966153053}
   m_Father: {fileID: 6725652083966153039}
@@ -775,6 +794,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0.012730017, y: -0.8889037, z: 0}
   m_LocalScale: {x: 1.0526316, y: 1.0526316, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6669339065921887427}
   - {fileID: 6725652083966153026}
@@ -812,6 +832,7 @@ Transform:
   m_LocalRotation: {x: 0.000000014634508, y: 0.000000029934164, z: 0.008927521, w: 0.9999601}
   m_LocalPosition: {x: 0.006038762, y: 0.02072584, z: 0.09499998}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4642180589918206098}
   m_Father: {fileID: 1219577715047709737}
@@ -858,7 +879,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.025, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000020391062, y: -0.040000092, z: 0.09999998}
+  m_ConnectedAnchor: {x: -0.00000015105068, y: -0.040000092, z: 0.099998474}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -984,6 +1005,7 @@ Transform:
   m_LocalRotation: {x: 0.00000003161014, y: 0.000000010536711, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0.41817117, y: -0.006407873, z: 0}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1219577715047709737}
   m_Father: {fileID: 5933972565007620259}
@@ -1030,7 +1052,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.325, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000010979807, y: 0.14499979, z: 0.000000009685754}
+  m_ConnectedAnchor: {x: -0.00000010979807, y: 0.14499979, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1144,6 +1166,7 @@ Transform:
   m_LocalRotation: {x: 0.00000008966947, y: -0.000000029002948, z: 0.008927521, w: 0.9999601}
   m_LocalPosition: {x: -0.004392964, y: 0.020539556, z: 0.09499998}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7702191396153500153}
   m_Father: {fileID: 8356948698654979714}
@@ -1190,7 +1213,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.025, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000002597901, y: -0.04000038, z: 0.09999998}
+  m_ConnectedAnchor: {x: 0.00000015293303, y: -0.04000038, z: 0.099998474}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1316,6 +1339,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0.41817117, y: 0.004025429, z: 0}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8356948698654979714}
   m_Father: {fileID: 8811313961112944006}
@@ -1362,7 +1386,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.325, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.000000015685437, y: 0.14499967, z: 0}
+  m_ConnectedAnchor: {x: 0.00000020391072, y: 0.14499967, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1475,6 +1499,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.34304142, y: -0.27290645, z: 0}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5933972565007620259}
   m_Father: {fileID: 4852034780043295207}
@@ -1521,7 +1546,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.3625, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.3, y: -0.012500048, z: 0}
+  m_ConnectedAnchor: {x: -0.3000002, y: -0.012500048, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1633,6 +1658,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6725652084838748970}
   - {fileID: 7374070928625343672}
@@ -1668,22 +1694,23 @@ MonoBehaviour:
   RightHand: {fileID: 6725652083966152835}
   LeftHand: {fileID: 6725652083966152832}
   COMP: {fileID: 1478486812722484469}
-  GrabRight: {fileID: 6725652083966152883}
-  GrabLeft: {fileID: 6725652083966152880}
   useControls: 0
+  joystick: {fileID: 0}
   forwardBackward: Vertical
   leftRight: Horizontal
-  jump: Jump
-  reachLeft: Fire1
-  reachRight: Fire2
+  keyJump: 32
+  reachLeft: 0
+  reachRight: 0
   punchLeft: q
   punchRight: e
   thisPlayerLayer: Player_1
-  forwardIsCameraDirection: 0
   moveSpeed: 30
-  turnSpeed: 6
-  jumpForce: 18
+  maxJumpStrength: 18
+  maxJumpRequiredSeconds: 2
+  jumpButton: {fileID: 0}
+  jumpStrengthIndicator: {fileID: 0}
   autoGetUpWhenPossible: 1
+  stunningParticle: {fileID: 0}
   getUpDelay: 2
   fallDamage: 5
   useStepPrediction: 1
@@ -1714,37 +1741,28 @@ MonoBehaviour:
   SoundSource: {fileID: 8912019627727742872}
   MouseYAxisArms: 0
   MouseYAxisBody: 0
-  WalkForward: 0
-  WalkBackward: 0
-  StepRight: 0
-  StepLeft: 0
-  Alert_Leg_Right: 0
-  Alert_Leg_Left: 0
-  balanced: 1
-  GettingUp: 0
+  walkForward: 0
+  walkBackward: 0
+  stepRight: 0
+  stepLeft: 0
+  alertLegRight: 0
+  alertLegLeft: 0
+  isBalanced: 1
+  isGettingUp: 0
   isRagdoll: 0
   isKeyDown: 0
   moveAxisUsed: 0
-  jumpAxisUsed: 0
   reachLeftAxisUsed: 0
   reachRightAxisUsed: 0
-  jumping: 0
-  isJumping: 0
-  inAir: 0
+  isInAir: 0
   punchingRight: 0
   punchingLeft: 0
-  HeadTarget: {x: 0, y: 0, z: 0, w: 0}
-  BodyTarget: {x: 0, y: 0, z: 0, w: 0}
-  UpperRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  LowerRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  UpperLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  LowerLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  RightHandTarget: {x: 0, y: 0, z: 0, w: 0}
-  LeftHandTarget: {x: 0, y: 0, z: 0, w: 0}
-  UpperRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
-  LowerRightLegTarget: {x: 0, y: 0, z: 0, w: 0}
-  UpperLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
-  LowerLeftLegTarget: {x: 0, y: 0, z: 0, w: 0}
+  upperRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  lowerRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  upperLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  lowerLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
+  rightHandTarget: {x: 0, y: 0, z: 0, w: 0}
+  leftHandTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
   healthManager: {fileID: 0}
 --- !u!114 &5609509283394988438
@@ -1794,6 +1812,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0032632889, y: -0.024786055, z: 0}
   m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2420667419710147023}
   m_Father: {fileID: 6725652083966153076}
@@ -1840,7 +1859,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0032630768, y: 0.22521408, z: 0.000000015685433}
+  m_ConnectedAnchor: {x: -0.0032625827, y: 0.22521402, z: 0.0000015214871}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1969,6 +1988,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0032631366, y: -0.024786068, z: 0}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3733625652549156495}
   m_Father: {fileID: 6725652083966153080}
@@ -2015,7 +2035,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0032628991, y: -0.27478638, z: 0.000000015685433}
+  m_ConnectedAnchor: {x: 0.0032628991, y: -0.27478638, z: 0.0000015214871}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2143,6 +2163,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0.06540307, w: 0.997859}
   m_LocalPosition: {x: -0.07716426, y: -0.56666076, z: -0.20386116}
   m_LocalScale: {x: 0.95000005, y: 0.95000005, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966152873}
   m_Father: {fileID: 4655348013687922275}
@@ -2189,7 +2210,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.225, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0026379144, y: -0.62810475, z: 0.000000015685433}
+  m_ConnectedAnchor: {x: 0.0026382909, y: -0.6281047, z: 0.0000015136443}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2302,6 +2323,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.34304136, y: 0.29709354, z: 0}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8811313961112944006}
   m_Father: {fileID: 4852034780043295207}
@@ -2348,7 +2370,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.3625, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.3, y: -0.012500048, z: 0}
+  m_ConnectedAnchor: {x: 0.3000002, y: -0.012500048, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2461,6 +2483,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.06540313, w: 0.997859}
   m_LocalPosition: {x: 0.09277074, y: -0.56666034, z: -0.20386116}
   m_LocalScale: {x: 0.9499998, y: 0.9499998, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6725652083966152879}
   m_Father: {fileID: 8281927211117646275}
@@ -2507,7 +2530,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.225, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.002637808, y: -0.17810416, z: 0.000000015685433}
+  m_ConnectedAnchor: {x: -0.0026381805, y: -0.17810412, z: 0.0000015136443}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2620,6 +2643,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.6593459, w: 0.7518398}
   m_LocalPosition: {x: -0.07019627, y: -0.84290653, z: -0.094999984}
   m_LocalScale: {x: 0.9499997, y: 0.9499997, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4655348013687922275}
   m_Father: {fileID: 6669339065921887427}
@@ -2666,7 +2690,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.35, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.94568413, y: -0.6470057, z: -0.09999998}
+  m_ConnectedAnchor: {x: -0.9456844, y: -0.6470057, z: -0.099998474}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2781,6 +2805,7 @@ Transform:
   m_LocalRotation: {x: -0.7039145, y: 0.7102847, z: 0.000000042336268, w: -0.000000041956575}
   m_LocalPosition: {x: -0.37302378, y: -0.008733079, z: -1.0694935e-18}
   m_LocalScale: {x: 0.94999975, y: 0.94999975, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4784057761332440257}
   m_Father: {fileID: 8825665691658339335}
@@ -2827,7 +2852,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.425, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.030709565, y: -0.012370314, z: -0.000000048130733}
+  m_ConnectedAnchor: {x: 0.030709565, y: -0.012370542, z: -1.5149544e-18}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -3049,6 +3074,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 0.75183976, w: 0.6593458}
   m_LocalPosition: {x: -0.07019651, y: 0.9145934, z: -0.094999984}
   m_LocalScale: {x: 0.9499999, y: 0.9499999, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8281927211117646275}
   m_Father: {fileID: 6669339065921887427}
@@ -3095,7 +3121,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.35, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.9043161, y: 0.04700573, z: -0.09999998}
+  m_ConnectedAnchor: {x: 0.90431595, y: 0.04700573, z: -0.099998474}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -3210,6 +3236,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.675, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8842119193622999490}
   - {fileID: 3491779649365310167}
@@ -3257,7 +3284,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.1625, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.41875, z: 0}
+  m_ConnectedAnchor: {x: 6.75, y: 0.41875, z: 20}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 2
@@ -3403,6 +3430,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.4724998, z: 0}
   m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4852034780043295207}
   m_Father: {fileID: 8842119193622999490}
@@ -3559,6 +3587,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.7054245, y: 1.7347235e-18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2383575210906539228}
   m_Father: {fileID: 6669339065921887427}
@@ -3590,6 +3619,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.1854206e-17, y: -0.07112567, z: 0.03879959}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6103174021042710081}
   m_RootOrder: 0
@@ -3620,6 +3650,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.16268337, y: 0.024308257, z: 0.11464418}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4784057761332440257}
   m_RootOrder: 0
@@ -3650,6 +3681,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.9694461e-16, y: 0.1875901, z: 0.14194553}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4784057761332440257}
   m_RootOrder: 2
@@ -3681,6 +3713,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0526316, y: 1.0526316, z: 1.0526316}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6725652083966152987}
   m_RootOrder: 1
@@ -3696,6 +3729,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3790,6 +3824,7 @@ Transform:
   m_LocalRotation: {x: 0.99998987, y: -0.0045043672, z: -2.7581296e-19, w: 6.123172e-17}
   m_LocalPosition: {x: -0.51269674, y: -9.486769e-20, z: -8.576407e-35}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1960649277904305775}
   m_Father: {fileID: 7127211907082742601}
@@ -3837,7 +3872,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.012729778, y: 0.9083422, z: -9.027798e-35}
+  m_ConnectedAnchor: {x: -0.012729644, y: 0.9083422, z: 0}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -3897,6 +3932,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.2862867e-16, y: -0.1532789, z: 0.14926922}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5990670250356275838}
   m_Father: {fileID: 4784057761332440257}
@@ -3993,6 +4029,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198717222519016466, guid: 9eb3b1a11c610cd418079f132e291197,
+        type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 198717222519016466, guid: 9eb3b1a11c610cd418079f132e291197,
         type: 3}

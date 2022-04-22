@@ -1,21 +1,19 @@
+using ARP.APR.Scripts;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	private ARP.APR.Scripts.APRController _aprController;
+	private APRController _aprController;
 	private ConfigurableJoint _armLeft, _armRight;
-	private ConfigurableJoint _armLeftLow, _armRightLow;
 	private SphereCollider _trigger;
 	private WeaponManager _weaponManager;
 	public ObservableList<Enemy> nearEnemies = new ObservableList<Enemy>();
 
 	private void Awake()
 	{
-		_aprController = this.transform.root.GetComponent<ARP.APR.Scripts.APRController>();
+		_aprController = this.transform.root.GetComponent<APRController>();
 		_armLeft = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
 		_armRight = _aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-		_armLeftLow = _aprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
-		_armRightLow = _aprController.LowerRightArm.GetComponent<ConfigurableJoint>();
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_trigger = this.GetComponent<SphereCollider>();
 		nearEnemies.CountChanged += count => this.enabled = count > 0;
@@ -60,17 +58,17 @@ public class Player : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (_weaponManager.weapon is Gun gunRight)
+		if (_weaponManager.weapon is Gun)
 		{
-			gunRight.Strain();
+			_aprController.StrainArms(APRController.Arms.Both);
 		}
 	}
 
 	private void OnDisable()
 	{
-		if (_weaponManager.weapon is Gun gunRight)
+		if (_weaponManager.weapon is Gun)
 		{
-			gunRight.Relax();
+			_aprController.RelaxArms(APRController.Arms.Both);
 		}
 	}
 

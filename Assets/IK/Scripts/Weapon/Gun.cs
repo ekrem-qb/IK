@@ -40,24 +40,12 @@ public class Gun : Weapon
 	{
 		_commonCollider.enabled = false;
 
-		left.arm.joint = newAprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
-		left.arm.rigidbody = newAprController.UpperLeftArm.GetComponent<Rigidbody>();
-		left.arm.originalRotation = newAprController.upperLeftArmTarget;
-		left.armLow.joint = newAprController.LowerLeftArm.GetComponent<ConfigurableJoint>();
-		left.armLow.rigidbody = newAprController.LowerLeftArm.GetComponent<Rigidbody>();
-		left.armLow.originalRotation = newAprController.lowerLeftArmTarget;
 		left.hand.joint = newAprController.LeftHand.GetComponent<ConfigurableJoint>();
 		left.hand.rigidbody = newAprController.LeftHand.GetComponent<Rigidbody>();
 		left.hand.originalRotation = newAprController.leftHandTarget;
 
 		left.transform.SetParent(left.hand.rigidbody.transform.GetChild(0));
 
-		right.arm.joint = newAprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-		right.arm.rigidbody = newAprController.UpperRightArm.GetComponent<Rigidbody>();
-		right.arm.originalRotation = newAprController.upperRightArmTarget;
-		right.armLow.joint = newAprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-		right.armLow.rigidbody = newAprController.LowerRightArm.GetComponent<Rigidbody>();
-		right.armLow.originalRotation = newAprController.lowerRightArmTarget;
 		right.hand.joint = newAprController.RightHand.GetComponent<ConfigurableJoint>();
 		right.hand.rigidbody = newAprController.RightHand.GetComponent<Rigidbody>();
 		right.hand.originalRotation = newAprController.rightHandTarget;
@@ -140,38 +128,6 @@ public class Gun : Weapon
 		}
 	}
 
-	public void Strain()
-	{
-		left.arm.joint.angularXDrive = aprController.ReachStiffness;
-		left.arm.joint.angularYZDrive = aprController.ReachStiffness;
-		left.armLow.joint.angularXDrive = aprController.ReachStiffness;
-		left.armLow.joint.angularYZDrive = aprController.ReachStiffness;
-		left.armLow.joint.targetRotation = Quaternion.identity;
-
-		right.arm.joint.angularXDrive = aprController.ReachStiffness;
-		right.arm.joint.angularYZDrive = aprController.ReachStiffness;
-		right.armLow.joint.angularXDrive = aprController.ReachStiffness;
-		right.armLow.joint.angularYZDrive = aprController.ReachStiffness;
-		right.armLow.joint.targetRotation = Quaternion.identity;
-	}
-
-	public void Relax()
-	{
-		left.arm.joint.angularXDrive = aprController.DriveOff;
-		left.arm.joint.angularYZDrive = aprController.DriveOff;
-		left.arm.joint.targetRotation = left.arm.originalRotation;
-		left.armLow.joint.angularXDrive = aprController.DriveOff;
-		left.armLow.joint.angularYZDrive = aprController.DriveOff;
-		left.armLow.joint.targetRotation = left.armLow.originalRotation;
-
-		right.arm.joint.angularXDrive = aprController.DriveOff;
-		right.arm.joint.angularYZDrive = aprController.DriveOff;
-		right.arm.joint.targetRotation = right.arm.originalRotation;
-		right.armLow.joint.angularXDrive = aprController.DriveOff;
-		right.armLow.joint.angularYZDrive = aprController.DriveOff;
-		right.armLow.joint.targetRotation = right.armLow.originalRotation;
-	}
-
 	[Serializable]
 	public struct WeaponPart
 	{
@@ -179,6 +135,6 @@ public class Gun : Weapon
 		public Vector3 dropPosition;
 		public Quaternion dropRotation;
 		[HideInInspector] public ParticleSystem particle;
-		[HideInInspector] public BodyPart arm, armLow, hand;
+		[HideInInspector] public BodyPart hand;
 	}
 }

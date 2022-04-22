@@ -1,4 +1,5 @@
 using System;
+using ARP.APR.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class HealthManager : MonoBehaviour
 	public Color particleColor = Color.white;
 	public Text textHealth;
 
-	private ARP.APR.Scripts.APRController _aprController;
+	private APRController _aprController;
 	private Enemy _enemy;
 	private PathFollower _pathFollower;
 	private Player _player;
@@ -52,7 +53,7 @@ public class HealthManager : MonoBehaviour
 			textHealth.text = _health.ToString();
 		}
 
-		_aprController = this.GetComponent<ARP.APR.Scripts.APRController>();
+		_aprController = this.GetComponent<APRController>();
 		_player = _aprController.Root.GetComponent<Player>();
 		_enemy = _aprController.Root.GetComponent<Enemy>();
 		_pathFollower = _aprController.Root.GetComponent<PathFollower>();

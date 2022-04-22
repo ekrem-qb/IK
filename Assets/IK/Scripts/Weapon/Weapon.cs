@@ -1,4 +1,5 @@
 using System.Collections;
+using ARP.APR.Scripts;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -12,7 +13,7 @@ public abstract class Weapon : MonoBehaviour
 	[HideInInspector] public bool isPickedUp;
 	private SphereCollider _pickupTrigger;
 	private Rigidbody _rigidbody;
-	protected ARP.APR.Scripts.APRController aprController;
+	protected APRController aprController;
 	protected BodyPart arm, armLow, hand;
 	protected ParticleSystem particle;
 
@@ -23,7 +24,7 @@ public abstract class Weapon : MonoBehaviour
 		particle = this.GetComponentInChildren<ParticleSystem>();
 		if (this.transform.parent)
 		{
-			PickUp(this.transform.root.GetComponent<ARP.APR.Scripts.APRController>());
+			PickUp(this.transform.root.GetComponent<APRController>());
 		}
 		else
 		{
@@ -35,7 +36,7 @@ public abstract class Weapon : MonoBehaviour
 	{
 		if (this.transform.parent)
 		{
-			PickUp(this.transform.root.GetComponent<ARP.APR.Scripts.APRController>());
+			PickUp(this.transform.root.GetComponent<APRController>());
 		}
 		else
 		{
@@ -43,7 +44,7 @@ public abstract class Weapon : MonoBehaviour
 		}
 	}
 
-	public virtual void PickUp(ARP.APR.Scripts.APRController newAprController)
+	public virtual void PickUp(APRController newAprController)
 	{
 		aprController = newAprController;
 		arm.joint = newAprController.UpperRightArm.GetComponent<ConfigurableJoint>();
