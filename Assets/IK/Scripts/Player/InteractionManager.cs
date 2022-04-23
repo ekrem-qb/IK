@@ -8,20 +8,20 @@ public class InteractionManager : MonoBehaviour
 	public KeyCode interactKey = KeyCode.F;
 	public Button interactButton;
 	public float pressingDelay = 1;
-	[ReadOnly] public Toggler currentToggler;
+	[ReadOnly] public Transform currentTarget;
 	[ReadOnly] public bool canInteract;
 	private APRController _aprController;
 	private ConfigurableJoint _armLeft, _armRight;
 	private WeaponManager _weaponManager;
 
-	private Toggler _currentToggler
+	private Transform _currentTarget
 	{
-		get => currentToggler;
+		get => currentTarget;
 		set
 		{
-			if (currentToggler != value)
+			if (currentTarget != value)
 			{
-				currentToggler = value;
+				currentTarget = value;
 				CheckInteractionAvailability();
 			}
 		}
@@ -53,34 +53,32 @@ public class InteractionManager : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Toggler toggler = other.GetComponent<Toggler>();
-		if (toggler)
+		if (other.transform.root != this.transform.root)
 		{
-			_currentToggler = toggler;
+			if (other.GetComponent<RedButton>() || (!other.isTrigger && other.CompareTag("CanBeGrabbed")))
+			{
+				_currentTarget = other.transform;
+			}
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
-		Toggler toggler = other.GetComponent<Toggler>();
-		if (toggler == _currentToggler)
+		if (other.transform == _currentTarget)
 		{
-			_currentToggler = null;
+			_currentTarget = null;
 		}
 	}
 
 	private void CheckInteractionAvailability()
 	{
-		if (_currentToggler)
+		if (_aprController.IsGrabbing)
 		{
-			if (!_weaponManager.weapon || (_weaponManager.weapon && _weaponManager.weapon is Melee))
-			{
-				canInteract = true;
-			}
-			else
-			{
-				canInteract = false;
-			}
+			canInteract = true;
+		}
+		else if (_currentTarget && _aprController.isBalanced && (!_weaponManager.weapon || (_currentTarget.GetComponent<RedButton>() && _weaponManager.weapon is Melee)))
+		{
+			canInteract = true;
 		}
 		else
 		{
@@ -93,24 +91,19 @@ public class InteractionManager : MonoBehaviour
 		}
 	}
 
-	private IEnumerator Interaction()
+	private IEnumerator PressButton(RedButton button)
 	{
 		_aprController.StrainArms(APRController.Arms.Left);
 
 		Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
 
-		Debug.DrawLine(currentToggler.transform.position, _armLeft.transform.position, Color.red);
-
-		Vector3 anglesLeft = Quaternion.LookRotation(currentToggler.transform.position - _armLeft.transform.position).eulerAngles;
+		Vector3 anglesLeft = Quaternion.LookRotation(currentTarget.transform.position - _armLeft.transform.position).eulerAngles;
 		anglesLeft -= bodyBendingFactor;
 		_armLeft.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
 
 		yield return new WaitForSeconds(pressingDelay);
 
-		if (currentToggler)
-		{
-			currentToggler.isOn = !currentToggler.isOn;
-		}
+		button.isOn = !button.isOn;
 
 		_aprController.RelaxArms(APRController.Arms.Left);
 	}
@@ -119,8 +112,28 @@ public class InteractionManager : MonoBehaviour
 	{
 		if (canInteract)
 		{
-			StopCoroutine(Interaction());
-			StartCoroutine(Interaction());
+			if (currentTarget)
+			{
+				if (currentTarget.CompareTag("CanBeGrabbed"))
+				{
+					_aprController.IsGrabbing = !_aprController.IsGrabbing;
+				}
+				else
+				{
+					RedButton button = currentTarget.GetComponent<RedButton>();
+					if (button)
+					{
+						StopCoroutine(PressButton(button));
+						StartCoroutine(PressButton(button));
+					}
+				}
+			}
+			else
+			{
+				_aprController.IsGrabbing = !_aprController.IsGrabbing;
+				canInteract = false;
+				CheckInteractionAvailability();
+			}
 		}
 	}
 }

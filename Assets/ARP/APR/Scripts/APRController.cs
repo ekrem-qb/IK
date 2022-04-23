@@ -60,8 +60,7 @@ namespace ARP.APR.Scripts
 
 		public string leftRight = "Horizontal";
 		public KeyCode keyJump = KeyCode.Space;
-		public KeyCode reachLeft = KeyCode.Keypad1;
-		public KeyCode reachRight = KeyCode.Keypad3;
+		public Slider bendingSlider;
 
 		[Header("Player Input KeyCodes")]
 		//Player KeyCode controls
@@ -100,10 +99,6 @@ namespace ARP.APR.Scripts
 		public float StepHeight = 1.7f;
 		public float FeetMountForce = 25f;
 
-		[Header("Reach Properties")]
-		//Reach
-		public float reachSensitivity = 25f;
-
 		public float armReachStiffness = 2000f;
 
 		[Header("Actions")]
@@ -111,8 +106,6 @@ namespace ARP.APR.Scripts
 		public bool canBeKnockoutByImpact = true;
 
 		public float requiredForceToBeKO = 20f;
-		public bool canPunch = true;
-		public float punchForce = 15f;
 
 		[Header("Audio")]
 		//Impact sounds
@@ -137,14 +130,12 @@ namespace ARP.APR.Scripts
 			isGettingUp,
 			isRagdoll,
 			isKeyDown,
-			moveAxisUsed,
-			reachLeftAxisUsed,
-			reachRightAxisUsed;
+			moveAxisUsed;
+
+		[SerializeField] [ReadOnly] private bool isGrabbing;
 
 		[ReadOnly] public bool
-			isInAir,
-			punchingRight,
-			punchingLeft;
+			isInAir;
 
 		[HideInInspector] public Quaternion
 			upperRightArmTarget,
@@ -194,6 +185,58 @@ namespace ARP.APR.Scripts
 			ReachStiffness,
 			DriveOff;
 
+		public bool IsGrabbing
+		{
+			get => isGrabbing;
+			set
+			{
+				isGrabbing = value;
+
+				if (bendingSlider)
+				{
+					bendingSlider.gameObject.SetActive(value);
+				}
+
+				if (value)
+				{
+					//Adjust Left Arm joint strength
+					UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+					UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+					LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+					LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+
+					UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+					UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+					LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
+					LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
+
+					//Adjust body joint strength
+					Body.GetComponent<ConfigurableJoint>().angularXDrive = CoreStiffness;
+					Body.GetComponent<ConfigurableJoint>().angularYZDrive = CoreStiffness;
+				}
+				else
+				{
+					UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+					UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+					LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+					LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+
+					UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+					UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+					LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
+					LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
+
+					if (isBalanced)
+					{
+						Body.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
+						Body.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
+					}
+
+					ResetPlayerPose();
+				}
+			}
+		}
+
 		private void Awake()
 		{
 			PlayerSetup();
@@ -219,6 +262,11 @@ namespace ARP.APR.Scripts
 				jumpButton.onRelease.AddListener(JumpRelease);
 			}
 
+			if (bendingSlider)
+			{
+				bendingSlider.gameObject.SetActive(false);
+			}
+
 			// Root.GetComponent<Rigidbody>().maxAngularVelocity = Mathf.Infinity;
 		}
 
@@ -232,15 +280,9 @@ namespace ARP.APR.Scripts
 					{
 						PlayerMovement();
 						Jumping();
-					}
-
-					if (canPunch)
-					{
-						PlayerPunch();
+						PlayerReach();
 					}
 				}
-
-				PlayerReach();
 			}
 
 			if (useStepPrediction)
@@ -574,236 +616,26 @@ namespace ARP.APR.Scripts
 			{
 				if (!_weaponManager.weapon)
 				{
-					//Body Bending
-					if (MouseYAxisBody <= 0.9f && MouseYAxisBody >= -0.9f)
+					if (bendingSlider)
 					{
-						MouseYAxisBody += (Input.GetAxis("Mouse Y") / reachSensitivity);
+						Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(bendingSlider.value, 0, 0, 1);
 					}
-					else if (MouseYAxisBody > 0.9f)
-					{
-						MouseYAxisBody = 0.9f;
-					}
-					else if (MouseYAxisBody < -0.9f)
-					{
-						MouseYAxisBody = -0.9f;
-					}
-
-					Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(MouseYAxisBody, 0, 0, 1);
 				}
 
-				if (!(_weaponManager.weapon is Gun))
+				if (IsGrabbing)
 				{
-					//Reach Left
-					if (Input.GetKey(reachLeft) && !punchingLeft)
+					if (!(_weaponManager.weapon is Gun))
 					{
-						if (!reachLeftAxisUsed)
-						{
-							//Adjust Left Arm joint strength
-							UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
-							UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
-							LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
-							LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
-
-							//Adjust body joint strength
-							Body.GetComponent<ConfigurableJoint>().angularXDrive = CoreStiffness;
-							Body.GetComponent<ConfigurableJoint>().angularYZDrive = CoreStiffness;
-
-							reachLeftAxisUsed = true;
-						}
-
-						if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
-						{
-							MouseYAxisArms += (Input.GetAxis("Mouse Y") / reachSensitivity);
-						}
-
-						else if (MouseYAxisArms > 1.2f)
-						{
-							MouseYAxisArms = 1.2f;
-						}
-
-						else if (MouseYAxisArms < -1.2f)
-						{
-							MouseYAxisArms = -1.2f;
-						}
-
+						//Reach Left
 						//upper  left arm pose
-						UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - MouseYAxisArms, 0.58f + MouseYAxisArms, -0.8f, 1);
+						UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - bendingSlider.value, 0.58f + bendingSlider.value, -0.8f, 1);
 					}
 
-					if (!Input.GetKey(reachLeft) && !punchingLeft)
+					if (!_weaponManager.weapon)
 					{
-						if (reachLeftAxisUsed)
-						{
-							if (isBalanced)
-							{
-								UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-								LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-
-								Body.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
-								Body.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
-							}
-
-							else if (!isBalanced)
-							{
-								UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-								LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								LowerLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-							}
-
-							ResetPlayerPose();
-							reachLeftAxisUsed = false;
-						}
-					}
-				}
-
-				if (!_weaponManager.weapon)
-				{
-					//Reach Right
-					if (Input.GetKey(reachRight) && !punchingRight)
-					{
-						if (!reachRightAxisUsed)
-						{
-							//Adjust Right Arm joint strength
-							UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
-							UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
-							LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = ReachStiffness;
-							LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = ReachStiffness;
-
-							//Adjust body joint strength
-							Body.GetComponent<ConfigurableJoint>().angularXDrive = CoreStiffness;
-							Body.GetComponent<ConfigurableJoint>().angularYZDrive = CoreStiffness;
-
-							reachRightAxisUsed = true;
-						}
-
-						if (MouseYAxisArms <= 1.2f && MouseYAxisArms >= -1.2f)
-						{
-							MouseYAxisArms += (Input.GetAxis("Mouse Y") / reachSensitivity);
-						}
-
-						else if (MouseYAxisArms > 1.2f)
-						{
-							MouseYAxisArms = 1.2f;
-						}
-
-						else if (MouseYAxisArms < -1.2f)
-						{
-							MouseYAxisArms = -1.2f;
-						}
-
+						//Reach Right
 						//upper right arm pose
-						UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f + MouseYAxisArms, 0.58f + MouseYAxisArms, -0.8f, 1));
-					}
-
-					if (!Input.GetKey(reachRight) && !punchingRight)
-					{
-						if (reachRightAxisUsed)
-						{
-							if (isBalanced)
-							{
-								UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-								LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-
-								Body.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
-								Body.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
-							}
-
-							else if (!isBalanced)
-							{
-								UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-								LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
-								LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-							}
-
-							ResetPlayerPose();
-							reachRightAxisUsed = false;
-						}
-					}
-				}
-			}
-		}
-
-		private void PlayerPunch()
-		{
-			//punch right
-			if (!punchingRight && Input.GetKey(punchRight))
-			{
-				punchingRight = true;
-
-				//Right hand punch pull back pose
-				Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.15f, -0.15f, 0, 1);
-				UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.62f, -0.51f, 0.02f, 1);
-				LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(1.31f, 0.5f, -0.5f, 1);
-			}
-
-			if (punchingRight && !Input.GetKey(punchRight))
-			{
-				punchingRight = false;
-
-				//Right hand punch release pose
-				Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.15f, 0.15f, 0, 1);
-				UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(0.74f, 0.04f, 0f, 1);
-				LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(0.2f, 0, 0, 1);
-
-				//Right hand punch force
-				RightHand.AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
-
-				Body.GetComponent<Rigidbody>().AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
-
-				StartCoroutine(DelayCoroutine());
-
-				IEnumerator DelayCoroutine()
-				{
-					yield return new WaitForSeconds(0.3f);
-					if (!Input.GetKey(punchRight))
-					{
-						UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = upperRightArmTarget;
-						LowerRightArm.GetComponent<ConfigurableJoint>().targetRotation = lowerRightArmTarget;
-					}
-				}
-			}
-
-
-			//punch left
-			if (!punchingLeft && Input.GetKey(punchLeft))
-			{
-				punchingLeft = true;
-
-				//Left hand punch pull back pose
-				Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.15f, 0.15f, 0, 1);
-				UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(0.62f, -0.51f, 0.02f, 1);
-				LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-1.31f, 0.5f, 0.5f, 1);
-			}
-
-			if (punchingLeft && !Input.GetKey(punchLeft))
-			{
-				punchingLeft = false;
-
-				//Left hand punch release pose
-				Body.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.15f, -0.15f, 0, 1);
-				UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.74f, 0.04f, 0f, 1);
-				LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.2f, 0, 0, 1);
-
-				//Left hand punch force
-				LeftHand.AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
-
-				Body.GetComponent<Rigidbody>().AddForce(Root.transform.forward * punchForce, ForceMode.Impulse);
-
-				StartCoroutine(DelayCoroutine());
-
-				IEnumerator DelayCoroutine()
-				{
-					yield return new WaitForSeconds(0.3f);
-					if (!Input.GetKey(punchLeft))
-					{
-						UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = upperLeftArmTarget;
-						LowerLeftArm.GetComponent<ConfigurableJoint>().targetRotation = lowerLeftArmTarget;
+						UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f + bendingSlider.value, 0.58f + bendingSlider.value, -0.8f, 1));
 					}
 				}
 			}
@@ -964,16 +796,13 @@ namespace ARP.APR.Scripts
 			Head.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 			Head.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 			//arms
-			if (!reachRightAxisUsed)
+			if (!IsGrabbing)
 			{
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 				LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-			}
 
-			if (!reachLeftAxisUsed)
-			{
 				UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 				LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
@@ -1007,16 +836,13 @@ namespace ARP.APR.Scripts
 			Head.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
 			Head.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
 			//arms
-			if (!reachRightAxisUsed)
+			if (!IsGrabbing)
 			{
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 				LowerRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				LowerRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
-			}
 
-			if (!reachLeftAxisUsed)
-			{
 				UpperLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperLeftArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 				LowerLeftArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
@@ -1059,6 +885,10 @@ namespace ARP.APR.Scripts
 				}
 
 				MouseYAxisArms = 0;
+				if (bendingSlider)
+				{
+					bendingSlider.value = 0;
+				}
 			}
 		}
 

@@ -98,6 +98,11 @@ public class WeaponManager : MonoBehaviour
 			drop.button.gameObject.SetActive(false);
 		}
 
+		if (ammoCount)
+		{
+			ammoCount.transform.parent.gameObject.SetActive(false);
+		}
+
 		Weapon hasWeapon = _handRight.GetComponentInChildren<Weapon>();
 		if (hasWeapon)
 		{
@@ -188,7 +193,7 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (pickUp.button)
 		{
-			pickUp.button.gameObject.SetActive(count > 0 && !weapon);
+			pickUp.button.gameObject.SetActive(count > 0 && !weapon && !_aprController.IsGrabbing);
 		}
 	}
 
