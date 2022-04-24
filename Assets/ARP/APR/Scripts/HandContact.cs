@@ -20,9 +20,6 @@ namespace ARP.APR.Scripts
 	{
 		public APRController APR_Player;
 
-		//Is left or right hand
-		public bool Left;
-
 		//Have joint/grabbed
 		public FixedJoint joint;
 
@@ -39,16 +36,9 @@ namespace ARP.APR.Scripts
 			{
 				//Left Hand
 				//On input release destroy joint
-				if (joint && !APR_Player.IsGrabbing)
+				if (joint && !APR_Player.isGrabbed)
 				{
-					if (Left)
-					{
-						Destroy(joint);
-					}
-					else
-					{
-						Destroy(joint);
-					}
+					Destroy(joint);
 				}
 			}
 		}
@@ -58,29 +48,14 @@ namespace ARP.APR.Scripts
 		{
 			if (APR_Player.useControls)
 			{
-				//Left Hand
-				if (Left)
+				if (col.gameObject.CompareTag("CanBeGrabbed") && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
 				{
-					if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
+					if (APR_Player.isGrabbing && !joint && !weaponManager.weapon)
 					{
-						if (APR_Player.IsGrabbing && !joint && !(weaponManager.weapon is Gun))
-						{
-							joint = this.gameObject.AddComponent<FixedJoint>();
-							joint.breakForce = Mathf.Infinity;
-							joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
-						}
-					}
-				}
-				else
-				{
-					if (col.gameObject.tag == "CanBeGrabbed" && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
-					{
-						if (APR_Player.IsGrabbing && !joint && !weaponManager.weapon)
-						{
-							joint = this.gameObject.AddComponent<FixedJoint>();
-							joint.breakForce = Mathf.Infinity;
-							joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
-						}
+						joint = this.gameObject.AddComponent<FixedJoint>();
+						joint.breakForce = Mathf.Infinity;
+						joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
+						APR_Player.isGrabbed = true;
 					}
 				}
 			}

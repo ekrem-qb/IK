@@ -155,7 +155,7 @@ public class Mover : Enemy
 
 		yield return new WaitForSeconds(pickUpDelay * 5);
 
-		aprController.IsGrabbing = true;
+		aprController.isGrabbing = true;
 
 		//upper  left arm pose
 		aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1);
@@ -196,7 +196,7 @@ public class Mover : Enemy
 
 		yield return new WaitForSeconds(pickUpDelay * 5);
 
-		aprController.IsGrabbing = false;
+		aprController.isGrabbing = false;
 
 		yield return new WaitForSeconds(pickUpDelay);
 

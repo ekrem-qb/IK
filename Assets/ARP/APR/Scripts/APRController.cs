@@ -54,19 +54,22 @@ namespace ARP.APR.Scripts
 
 		public Joystick joystick;
 
-		[Header("Player Input Axis")]
+		[Header("Player Input")]
 		//Player Axis controls
 		public string forwardBackward = "Vertical";
 
 		public string leftRight = "Horizontal";
-		public KeyCode keyJump = KeyCode.Space;
 		public Slider bendingSlider;
 
-		[Header("Player Input KeyCodes")]
-		//Player KeyCode controls
-		public string punchLeft = "q";
+		public InputControl jump = new InputControl()
+		{
+			key = KeyCode.Space
+		};
 
-		public string punchRight = "e";
+		public InputControl drop = new InputControl()
+		{
+			key = KeyCode.Q
+		};
 
 		[Header("The Layer Only This Player Is On")]
 		//Player layer name
@@ -76,7 +79,6 @@ namespace ARP.APR.Scripts
 		public float moveSpeed = 10;
 		public float maxJumpStrength = 18;
 		public float maxJumpRequiredSeconds = 2;
-		public HoldButton jumpButton;
 		public Slider jumpStrengthIndicator;
 
 		[Header("Balance Properties")]
@@ -132,7 +134,8 @@ namespace ARP.APR.Scripts
 			isKeyDown,
 			moveAxisUsed;
 
-		[SerializeField] [ReadOnly] private bool isGrabbing;
+		[SerializeField] [ReadOnly] private bool _isGrabbing;
+		[SerializeField] [ReadOnly] private bool _isGrabbed;
 
 		[ReadOnly] public bool
 			isInAir;
@@ -156,6 +159,7 @@ namespace ARP.APR.Scripts
 		private Camera _cam;
 		private Vector3 _centerOfMassPoint;
 		private Vector3 _direction;
+		private HoldTrigger _grabbingToggleButton;
 
 		//Original pose target rotation
 		private Quaternion
@@ -185,17 +189,12 @@ namespace ARP.APR.Scripts
 			ReachStiffness,
 			DriveOff;
 
-		public bool IsGrabbing
+		public bool isGrabbing
 		{
-			get => isGrabbing;
+			get => _isGrabbing;
 			set
 			{
-				isGrabbing = value;
-
-				if (bendingSlider)
-				{
-					bendingSlider.gameObject.SetActive(value);
-				}
+				_isGrabbing = value;
 
 				if (value)
 				{
@@ -233,6 +232,21 @@ namespace ARP.APR.Scripts
 					}
 
 					ResetPlayerPose();
+
+					isGrabbed = false;
+				}
+			}
+		}
+
+		public bool isGrabbed
+		{
+			get => _isGrabbed;
+			set
+			{
+				_isGrabbed = value;
+				if (drop.button)
+				{
+					drop.button.gameObject.SetActive(value);
 				}
 			}
 		}
@@ -255,19 +269,45 @@ namespace ARP.APR.Scripts
 				jumpStrengthIndicator.maxValue = maxJumpStrength;
 			}
 
-			if (jumpButton)
+			if (jump.holdButton)
 			{
-				jumpButton.onPress.AddListener(JumpPress);
-				jumpButton.onHold.AddListener(JumpHold);
-				jumpButton.onRelease.AddListener(JumpRelease);
+				jump.holdButton.onPress.AddListener(JumpPress);
+				jump.holdButton.onHold.AddListener(JumpHold);
+				jump.holdButton.onRelease.AddListener(JumpRelease);
 			}
 
 			if (bendingSlider)
 			{
-				bendingSlider.gameObject.SetActive(false);
+				_grabbingToggleButton = bendingSlider.GetComponent<HoldTrigger>();
+
+				if (_weaponManager)
+				{
+					_weaponManager.WeaponChanged += () => bendingSlider.gameObject.SetActive(!_weaponManager.weapon);
+				}
 			}
 
-			// Root.GetComponent<Rigidbody>().maxAngularVelocity = Mathf.Infinity;
+			if (_grabbingToggleButton)
+			{
+				_grabbingToggleButton.onPress.AddListener(() =>
+				{
+					if (!isGrabbed && isBalanced)
+					{
+						isGrabbing = true;
+					}
+				});
+				_grabbingToggleButton.onRelease.AddListener(() =>
+				{
+					if (!isGrabbed)
+					{
+						isGrabbing = false;
+					}
+				});
+			}
+
+			if (drop.button)
+			{
+				drop.button.onClick.AddListener(() => isGrabbing = false);
+			}
 		}
 
 		private void Update()
@@ -400,6 +440,16 @@ namespace ARP.APR.Scripts
 			else
 			{
 				isBalanced = false;
+				if (bendingSlider)
+				{
+					bendingSlider.gameObject.SetActive(false);
+				}
+
+				if (jump.holdButton)
+				{
+					jump.holdButton.gameObject.SetActive(false);
+				}
+
 				isInAir = true;
 			}
 
@@ -537,17 +587,17 @@ namespace ARP.APR.Scripts
 
 		private void Jumping()
 		{
-			if (Input.GetKeyDown(keyJump))
+			if (Input.GetKeyDown(jump.key))
 			{
 				JumpPress();
 			}
 			else
 			{
-				if (Input.GetKey(keyJump))
+				if (Input.GetKey(jump.key))
 				{
 					JumpHold();
 				}
-				else if (Input.GetKeyUp(keyJump))
+				else if (Input.GetKeyUp(jump.key))
 				{
 					JumpRelease();
 				}
@@ -614,6 +664,11 @@ namespace ARP.APR.Scripts
 		{
 			if (_weaponManager)
 			{
+				if (Input.GetKeyDown(drop.key))
+				{
+					isGrabbing = false;
+				}
+
 				if (!_weaponManager.weapon)
 				{
 					if (bendingSlider)
@@ -622,7 +677,7 @@ namespace ARP.APR.Scripts
 					}
 				}
 
-				if (IsGrabbing)
+				if (isGrabbing)
 				{
 					if (!(_weaponManager.weapon is Gun))
 					{
@@ -788,6 +843,15 @@ namespace ARP.APR.Scripts
 		{
 			isRagdoll = true;
 			isBalanced = false;
+			if (bendingSlider)
+			{
+				bendingSlider.gameObject.SetActive(false);
+			}
+
+			if (jump.holdButton)
+			{
+				jump.holdButton.gameObject.SetActive(false);
+			}
 
 			//Root
 			Root.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
@@ -796,7 +860,7 @@ namespace ARP.APR.Scripts
 			Head.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 			Head.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
 			//arms
-			if (!IsGrabbing)
+			if (!isGrabbing)
 			{
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;
@@ -828,6 +892,15 @@ namespace ARP.APR.Scripts
 		{
 			isRagdoll = false;
 			isBalanced = true;
+			if (bendingSlider)
+			{
+				bendingSlider.gameObject.SetActive(true);
+			}
+
+			if (jump.holdButton)
+			{
+				jump.holdButton.gameObject.SetActive(true);
+			}
 
 			//Root
 			Root.GetComponent<ConfigurableJoint>().angularXDrive = _balanceOn;
@@ -836,7 +909,7 @@ namespace ARP.APR.Scripts
 			Head.GetComponent<ConfigurableJoint>().angularXDrive = PoseOn;
 			Head.GetComponent<ConfigurableJoint>().angularYZDrive = PoseOn;
 			//arms
-			if (!IsGrabbing)
+			if (!isGrabbing)
 			{
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularXDrive = DriveOff;
 				UpperRightArm.GetComponent<ConfigurableJoint>().angularYZDrive = DriveOff;

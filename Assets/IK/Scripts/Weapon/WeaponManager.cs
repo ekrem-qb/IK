@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class WeaponManager : MonoBehaviour
 {
-	public Control pickUp = new Control()
+	public InputControl pickUp = new InputControl()
 	{
 		key = KeyCode.E
 	};
 
-	public Control drop = new Control()
+	public InputControl drop = new InputControl()
 	{
 		key = KeyCode.Q
 	};
 
-	public Control attack = new Control()
+	public InputControl attack = new InputControl()
 	{
 		key = KeyCode.Keypad0
 	};
@@ -193,7 +193,7 @@ public class WeaponManager : MonoBehaviour
 	{
 		if (pickUp.button)
 		{
-			pickUp.button.gameObject.SetActive(count > 0 && !weapon && !_aprController.IsGrabbing);
+			pickUp.button.gameObject.SetActive(count > 0 && !weapon && !_aprController.isGrabbing);
 		}
 	}
 
@@ -272,12 +272,5 @@ public class WeaponManager : MonoBehaviour
 		{
 			DropWeapon();
 		}
-	}
-
-	[Serializable]
-	public struct Control
-	{
-		public KeyCode key;
-		public Button button;
 	}
 }

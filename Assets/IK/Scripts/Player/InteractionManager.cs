@@ -1,27 +1,29 @@
 using System.Collections;
 using ARP.APR.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InteractionManager : MonoBehaviour
 {
-	public KeyCode interactKey = KeyCode.F;
-	public Button interactButton;
+	public InputControl interact = new InputControl()
+	{
+		key = KeyCode.F
+	};
+
 	public float pressingDelay = 1;
-	[ReadOnly] public Transform currentTarget;
+	[ReadOnly] [SerializeField] private Transform _currentTarget;
 	[ReadOnly] public bool canInteract;
 	private APRController _aprController;
 	private ConfigurableJoint _armLeft, _armRight;
 	private WeaponManager _weaponManager;
 
-	private Transform _currentTarget
+	public Transform currentTarget
 	{
-		get => currentTarget;
+		get => _currentTarget;
 		set
 		{
-			if (currentTarget != value)
+			if (_currentTarget != value)
 			{
-				currentTarget = value;
+				_currentTarget = value;
 				CheckInteractionAvailability();
 			}
 		}
@@ -34,12 +36,12 @@ public class InteractionManager : MonoBehaviour
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_weaponManager.WeaponChanged += CheckInteractionAvailability;
 		CheckInteractionAvailability();
-		interactButton.onClick.AddListener(Interact);
+		interact.button.onClick.AddListener(Interact);
 	}
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(interactKey))
+		if (Input.GetKeyDown(interact.key))
 		{
 			Interact();
 		}
@@ -48,35 +50,31 @@ public class InteractionManager : MonoBehaviour
 	private void OnDestroy()
 	{
 		_weaponManager.WeaponChanged += CheckInteractionAvailability;
-		interactButton.onClick.RemoveListener(Interact);
+		interact.button.onClick.RemoveListener(Interact);
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.transform.root != this.transform.root)
 		{
-			if (other.GetComponent<RedButton>() || (!other.isTrigger && other.CompareTag("CanBeGrabbed")))
+			if (other.GetComponent<RedButton>())
 			{
-				_currentTarget = other.transform;
+				currentTarget = other.transform;
 			}
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.transform == _currentTarget)
+		if (other.transform == currentTarget)
 		{
-			_currentTarget = null;
+			currentTarget = null;
 		}
 	}
 
 	private void CheckInteractionAvailability()
 	{
-		if (_aprController.IsGrabbing)
-		{
-			canInteract = true;
-		}
-		else if (_currentTarget && _aprController.isBalanced && (!_weaponManager.weapon || (_currentTarget.GetComponent<RedButton>() && _weaponManager.weapon is Melee)))
+		if (currentTarget && _aprController.isBalanced && !_aprController.isGrabbing && !_aprController.isGrabbed && (!_weaponManager.weapon || (currentTarget.GetComponent<RedButton>() && _weaponManager.weapon is Melee)))
 		{
 			canInteract = true;
 		}
@@ -85,9 +83,9 @@ public class InteractionManager : MonoBehaviour
 			canInteract = false;
 		}
 
-		if (interactButton)
+		if (interact.button)
 		{
-			interactButton.gameObject.SetActive(canInteract);
+			interact.button.gameObject.SetActive(canInteract);
 		}
 	}
 
@@ -97,7 +95,7 @@ public class InteractionManager : MonoBehaviour
 
 		Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
 
-		Vector3 anglesLeft = Quaternion.LookRotation(currentTarget.transform.position - _armLeft.transform.position).eulerAngles;
+		Vector3 anglesLeft = Quaternion.LookRotation(_currentTarget.transform.position - _armLeft.transform.position).eulerAngles;
 		anglesLeft -= bodyBendingFactor;
 		_armLeft.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
 
@@ -112,25 +110,17 @@ public class InteractionManager : MonoBehaviour
 	{
 		if (canInteract)
 		{
-			if (currentTarget)
+			if (_currentTarget)
 			{
-				if (currentTarget.CompareTag("CanBeGrabbed"))
+				RedButton button = _currentTarget.GetComponent<RedButton>();
+				if (button)
 				{
-					_aprController.IsGrabbing = !_aprController.IsGrabbing;
-				}
-				else
-				{
-					RedButton button = currentTarget.GetComponent<RedButton>();
-					if (button)
-					{
-						StopCoroutine(PressButton(button));
-						StartCoroutine(PressButton(button));
-					}
+					StopCoroutine(PressButton(button));
+					StartCoroutine(PressButton(button));
 				}
 			}
 			else
 			{
-				_aprController.IsGrabbing = !_aprController.IsGrabbing;
 				canInteract = false;
 				CheckInteractionAvailability();
 			}
