@@ -47,17 +47,11 @@ public abstract class Weapon : MonoBehaviour
 	public virtual void PickUp(APRController newAprController)
 	{
 		aprController = newAprController;
-		arm.joint = newAprController.UpperRightArm.GetComponent<ConfigurableJoint>();
-		arm.rigidbody = newAprController.UpperRightArm.GetComponent<Rigidbody>();
-		arm.originalRotation = newAprController.upperRightArmTarget;
-		armLow.joint = newAprController.LowerRightArm.GetComponent<ConfigurableJoint>();
-		armLow.rigidbody = newAprController.LowerRightArm.GetComponent<Rigidbody>();
-		armLow.originalRotation = newAprController.lowerRightArmTarget;
-		hand.joint = newAprController.RightHand.GetComponent<ConfigurableJoint>();
-		hand.rigidbody = newAprController.RightHand.GetComponent<Rigidbody>();
-		hand.originalRotation = newAprController.rightHandTarget;
+		arm = newAprController.armRight;
+		armLow = newAprController.armRightLow;
+		hand = newAprController.handRight;
 
-		this.transform.SetParent(hand.rigidbody.transform.GetChild(0));
+		this.transform.SetParent(aprController.handRight.transform.GetChild(0));
 
 		if (_pickupTrigger)
 		{
@@ -103,12 +97,5 @@ public abstract class Weapon : MonoBehaviour
 			this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, targetRotation, Time.deltaTime * transitionSpeed);
 			yield return null;
 		}
-	}
-
-	public struct BodyPart
-	{
-		public ConfigurableJoint joint;
-		public Rigidbody rigidbody;
-		public Quaternion originalRotation;
 	}
 }

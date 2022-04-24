@@ -40,17 +40,13 @@ public class Gun : Weapon
 	{
 		_commonCollider.enabled = false;
 
-		left.hand.joint = newAprController.LeftHand.GetComponent<ConfigurableJoint>();
-		left.hand.rigidbody = newAprController.LeftHand.GetComponent<Rigidbody>();
-		left.hand.originalRotation = newAprController.leftHandTarget;
+		left.hand = newAprController.handLeft;
 
-		left.transform.SetParent(left.hand.rigidbody.transform.GetChild(0));
+		left.transform.SetParent(left.hand.transform.GetChild(0));
 
-		right.hand.joint = newAprController.RightHand.GetComponent<ConfigurableJoint>();
-		right.hand.rigidbody = newAprController.RightHand.GetComponent<Rigidbody>();
-		right.hand.originalRotation = newAprController.rightHandTarget;
+		right.hand = newAprController.handRight;
 
-		right.transform.SetParent(right.hand.rigidbody.transform.GetChild(0));
+		right.transform.SetParent(right.hand.transform.GetChild(0));
 
 		base.PickUp(newAprController);
 	}
@@ -135,6 +131,6 @@ public class Gun : Weapon
 		public Vector3 dropPosition;
 		public Quaternion dropRotation;
 		[HideInInspector] public ParticleSystem particle;
-		[HideInInspector] public BodyPart hand;
+		public BodyPart hand;
 	}
 }

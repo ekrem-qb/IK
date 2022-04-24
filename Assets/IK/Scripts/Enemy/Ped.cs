@@ -31,7 +31,7 @@ public class Ped : Enemy
 				APRController playerApr = other.transform.root.GetComponent<APRController>();
 				if (playerApr)
 				{
-					Player player = playerApr.Root.GetComponent<Player>();
+					Player player = playerApr.root.transform.GetComponent<Player>();
 					if (player)
 					{
 						Annoy();

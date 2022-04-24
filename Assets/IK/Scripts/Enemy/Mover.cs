@@ -150,30 +150,30 @@ public class Mover : Enemy
 
 		Vector3 targetPos = coll.transform.position;
 		targetPos.y = this.transform.position.y;
-		rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
-		bodyJoint.targetRotation = new Quaternion(aprController.MouseYAxisBody, 0, 0, 1);
+		aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
+		aprController.body.joint.targetRotation = new Quaternion(aprController.MouseYAxisBody, 0, 0, 1);
 
 		yield return new WaitForSeconds(pickUpDelay * 5);
 
 		aprController.isGrabbing = true;
 
 		//upper  left arm pose
-		aprController.UpperLeftArm.GetComponent<ConfigurableJoint>().targetRotation = new Quaternion(-0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1);
+		aprController.armLeft.joint.targetRotation = new Quaternion(-0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1);
 
 		//upper  left arm pose
-		aprController.UpperRightArm.GetComponent<ConfigurableJoint>().targetRotation = Quaternion.Inverse(new Quaternion(0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1));
+		aprController.armRight.joint.targetRotation = Quaternion.Inverse(new Quaternion(0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1));
 
 		yield return new WaitForSeconds(pickUpDelay);
 
-		jointLeft = aprController.LeftHand.gameObject.AddComponent<FixedJoint>();
+		jointLeft = aprController.handLeft.transform.gameObject.AddComponent<FixedJoint>();
 		jointLeft.breakForce = Mathf.Infinity;
 		jointLeft.connectedBody = coll.attachedRigidbody;
 
-		jointRight = aprController.RightHand.gameObject.AddComponent<FixedJoint>();
+		jointRight = aprController.handRight.transform.gameObject.AddComponent<FixedJoint>();
 		jointRight.breakForce = Mathf.Infinity;
 		jointRight.connectedBody = coll.attachedRigidbody;
 
-		bodyJoint.targetRotation = new Quaternion(0, 0, 0, 1);
+		aprController.body.joint.targetRotation = new Quaternion(0, 0, 0, 1);
 
 		yield return new WaitForSeconds(pickUpDelay * 5);
 
@@ -192,7 +192,7 @@ public class Mover : Enemy
 
 		Vector3 targetPos = conveyorStart.position;
 		targetPos.y = this.transform.position.y;
-		rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
+		aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(targetPos - this.transform.position));
 
 		yield return new WaitForSeconds(pickUpDelay * 5);
 

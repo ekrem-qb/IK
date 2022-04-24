@@ -54,9 +54,14 @@ public class HealthManager : MonoBehaviour
 		}
 
 		_aprController = this.GetComponent<APRController>();
-		_player = _aprController.Root.GetComponent<Player>();
-		_enemy = _aprController.Root.GetComponent<Enemy>();
-		_pathFollower = _aprController.Root.GetComponent<PathFollower>();
+		if (!_aprController.root.transform)
+		{
+			_aprController.PlayerSetup();
+		}
+
+		_player = _aprController.root.transform.GetComponent<Player>();
+		_enemy = _aprController.root.transform.GetComponent<Enemy>();
+		_pathFollower = _aprController.root.transform.GetComponent<PathFollower>();
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 	}
 

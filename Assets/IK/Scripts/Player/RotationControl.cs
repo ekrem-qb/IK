@@ -4,12 +4,10 @@ using UnityEngine;
 public class RotationControl : MonoBehaviour
 {
 	private APRController _aprController;
-	private ConfigurableJoint _rootJoint;
 
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
-		_rootJoint = _aprController.Root.GetComponent<ConfigurableJoint>();
 	}
 
 	private void FixedUpdate()
@@ -43,7 +41,7 @@ public class RotationControl : MonoBehaviour
 
 			if (targetDirection != Vector3.zero)
 			{
-				_rootJoint.targetRotation = Quaternion.LookRotation(targetDirection);
+				_aprController.root.joint.targetRotation = Quaternion.LookRotation(targetDirection);
 			}
 		}
 	}

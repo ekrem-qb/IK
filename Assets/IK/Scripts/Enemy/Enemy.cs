@@ -5,12 +5,9 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
 	[HideInInspector] public APRController aprController;
-	[HideInInspector] public ConfigurableJoint rootJoint;
-	[HideInInspector] public Rigidbody rootRB;
-	[HideInInspector] public Transform target;
-	[SerializeField] Player _player;
+	[HideInInspector] public Transform selfTarget;
+	[SerializeField] [ReadOnly] private Player _player;
 	public float attackDistance = 2.5f;
-	protected ConfigurableJoint bodyJoint;
 	protected bool isAttacking;
 	protected PathFollower pathFollower;
 
@@ -31,10 +28,7 @@ public abstract class Enemy : MonoBehaviour
 	protected virtual void Awake()
 	{
 		aprController = this.transform.root.GetComponent<APRController>();
-		rootJoint = aprController.Root.GetComponent<ConfigurableJoint>();
-		bodyJoint = aprController.Body.GetComponent<ConfigurableJoint>();
-		rootRB = aprController.Root.GetComponent<Rigidbody>();
-		target = aprController.Body.transform;
+		selfTarget = aprController.body.transform;
 		pathFollower = this.GetComponent<PathFollower>();
 		this.enabled = false;
 	}
@@ -44,15 +38,15 @@ public abstract class Enemy : MonoBehaviour
 		Vector3 target = player.transform.position;
 		target.y = this.transform.position.y;
 
-		rootJoint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - rootJoint.transform.position));
+		aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - aprController.root.transform.position));
 
 		if (Vector3.Distance(this.transform.position, target) > attackDistance)
 		{
-			Vector3 direction = aprController.Root.transform.forward;
+			Vector3 direction = aprController.root.transform.forward;
 			direction.y = 0f;
 			direction *= aprController.moveSpeed;
 
-			rootRB.velocity = Vector3.Lerp(rootRB.velocity, direction + new Vector3(0, rootRB.velocity.y, 0), Time.fixedDeltaTime * 10);
+			aprController.root.rigidbody.velocity = Vector3.Lerp(aprController.root.rigidbody.velocity, direction + new Vector3(0, aprController.root.rigidbody.velocity.y, 0), Time.fixedDeltaTime * 10);
 
 			if (aprController.isBalanced)
 			{

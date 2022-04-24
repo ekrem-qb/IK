@@ -77,8 +77,13 @@ public class WeaponManager : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
-		_player = _aprController.Root.GetComponent<Player>();
-		_handRight = _aprController.RightHand.transform.GetChild(0);
+		if (!_aprController.root.transform)
+		{
+			_aprController.PlayerSetup();
+		}
+
+		_player = _aprController.root.transform.GetComponent<Player>();
+		_handRight = _aprController.handRight.transform.GetChild(0);
 
 		if (attack.button)
 		{

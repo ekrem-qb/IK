@@ -2503,7 +2503,7 @@ PrefabInstance:
     - target: {fileID: 6644999386083356834, guid: 07885fd8e3651f94cac7408d3b10ebf0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 6644999386083356834, guid: 07885fd8e3651f94cac7408d3b10ebf0,
         type: 3}
@@ -3041,6 +3041,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1206455695}
   - component: {fileID: 1206455696}
+  - component: {fileID: 1206455697}
   m_Layer: 5
   m_Name: BendingSlider
   m_TagString: Untagged
@@ -3121,6 +3122,29 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1206455697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206455694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18154c6abd924e4887e1b3684539c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  onPress:
+    m_PersistentCalls:
+      m_Calls: []
+  onHold:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  isPressed: 0
 --- !u!4 &1218281947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 511849866481875190, guid: 9cc86f3bdd5baae48b2c8e571874bb4d,
@@ -4846,6 +4870,11 @@ PrefabInstance:
       propertyPath: interactButton
       value: 
       objectReference: {fileID: 332073015}
+    - target: {fileID: 6746505262532458258, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: interact.button
+      value: 
+      objectReference: {fileID: 332073015}
     - target: {fileID: 7096072420157911756, guid: b6b248ede00241d4e976e4ea12ba4ee4,
         type: 3}
       propertyPath: textHealth
@@ -4913,14 +4942,34 @@ PrefabInstance:
       objectReference: {fileID: 1451711528}
     - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
         type: 3}
+      propertyPath: buttonDrop
+      value: 
+      objectReference: {fileID: 95706955}
+    - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
       propertyPath: jumpButton
       value: 
       objectReference: {fileID: 868626901}
     - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
         type: 3}
+      propertyPath: drop.button
+      value: 
+      objectReference: {fileID: 95706955}
+    - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
       propertyPath: bendingSlider
       value: 
       objectReference: {fileID: 1206455696}
+    - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: jump.holdButton
+      value: 
+      objectReference: {fileID: 868626901}
+    - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
+        type: 3}
+      propertyPath: grabbingToggleButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7906404184273446313, guid: b6b248ede00241d4e976e4ea12ba4ee4,
         type: 3}
       propertyPath: jumpStrengthIndicator

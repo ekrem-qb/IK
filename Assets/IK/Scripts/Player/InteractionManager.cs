@@ -13,7 +13,6 @@ public class InteractionManager : MonoBehaviour
 	[ReadOnly] [SerializeField] private Transform _currentTarget;
 	[ReadOnly] public bool canInteract;
 	private APRController _aprController;
-	private ConfigurableJoint _armLeft, _armRight;
 	private WeaponManager _weaponManager;
 
 	public Transform currentTarget
@@ -32,7 +31,6 @@ public class InteractionManager : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
-		_armLeft = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_weaponManager.WeaponChanged += CheckInteractionAvailability;
 		CheckInteractionAvailability();
@@ -93,11 +91,11 @@ public class InteractionManager : MonoBehaviour
 	{
 		_aprController.StrainArms(APRController.Arms.Left);
 
-		Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
+		Vector3 bodyBendingFactor = new Vector3(_aprController.body.transform.eulerAngles.x, _aprController.root.transform.localEulerAngles.y, 0);
 
-		Vector3 anglesLeft = Quaternion.LookRotation(_currentTarget.transform.position - _armLeft.transform.position).eulerAngles;
+		Vector3 anglesLeft = Quaternion.LookRotation(_currentTarget.transform.position - _aprController.armLeft.transform.position).eulerAngles;
 		anglesLeft -= bodyBendingFactor;
-		_armLeft.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
+		_aprController.armLeft.joint.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
 
 		yield return new WaitForSeconds(pressingDelay);
 

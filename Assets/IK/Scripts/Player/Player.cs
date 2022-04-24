@@ -4,7 +4,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	private APRController _aprController;
-	private ConfigurableJoint _armLeft, _armRight;
 	private SphereCollider _trigger;
 	private WeaponManager _weaponManager;
 	public ObservableList<Enemy> nearEnemies = new ObservableList<Enemy>();
@@ -12,8 +11,6 @@ public class Player : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
-		_armLeft = _aprController.UpperLeftArm.GetComponent<ConfigurableJoint>();
-		_armRight = _aprController.UpperRightArm.GetComponent<ConfigurableJoint>();
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_trigger = this.GetComponent<SphereCollider>();
 		nearEnemies.CountChanged += count => this.enabled = count > 0;
@@ -25,18 +22,18 @@ public class Player : MonoBehaviour
 		{
 			if (_weaponManager.weapon is Gun)
 			{
-				Vector3 bodyBendingFactor = new Vector3(_aprController.Body.transform.eulerAngles.x, _aprController.Root.transform.localEulerAngles.y, 0);
+				Vector3 bodyBendingFactor = new Vector3(_aprController.body.transform.eulerAngles.x, _aprController.root.transform.localEulerAngles.y, 0);
 
-				nearEnemies.SortByDistanceTo(_armLeft.transform.position);
+				nearEnemies.SortByDistanceTo(_aprController.armLeft.transform.position);
 				Enemy nearestToArmLeft = nearEnemies[0];
 
-				Debug.DrawLine(nearestToArmLeft.target.position, _armLeft.transform.position, Color.red);
+				Debug.DrawLine(nearestToArmLeft.selfTarget.position, _aprController.armLeft.transform.position, Color.red);
 
-				Vector3 anglesLeft = Quaternion.LookRotation(nearestToArmLeft.target.position - _armLeft.transform.position).eulerAngles;
+				Vector3 anglesLeft = Quaternion.LookRotation(nearestToArmLeft.selfTarget.position - _aprController.armLeft.transform.position).eulerAngles;
 				anglesLeft -= bodyBendingFactor;
-				_armLeft.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
+				_aprController.armLeft.joint.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
 
-				nearEnemies.SortByDistanceTo(_armRight.transform.position);
+				nearEnemies.SortByDistanceTo(_aprController.armLeft.transform.position);
 				Enemy nearestToArmRight = nearEnemies[0];
 
 				if (nearEnemies.Count > 1)
@@ -47,11 +44,11 @@ public class Player : MonoBehaviour
 					}
 				}
 
-				Debug.DrawLine(nearestToArmRight.target.position, _armRight.transform.position, Color.yellow);
+				Debug.DrawLine(nearestToArmRight.selfTarget.position, _aprController.armRight.transform.position, Color.yellow);
 
-				Vector3 angles = Quaternion.LookRotation(nearestToArmRight.target.position - _armRight.transform.position).eulerAngles;
+				Vector3 angles = Quaternion.LookRotation(nearestToArmRight.selfTarget.position - _aprController.armRight.transform.position).eulerAngles;
 				angles -= bodyBendingFactor;
-				_armRight.targetRotation = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
+				_aprController.armRight.joint.targetRotation = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
 			}
 		}
 	}
