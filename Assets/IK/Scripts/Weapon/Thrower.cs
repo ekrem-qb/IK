@@ -27,7 +27,7 @@ public class Thrower : Melee
 		}
 	}
 
-	IEnumerator Throw(Vector3 target)
+	private IEnumerator Throw(Vector3 target)
 	{
 		yield return new WaitUntil(() => isAttacking);
 		Knife knife = Instantiate(projectilePrefab, this.transform.position, Quaternion.identity).GetComponent<Knife>();

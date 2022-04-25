@@ -3,25 +3,26 @@ using UnityEngine;
 
 public class Gangster : Enemy
 {
-    public float attackInterval = 0.5f;
-    WeaponManager weaponManager;
+	[Header("Gangster")] public float attackInterval = 0.5f;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        weaponManager = aprController.COMP.GetComponent<WeaponManager>();
-    }
+	WeaponManager weaponManager;
 
-    protected override IEnumerator Attack()
-    {
-        isAttacking = true;
+	protected override void Awake()
+	{
+		base.Awake();
+		weaponManager = aprController.COMP.GetComponent<WeaponManager>();
+	}
 
-        if (weaponManager.weapon)
-        {
-            weaponManager.weapon.Attack();
-        }
+	protected override IEnumerator Attack()
+	{
+		isAttacking = true;
 
-        yield return new WaitForSeconds(attackInterval);
-        isAttacking = false;
-    }
+		if (weaponManager.weapon)
+		{
+			weaponManager.weapon.Attack();
+		}
+
+		yield return new WaitForSeconds(attackInterval);
+		isAttacking = false;
+	}
 }

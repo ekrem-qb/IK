@@ -514,12 +514,15 @@ MonoBehaviour:
   pickUp:
     key: 101
     button: {fileID: 0}
+    holdButton: {fileID: 0}
   drop:
     key: 113
     button: {fileID: 0}
+    holdButton: {fileID: 0}
   attack:
     key: 256
     button: {fileID: 0}
+    holdButton: {fileID: 0}
   ammoCount: {fileID: 0}
 --- !u!1 &1732073244057133435
 GameObject:
@@ -1037,7 +1040,6 @@ Transform:
   m_Children:
   - {fileID: 7725703933841967889}
   - {fileID: 9165881614328315649}
-  - {fileID: 3489675994536692372}
   m_Father: {fileID: 6974771330786837034}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2492,7 +2494,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 6974771330786837042}
-  Left: 1
   joint: {fileID: 0}
 --- !u!1 &6974771330786837005
 GameObject:
@@ -2668,7 +2669,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   APR_Player: {fileID: 6974771330786837042}
-  Left: 0
   joint: {fileID: 0}
 --- !u!1 &6974771330786837007
 GameObject:
@@ -2738,16 +2738,19 @@ MonoBehaviour:
   joystick: {fileID: 0}
   forwardBackward: Vertical
   leftRight: Horizontal
-  keyJump: 32
-  reachLeft: 0
-  reachRight: 0
-  punchLeft: q
-  punchRight: e
+  bendingSlider: {fileID: 0}
+  jump:
+    key: 32
+    button: {fileID: 0}
+    holdButton: {fileID: 0}
+  drop:
+    key: 113
+    button: {fileID: 0}
+    holdButton: {fileID: 0}
   thisPlayerLayer: Player_1
   moveSpeed: 10
   maxJumpStrength: 18
   maxJumpRequiredSeconds: 2
-  jumpButton: {fileID: 0}
   jumpStrengthIndicator: {fileID: 0}
   autoGetUpWhenPossible: 1
   stunningParticle: {fileID: 0}
@@ -2761,12 +2764,9 @@ MonoBehaviour:
   StepDuration: 0.25
   StepHeight: 0.625
   FeetMountForce: 25
-  reachSensitivity: 25
   armReachStiffness: 2000
   canBeKnockoutByImpact: 0
   requiredForceToBeKO: 20
-  canPunch: 1
-  punchForce: 15
   ImpactForce: 10
   Impacts:
   - {fileID: 8300000, guid: 6c4cb0d9b484065469606431acecaf73, type: 3}
@@ -2792,17 +2792,9 @@ MonoBehaviour:
   isRagdoll: 0
   isKeyDown: 0
   moveAxisUsed: 0
-  reachLeftAxisUsed: 0
-  reachRightAxisUsed: 0
+  _isGrabbing: 0
+  _isGrabbed: 0
   isInAir: 0
-  punchingRight: 0
-  punchingLeft: 0
-  upperRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  lowerRightArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  upperLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  lowerLeftArmTarget: {x: 0, y: 0, z: 0, w: 0}
-  rightHandTarget: {x: 0, y: 0, z: 0, w: 0}
-  leftHandTarget: {x: 0, y: 0, z: 0, w: 0}
   editorDebugMode: 1
   healthManager: {fileID: 0}
 --- !u!114 &6224220087467174476
@@ -3811,16 +3803,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aprController: {fileID: 0}
-  rootJoint: {fileID: 0}
-  rootRB: {fileID: 0}
-  target: {fileID: 0}
+  selfTarget: {fileID: 0}
   _player: {fileID: 0}
   attackDistance: 15
+  attackInterval: 0.5
   pickUpDelay: 0.065
   conveyorStart: {fileID: 0}
   boxManager: {fileID: 0}
   toggler: {fileID: 0}
-  attackInterval: 0.5
 --- !u!114 &4936355600723285689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4397,6 +4387,7 @@ Transform:
   m_Children:
   - {fileID: 7685267022771547106}
   - {fileID: 8774414234100350229}
+  - {fileID: 3489675994536692372}
   m_Father: {fileID: 6974771330786837036}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4596,7 +4587,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 3216840483188671167}
+    m_TransformParent: {fileID: 9108027804109352440}
     m_Modifications:
     - target: {fileID: -8852265617842370800, guid: cc9820ede38d59c449a4a5a24c024d1a,
         type: 3}
@@ -4615,8 +4606,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
         type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
+      propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
         type: 3}
@@ -4626,7 +4652,7 @@ PrefabInstance:
     - target: {fileID: 8210723328586061642, guid: cc9820ede38d59c449a4a5a24c024d1a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
+      value: 174
       objectReference: {fileID: 0}
     - target: {fileID: 8210723328586061643, guid: cc9820ede38d59c449a4a5a24c024d1a,
         type: 3}

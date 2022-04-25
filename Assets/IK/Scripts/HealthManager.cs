@@ -46,7 +46,7 @@ public class HealthManager : MonoBehaviour
 		}
 	}
 
-	void Awake()
+	private void Awake()
 	{
 		if (textHealth)
 		{

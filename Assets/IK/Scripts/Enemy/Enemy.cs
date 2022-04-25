@@ -6,7 +6,10 @@ public abstract class Enemy : MonoBehaviour
 {
 	[HideInInspector] public APRController aprController;
 	[HideInInspector] public Transform selfTarget;
-	[SerializeField] [ReadOnly] private Player _player;
+
+	[Header("Enemy")] [SerializeField] [ReadOnly]
+	private Player _player;
+
 	public float attackDistance = 2.5f;
 	protected bool isAttacking;
 	protected PathFollower pathFollower;

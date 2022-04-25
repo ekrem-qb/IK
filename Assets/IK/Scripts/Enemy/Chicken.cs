@@ -3,45 +3,46 @@ using UnityEngine;
 
 public class Chicken : Enemy
 {
-    public float explosionForce = 40;
-    private ParticleSystem _particle;
+	[Header("Chicken")] public float explosionForce = 40;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _particle = this.GetComponentInChildren<ParticleSystem>();
-    }
+	private ParticleSystem _particle;
 
-    protected override IEnumerator Attack()
-    {
-        Collider[] colliders = Physics.OverlapSphere(this.transform.position, attackDistance);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            HealthManager enemy = colliders[i].transform.root.GetComponent<HealthManager>();
-            if (enemy)
-            {
-                enemy.health = 0;
-            }
+	protected override void Awake()
+	{
+		base.Awake();
+		_particle = this.GetComponentInChildren<ParticleSystem>();
+	}
 
-            if (colliders[i].attachedRigidbody)
-            {
-                colliders[i].attachedRigidbody.velocity = Vector3.zero;
-                colliders[i].attachedRigidbody.AddExplosionForce(explosionForce, this.transform.position, attackDistance, 0, ForceMode.VelocityChange);
-            }
-        }
+	protected override IEnumerator Attack()
+	{
+		Collider[] colliders = Physics.OverlapSphere(this.transform.position, attackDistance);
+		for (int i = 0; i < colliders.Length; i++)
+		{
+			HealthManager enemy = colliders[i].transform.root.GetComponent<HealthManager>();
+			if (enemy)
+			{
+				enemy.health = 0;
+			}
 
-        if (_particle)
-        {
-            _particle.transform.SetParent(null);
-            _particle.Play();
-        }
+			if (colliders[i].attachedRigidbody)
+			{
+				colliders[i].attachedRigidbody.velocity = Vector3.zero;
+				colliders[i].attachedRigidbody.AddExplosionForce(explosionForce, this.transform.position, attackDistance, 0, ForceMode.VelocityChange);
+			}
+		}
 
-        Destroy(this.transform.root.gameObject);
-        yield return null;
-    }
+		if (_particle)
+		{
+			_particle.transform.SetParent(null);
+			_particle.Play();
+		}
 
-    protected override void OnPlayerChanged(Player newPlayer)
-    {
-        this.enabled = newPlayer;
-    }
+		Destroy(this.transform.root.gameObject);
+		yield return null;
+	}
+
+	protected override void OnPlayerChanged(Player newPlayer)
+	{
+		this.enabled = newPlayer;
+	}
 }

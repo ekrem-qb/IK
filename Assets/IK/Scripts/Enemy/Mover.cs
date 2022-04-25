@@ -1,19 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class Mover : Enemy
+public class Mover : Ped
 {
-	public float pickUpDelay = 0.065f;
+	[Header("Mover")] public float pickUpDelay = 0.065f;
+
 	public Transform conveyorStart;
 	public BoxManager boxManager;
 	public Toggler toggler;
-	public float attackInterval = 0.5f;
-	Box _box;
-	FixedJoint jointLeft, jointRight;
-	SphereCollider trigger;
-	WeaponManager weaponManager;
+	private Box _box;
+	private FixedJoint _jointLeft, _jointRight;
+	private SphereCollider _trigger;
 
-	Box box
+	private Box box
 	{
 		get => _box;
 		set
@@ -38,8 +37,7 @@ public class Mover : Enemy
 	protected override void Awake()
 	{
 		base.Awake();
-		trigger = this.GetComponent<SphereCollider>();
-		weaponManager = aprController.COMP.GetComponent<WeaponManager>();
+		_trigger = this.GetComponent<SphereCollider>();
 		boxManager.boxes.CountChanged += OnBoxesCountChanged;
 		toggler.Toggle += OnSwitchToggle;
 
@@ -56,7 +54,7 @@ public class Mover : Enemy
 		toggler.Toggle -= OnSwitchToggle;
 	}
 
-	void OnDrawGizmos()
+	private void OnDrawGizmos()
 	{
 		if (pathFollower)
 		{
@@ -71,7 +69,7 @@ public class Mover : Enemy
 		}
 	}
 
-	void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
 		if (pathFollower.enabled)
 		{
@@ -90,7 +88,7 @@ public class Mover : Enemy
 					{
 						if (other.transform == box.transform)
 						{
-							if (!jointLeft && !jointRight)
+							if (!_jointLeft && !_jointRight)
 							{
 								StartCoroutine(PickUp(other));
 							}
@@ -101,22 +99,11 @@ public class Mover : Enemy
 		}
 	}
 
-	void OnSwitchToggle(bool isOn)
+	private void OnSwitchToggle(bool isOn)
 	{
 		if (isOn)
 		{
-			if (player)
-			{
-				pathFollower.enabled = false;
-				this.enabled = true;
-
-				if (weaponManager.weapon)
-				{
-					weaponManager.weapon.gameObject.SetActive(true);
-				}
-
-				StartCoroutine(Drop());
-			}
+			Annoy();
 		}
 		else
 		{
@@ -130,7 +117,7 @@ public class Mover : Enemy
 		}
 	}
 
-	void OnBoxesCountChanged(int count)
+	private void OnBoxesCountChanged(int count)
 	{
 		if (count > 0)
 		{
@@ -143,7 +130,7 @@ public class Mover : Enemy
 		}
 	}
 
-	IEnumerator PickUp(Collider coll)
+	private IEnumerator PickUp(Collider coll)
 	{
 		pathFollower.isWaiting = true;
 		box = null;
@@ -165,13 +152,13 @@ public class Mover : Enemy
 
 		yield return new WaitForSeconds(pickUpDelay);
 
-		jointLeft = aprController.handLeft.transform.gameObject.AddComponent<FixedJoint>();
-		jointLeft.breakForce = Mathf.Infinity;
-		jointLeft.connectedBody = coll.attachedRigidbody;
+		_jointLeft = aprController.handLeft.transform.gameObject.AddComponent<FixedJoint>();
+		_jointLeft.breakForce = Mathf.Infinity;
+		_jointLeft.connectedBody = coll.attachedRigidbody;
 
-		jointRight = aprController.handRight.transform.gameObject.AddComponent<FixedJoint>();
-		jointRight.breakForce = Mathf.Infinity;
-		jointRight.connectedBody = coll.attachedRigidbody;
+		_jointRight = aprController.handRight.transform.gameObject.AddComponent<FixedJoint>();
+		_jointRight.breakForce = Mathf.Infinity;
+		_jointRight.connectedBody = coll.attachedRigidbody;
 
 		aprController.body.joint.targetRotation = new Quaternion(0, 0, 0, 1);
 
@@ -183,7 +170,7 @@ public class Mover : Enemy
 		}
 
 		pathFollower.isWaiting = false;
-		trigger.radius = 1.5f;
+		_trigger.radius = 1.5f;
 	}
 
 	public IEnumerator Drop()
@@ -200,13 +187,13 @@ public class Mover : Enemy
 
 		yield return new WaitForSeconds(pickUpDelay);
 
-		Destroy(jointLeft);
-		Destroy(jointRight);
+		Destroy(_jointLeft);
+		Destroy(_jointRight);
 
 		pathFollower.isWaiting = false;
 		pathFollower.path.Remove(conveyorStart);
 
-		trigger.radius = 1;
+		_trigger.radius = 1;
 	}
 
 	protected override void OnPlayerChanged(Player newPlayer)
@@ -215,15 +202,7 @@ public class Mover : Enemy
 		{
 			if (toggler.isOn)
 			{
-				pathFollower.enabled = false;
-				this.enabled = true;
-
-				if (weaponManager.weapon)
-				{
-					weaponManager.weapon.gameObject.SetActive(true);
-				}
-
-				StartCoroutine(Drop());
+				Annoy();
 			}
 		}
 		else
@@ -238,15 +217,29 @@ public class Mover : Enemy
 		}
 	}
 
+	protected override void Annoy()
+	{
+		base.Annoy();
+
+		if (player)
+		{
+			if (weaponManager.weapon)
+			{
+				weaponManager.weapon.gameObject.SetActive(true);
+			}
+
+			StartCoroutine(Drop());
+		}
+	}
+
 	protected override IEnumerator Attack()
 	{
 		isAttacking = true;
 
 		if (weaponManager.weapon)
 		{
-			if (weaponManager.weapon is Thrower)
+			if (weaponManager.weapon is Thrower thrower)
 			{
-				Thrower thrower = weaponManager.weapon as Thrower;
 				thrower.Attack(player.transform.position);
 				yield return new WaitUntil(() => thrower.isAttacking);
 				thrower.meshRenderer.enabled = false;

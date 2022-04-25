@@ -13,12 +13,12 @@ public class PathFollower : MonoBehaviour
 	public bool isWaiting = false;
 	Enemy enemy;
 
-	void Awake()
+	private void Awake()
 	{
 		enemy = this.GetComponent<Enemy>();
 	}
 
-	void FixedUpdate()
+	private void FixedUpdate()
 	{
 		if (!isWaiting && path.Count > 0)
 		{
@@ -74,7 +74,7 @@ public class PathFollower : MonoBehaviour
 		}
 	}
 
-	void OnDrawGizmos()
+	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.cyan;
 
@@ -102,7 +102,7 @@ public class PathFollower : MonoBehaviour
 		}
 	}
 
-	IEnumerator WaitForIntervalBetweenPoints()
+	private IEnumerator WaitForIntervalBetweenPoints()
 	{
 		if (Random.Range(0, 101) <= probabilityPercent)
 		{

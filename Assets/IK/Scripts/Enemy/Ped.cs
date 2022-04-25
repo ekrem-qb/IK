@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class Ped : Enemy
 {
-	public float attackInterval = 0.5f;
-	HealthManager healthManager;
-	WeaponManager weaponManager;
+	[Header("Ped")] public float attackInterval = 0.5f;
+
+	private HealthManager _healthManager;
+	protected WeaponManager weaponManager;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		weaponManager = aprController.COMP.GetComponent<WeaponManager>();
-		healthManager = this.transform.root.GetComponent<HealthManager>();
-		healthManager.Hit += Annoy;
+		_healthManager = this.transform.root.GetComponent<HealthManager>();
+		_healthManager.Hit += Annoy;
 	}
 
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
-		healthManager.Hit -= Annoy;
+		_healthManager.Hit -= Annoy;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -50,7 +51,7 @@ public class Ped : Enemy
 		}
 	}
 
-	void Annoy()
+	protected virtual void Annoy()
 	{
 		if (player)
 		{
@@ -62,8 +63,6 @@ public class Ped : Enemy
 	protected override IEnumerator Attack()
 	{
 		isAttacking = true;
-
-		yield return new WaitForSeconds(attackInterval);
 
 		if (weaponManager.weapon)
 		{
