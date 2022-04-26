@@ -207,17 +207,21 @@ public class Mover : Ped
 		}
 		else
 		{
-			pathFollower.enabled = true;
-			this.enabled = false;
-
-			if (weaponManager.weapon)
-			{
-				weaponManager.weapon.gameObject.SetActive(false);
-			}
+			Calm();
 		}
 	}
 
-	protected override void Annoy()
+	public override void Calm()
+	{
+		base.Calm();
+
+		if (weaponManager.weapon)
+		{
+			weaponManager.weapon.gameObject.SetActive(false);
+		}
+	}
+
+	public override void Annoy()
 	{
 		base.Annoy();
 

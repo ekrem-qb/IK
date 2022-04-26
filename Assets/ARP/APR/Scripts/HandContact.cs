@@ -36,7 +36,7 @@ namespace ARP.APR.Scripts
 			{
 				//Left Hand
 				//On input release destroy joint
-				if (joint && !APR_Player.isGrabbed)
+				if (joint && !APR_Player.grabbed)
 				{
 					Destroy(joint);
 				}
@@ -54,8 +54,8 @@ namespace ARP.APR.Scripts
 					{
 						joint = this.gameObject.AddComponent<FixedJoint>();
 						joint.breakForce = Mathf.Infinity;
-						joint.connectedBody = col.gameObject.GetComponent<Rigidbody>();
-						APR_Player.isGrabbed = true;
+						joint.connectedBody = col.rigidbody;
+						APR_Player.grabbed = col.transform;
 					}
 				}
 			}

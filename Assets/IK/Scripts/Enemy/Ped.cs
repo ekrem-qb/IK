@@ -46,12 +46,17 @@ public class Ped : Enemy
 	{
 		if (!newPlayer)
 		{
-			pathFollower.enabled = true;
-			this.enabled = false;
+			Calm();
 		}
 	}
 
-	protected virtual void Annoy()
+	public virtual void Calm()
+	{
+		pathFollower.enabled = true;
+		this.enabled = false;
+	}
+
+	public virtual void Annoy()
 	{
 		if (player)
 		{

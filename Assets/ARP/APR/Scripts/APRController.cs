@@ -135,7 +135,7 @@ namespace ARP.APR.Scripts
 			moveAxisUsed;
 
 		[SerializeField] [ReadOnly] private bool _isGrabbing;
-		[SerializeField] [ReadOnly] private bool _isGrabbed;
+		[SerializeField] [ReadOnly] private Transform _grabbed;
 
 		[ReadOnly] public bool
 			isInAir;
@@ -155,6 +155,8 @@ namespace ARP.APR.Scripts
 
 		private float
 			_mouseXAxisArms;
+
+		private Player _player;
 
 		private ETFXRotation[] _stunningParticleRotations;
 
@@ -233,21 +235,46 @@ namespace ARP.APR.Scripts
 
 					ResetPlayerPose();
 
-					isGrabbed = false;
+					grabbed = null;
 				}
 			}
 		}
 
-		public bool isGrabbed
+		public Transform grabbed
 		{
-			get => _isGrabbed;
+			get => _grabbed;
 			set
 			{
-				_isGrabbed = value;
 				if (drop.button)
 				{
 					drop.button.gameObject.SetActive(value);
 				}
+
+				if (value)
+				{
+					if (value.GetComponent<Box>())
+					{
+						foreach (Mover mover in _player.nearEnemies.FindAll(enemy => enemy is Mover))
+						{
+							mover.Annoy();
+						}
+					}
+				}
+				else
+				{
+					if (_grabbed)
+					{
+						if (_grabbed.GetComponent<Box>())
+						{
+							foreach (Mover mover in _player.nearEnemies.FindAll(enemy => enemy is Mover))
+							{
+								mover.Calm();
+							}
+						}
+					}
+				}
+
+				_grabbed = value;
 			}
 		}
 
@@ -256,6 +283,7 @@ namespace ARP.APR.Scripts
 			PlayerSetup();
 			DeactivateRagdoll();
 			_weaponManager = COMP.GetComponent<WeaponManager>();
+			_player = root.transform.GetComponent<Player>();
 			healthManager = this.GetComponent<HealthManager>();
 			if (stunningParticle)
 			{
@@ -290,14 +318,14 @@ namespace ARP.APR.Scripts
 			{
 				_grabbingToggleButton.onPress.AddListener(() =>
 				{
-					if (!isGrabbed && isBalanced)
+					if (!grabbed && isBalanced)
 					{
 						isGrabbing = true;
 					}
 				});
 				_grabbingToggleButton.onRelease.AddListener(() =>
 				{
-					if (!isGrabbed)
+					if (!grabbed)
 					{
 						isGrabbing = false;
 					}

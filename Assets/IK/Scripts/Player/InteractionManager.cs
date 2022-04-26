@@ -72,7 +72,7 @@ public class InteractionManager : MonoBehaviour
 
 	private void CheckInteractionAvailability()
 	{
-		if (currentTarget && _aprController.isBalanced && !_aprController.isGrabbing && !_aprController.isGrabbed && (!_weaponManager.weapon || (currentTarget.GetComponent<RedButton>() && _weaponManager.weapon is Melee)))
+		if (currentTarget && _aprController.isBalanced && !_aprController.isGrabbing && !_aprController.grabbed && (!_weaponManager.weapon || (currentTarget.GetComponent<RedButton>() && _weaponManager.weapon is Melee)))
 		{
 			canInteract = true;
 		}
