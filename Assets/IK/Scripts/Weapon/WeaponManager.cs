@@ -210,7 +210,7 @@ public class WeaponManager : MonoBehaviour
 			{
 				return;
 			}
-			case Fist:
+			case Fist _:
 			{
 				return;
 			}
