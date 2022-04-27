@@ -31,6 +31,11 @@ public class InteractionManager : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
+		if (!_aprController.root.transform)
+		{
+			_aprController.PlayerSetup();
+		}
+
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_weaponManager.WeaponChanged += CheckInteractionAvailability;
 		CheckInteractionAvailability();

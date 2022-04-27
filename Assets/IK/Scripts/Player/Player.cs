@@ -11,6 +11,11 @@ public class Player : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
+		if (!_aprController.root.transform)
+		{
+			_aprController.PlayerSetup();
+		}
+
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_trigger = this.GetComponent<SphereCollider>();
 		nearEnemies.CountChanged += count => this.enabled = count > 0;

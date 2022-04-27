@@ -8,6 +8,10 @@ public class RotationControl : MonoBehaviour
 	private void Awake()
 	{
 		_aprController = this.transform.root.GetComponent<APRController>();
+		if (!_aprController.root.transform)
+		{
+			_aprController.PlayerSetup();
+		}
 	}
 
 	private void FixedUpdate()

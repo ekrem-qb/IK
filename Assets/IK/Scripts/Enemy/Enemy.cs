@@ -31,6 +31,11 @@ public abstract class Enemy : MonoBehaviour
 	protected virtual void Awake()
 	{
 		aprController = this.transform.root.GetComponent<APRController>();
+		if (!aprController.root.transform)
+		{
+			aprController.PlayerSetup();
+		}
+
 		selfTarget = aprController.body.transform;
 		pathFollower = this.GetComponent<PathFollower>();
 		this.enabled = false;
