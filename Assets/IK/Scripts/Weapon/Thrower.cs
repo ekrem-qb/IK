@@ -13,9 +13,9 @@ public class Thrower : Melee
 		meshRenderer = this.GetComponent<MeshRenderer>();
 	}
 
-	public override void Attack()
+	public override void Drop()
 	{
-		Attack(Vector3.zero);
+		meshRenderer.enabled = false;
 	}
 
 	public void Attack(Vector3 target)
