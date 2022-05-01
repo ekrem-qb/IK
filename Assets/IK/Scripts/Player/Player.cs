@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	public readonly ObservableList<Target> nearTargets = new ObservableList<Target>();
 	private APRController _aprController;
 	private SphereCollider _trigger;
 	private WeaponManager _weaponManager;
-	public ObservableList<Enemy> nearEnemies = new ObservableList<Enemy>();
 
 	private void Awake()
 	{
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
 		_weaponManager = _aprController.COMP.GetComponent<WeaponManager>();
 		_trigger = this.GetComponent<SphereCollider>();
-		nearEnemies.CountChanged += count => this.enabled = count > 0;
+		nearTargets.CountChanged += count => this.enabled = count > 0;
 	}
 
 	private void FixedUpdate()
@@ -29,8 +29,8 @@ public class Player : MonoBehaviour
 			{
 				Vector3 bodyBendingFactor = new Vector3(_aprController.body.transform.eulerAngles.x, _aprController.root.transform.localEulerAngles.y, 0);
 
-				nearEnemies.SortByDistanceTo(_aprController.armLeft.transform.position);
-				Enemy nearestToArmLeft = nearEnemies[0];
+				nearTargets.SortByDistanceTo(_aprController.armLeft.transform.position);
+				Target nearestToArmLeft = nearTargets[0];
 
 				Debug.DrawLine(nearestToArmLeft.selfTarget.position, _aprController.armLeft.transform.position, Color.red);
 
@@ -38,14 +38,14 @@ public class Player : MonoBehaviour
 				anglesLeft -= bodyBendingFactor;
 				_aprController.armLeft.joint.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
 
-				nearEnemies.SortByDistanceTo(_aprController.armLeft.transform.position);
-				Enemy nearestToArmRight = nearEnemies[0];
+				nearTargets.SortByDistanceTo(_aprController.armRight.transform.position);
+				Target nearestToArmRight = nearTargets[0];
 
-				if (nearEnemies.Count > 1)
+				if (nearTargets.Count > 1)
 				{
 					if (nearestToArmRight == nearestToArmLeft)
 					{
-						nearestToArmRight = nearEnemies[1];
+						nearestToArmRight = nearTargets[1];
 					}
 				}
 
@@ -76,20 +76,19 @@ public class Player : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		nearEnemies.ForEach(enemy => enemy.player = null);
+		nearTargets.ForEach(target => target.player = null);
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.isTrigger)
 		{
-			Enemy enemy = other.GetComponent<Enemy>();
-			if (enemy)
+			if (other.TryGetComponent(out Target target))
 			{
-				if (!nearEnemies.Contains(enemy))
+				if (!nearTargets.Contains(target))
 				{
-					enemy.player = this;
-					nearEnemies.Add(enemy);
+					target.player = this;
+					nearTargets.Add(target);
 				}
 			}
 		}
@@ -101,11 +100,10 @@ public class Player : MonoBehaviour
 		{
 			if (_trigger.radius <= Vector3.Distance(this.transform.position, other.transform.position))
 			{
-				Enemy enemy = other.GetComponent<Enemy>();
-				if (enemy)
+				if (other.TryGetComponent(out Target target))
 				{
-					enemy.player = null;
-					nearEnemies.Remove(enemy);
+					target.player = null;
+					nearTargets.Remove(target);
 				}
 			}
 		}

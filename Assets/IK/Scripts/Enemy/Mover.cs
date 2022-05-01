@@ -145,10 +145,10 @@ public class Mover : Ped
 		aprController.isGrabbing = true;
 
 		//upper  left arm pose
-		aprController.armLeft.joint.targetRotation = new Quaternion(-0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1);
+		aprController.armLeft.joint.targetRotation = new Quaternion(-0.88f, 0.58f, -0.8f, 1);
 
 		//upper  left arm pose
-		aprController.armRight.joint.targetRotation = Quaternion.Inverse(new Quaternion(0.88f - aprController.MouseYAxisArms, 0.58f + aprController.MouseYAxisArms, -0.8f, 1));
+		aprController.armRight.joint.targetRotation = Quaternion.Inverse(new Quaternion(0.88f, 0.58f, -0.8f, 1));
 
 		yield return new WaitForSeconds(pickUpDelay);
 

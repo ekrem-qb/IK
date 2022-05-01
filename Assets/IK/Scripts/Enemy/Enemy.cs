@@ -2,33 +2,14 @@ using System.Collections;
 using ARP.APR.Scripts;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : Target
 {
 	[HideInInspector] public APRController aprController;
-	[HideInInspector] public Transform selfTarget;
-
-	[Header("Enemy")] [SerializeField] [ReadOnly]
-	private Player _player;
-
-	public float attackDistance = 2.5f;
+	[Header("Enemy")] public float attackDistance = 2.5f;
 	protected bool isAttacking;
 	protected PathFollower pathFollower;
 
-	public Player player
-	{
-		get => _player;
-		set
-		{
-			if (_player != value)
-			{
-				OnPlayerChanged(value);
-			}
-
-			_player = value;
-		}
-	}
-
-	protected virtual void Awake()
+	protected override void Awake()
 	{
 		aprController = this.transform.root.GetComponent<APRController>();
 		if (!aprController.root.transform)
@@ -95,14 +76,6 @@ public abstract class Enemy : MonoBehaviour
 		}
 	}
 
-	protected virtual void OnDestroy()
-	{
-		if (player)
-		{
-			player.nearEnemies.Remove(this);
-		}
-	}
-
 	protected virtual void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
@@ -111,9 +84,9 @@ public abstract class Enemy : MonoBehaviour
 
 	protected abstract IEnumerator Attack();
 
-	protected virtual void OnPlayerChanged(Player newPlayer)
+	protected override void OnPlayerChanged(Player newPlayer)
 	{
+		base.OnPlayerChanged(newPlayer);
 		pathFollower.enabled = !newPlayer;
-		this.enabled = newPlayer;
 	}
 }

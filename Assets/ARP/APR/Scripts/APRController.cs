@@ -118,7 +118,6 @@ namespace ARP.APR.Scripts
 		public AudioSource SoundSource;
 
 		public float
-			MouseYAxisArms,
 			MouseYAxisBody;
 
 		[ReadOnly] public bool
@@ -254,7 +253,7 @@ namespace ARP.APR.Scripts
 				{
 					if (value.GetComponent<Box>())
 					{
-						foreach (Mover mover in _player.nearEnemies.FindAll(enemy => enemy is Mover))
+						foreach (Mover mover in _player.nearTargets.FindAll(enemy => enemy is Mover))
 						{
 							mover.Annoy();
 						}
@@ -266,7 +265,7 @@ namespace ARP.APR.Scripts
 					{
 						if (_grabbed.GetComponent<Box>())
 						{
-							foreach (Mover mover in _player.nearEnemies.FindAll(enemy => enemy is Mover))
+							foreach (Mover mover in _player.nearTargets.FindAll(enemy => enemy is Mover))
 							{
 								mover.Calm();
 							}
@@ -762,24 +761,25 @@ namespace ARP.APR.Scripts
 				{
 					if (bendingSlider)
 					{
-						body.joint.targetRotation = new Quaternion(bendingSlider.value, 0, 0, 1);
+						body.joint.targetRotation = new Quaternion(Mathf.Clamp(bendingSlider.value, -1, 0.25f), 0, 0, 1);
 					}
 				}
 
 				if (isGrabbing)
 				{
-					if (!(_weaponManager.weapon is Gun))
-					{
-						//Reach Left
-						//upper  left arm pose
-						armLeft.joint.targetRotation = new Quaternion(-0.88f - bendingSlider.value, 0.58f + bendingSlider.value, -0.8f, 1);
-					}
-
 					if (!_weaponManager.weapon)
 					{
+						float clampedValue = Mathf.Clamp(bendingSlider.value, -0.5f, 1);
+						Quaternion targetRotation = new Quaternion(-0.88f - clampedValue, 0.58f + clampedValue, -0.8f, 1);
+
+						//Reach Left
+						//upper  left arm pose
+						armLeft.joint.targetRotation = targetRotation;
+
 						//Reach Right
 						//upper right arm pose
-						armRight.joint.targetRotation = Quaternion.Inverse(new Quaternion(0.88f + bendingSlider.value, 0.58f + bendingSlider.value, -0.8f, 1));
+						targetRotation.x = -targetRotation.x;
+						armRight.joint.targetRotation = Quaternion.Inverse(targetRotation);
 					}
 				}
 			}
@@ -1046,7 +1046,6 @@ namespace ARP.APR.Scripts
 					armLeftLow.joint.targetRotation = armLeftLow.originalRotation;
 				}
 
-				MouseYAxisArms = 0;
 				if (bendingSlider)
 				{
 					bendingSlider.value = 0;

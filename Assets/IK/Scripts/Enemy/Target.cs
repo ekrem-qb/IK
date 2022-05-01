@@ -1,30 +1,41 @@
-using System.Collections;
+using UnityEngine;
 
-public class Target : Enemy
+public class Target : MonoBehaviour
 {
-	protected override void Awake()
+	[Header("Target")] [SerializeField] [ReadOnly]
+	private Player _player;
+
+	[HideInInspector] public Transform selfTarget;
+
+	public Player player
+	{
+		get => _player;
+		set
+		{
+			if (_player != value)
+			{
+				OnPlayerChanged(value);
+			}
+
+			_player = value;
+		}
+	}
+
+	protected virtual void Awake()
 	{
 		selfTarget = this.transform;
 	}
 
-	protected override void FixedUpdate()
+	protected virtual void OnDestroy()
 	{
+		if (player)
+		{
+			player.nearTargets.Remove(this);
+		}
 	}
 
-	protected override void OnDisable()
+	protected virtual void OnPlayerChanged(Player newPlayer)
 	{
-	}
-
-	protected override void OnDrawGizmosSelected()
-	{
-	}
-
-	protected override IEnumerator Attack()
-	{
-		yield return null;
-	}
-
-	protected override void OnPlayerChanged(Player newPlayer)
-	{
+		this.enabled = newPlayer;
 	}
 }

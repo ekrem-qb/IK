@@ -4,6 +4,7 @@ using UnityEngine;
 public class RotationControl : MonoBehaviour
 {
 	private APRController _aprController;
+	private Vector3 _targetDirection = Vector3.zero;
 
 	private void Awake()
 	{
@@ -18,34 +19,34 @@ public class RotationControl : MonoBehaviour
 	{
 		if (_aprController.useControls)
 		{
-			Vector3 targetDirection = Vector3.zero;
-
 			if (Input.GetAxisRaw(_aprController.leftRight) != 0)
 			{
-				targetDirection += Vector3.left * Input.GetAxisRaw(_aprController.leftRight);
+				_targetDirection += Vector3.left * Input.GetAxisRaw(_aprController.leftRight);
 			}
 
 			if (Input.GetAxisRaw(_aprController.forwardBackward) != 0)
 			{
-				targetDirection += Vector3.forward * Input.GetAxisRaw(_aprController.forwardBackward);
+				_targetDirection += Vector3.forward * Input.GetAxisRaw(_aprController.forwardBackward);
 			}
 
 			if (_aprController.joystick)
 			{
 				if (_aprController.joystick.Horizontal != 0)
 				{
-					targetDirection += Vector3.left * _aprController.joystick.Horizontal;
+					_targetDirection += Vector3.left * _aprController.joystick.Horizontal;
 				}
 
 				if (_aprController.joystick.Vertical != 0)
 				{
-					targetDirection += Vector3.forward * _aprController.joystick.Vertical;
+					_targetDirection += Vector3.forward * _aprController.joystick.Vertical;
 				}
 			}
 
-			if (targetDirection != Vector3.zero)
+			if (_targetDirection != Vector3.zero)
 			{
-				_aprController.root.joint.targetRotation = Quaternion.LookRotation(targetDirection);
+				_aprController.root.joint.targetRotation = Quaternion.LookRotation(_targetDirection);
+
+				_targetDirection = Vector3.zero;
 			}
 		}
 	}
