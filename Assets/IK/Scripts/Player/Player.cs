@@ -34,9 +34,17 @@ public class Player : MonoBehaviour
 
 				Debug.DrawLine(nearestToArmLeft.selfTarget.position, _aprController.armLeft.transform.position, Color.red);
 
-				Vector3 anglesLeft = Quaternion.LookRotation(nearestToArmLeft.selfTarget.position - _aprController.armLeft.transform.position).eulerAngles;
+				Quaternion targetRotationLeft = Quaternion.LookRotation(nearestToArmLeft.selfTarget.position - _aprController.armLeft.transform.position);
+				Vector3 anglesLeft = targetRotationLeft.eulerAngles;
+				anglesLeft.y -= 270;
+				if (Mathf.Abs(Quaternion.Dot(Quaternion.LookRotation(_aprController.root.transform.forward), targetRotationLeft)) < 0.5)
+				{
+					anglesLeft.x *= -1;
+				}
+
 				anglesLeft -= bodyBendingFactor;
-				_aprController.armLeft.joint.targetRotation = Quaternion.Euler(anglesLeft.x, anglesLeft.y - 270, anglesLeft.z);
+				_aprController.armLeft.joint.targetRotation = Quaternion.Euler(anglesLeft);
+
 
 				nearTargets.SortByDistanceTo(_aprController.armRight.transform.position);
 				Target nearestToArmRight = nearTargets[0];
@@ -51,9 +59,16 @@ public class Player : MonoBehaviour
 
 				Debug.DrawLine(nearestToArmRight.selfTarget.position, _aprController.armRight.transform.position, Color.yellow);
 
-				Vector3 angles = Quaternion.LookRotation(nearestToArmRight.selfTarget.position - _aprController.armRight.transform.position).eulerAngles;
-				angles -= bodyBendingFactor;
-				_aprController.armRight.joint.targetRotation = Quaternion.Euler(angles.x, angles.y - 90, angles.z);
+				Quaternion targetRotationRight = Quaternion.LookRotation(nearestToArmRight.selfTarget.position - _aprController.armRight.transform.position);
+				Vector3 anglesRight = targetRotationRight.eulerAngles;
+				anglesRight.y -= 90;
+				if (Mathf.Abs(Quaternion.Dot(Quaternion.LookRotation(_aprController.root.transform.forward), targetRotationRight)) < 0.5)
+				{
+					anglesRight.x *= -1;
+				}
+
+				anglesRight -= bodyBendingFactor;
+				_aprController.armRight.joint.targetRotation = Quaternion.Euler(anglesRight);
 			}
 		}
 	}
