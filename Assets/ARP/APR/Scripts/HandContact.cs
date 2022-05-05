@@ -48,7 +48,7 @@ namespace ARP.APR.Scripts
 		{
 			if (APR_Player.useControls)
 			{
-				if (col.gameObject.CompareTag("CanBeGrabbed") && col.gameObject.layer != LayerMask.NameToLayer(APR_Player.thisPlayerLayer) && !joint)
+				if (col.gameObject.CompareTag("CanBeGrabbed") && col.gameObject.layer != APR_Player.gameObject.layer && !joint)
 				{
 					if (APR_Player.isGrabbing && !joint && !weaponManager.weapon)
 					{

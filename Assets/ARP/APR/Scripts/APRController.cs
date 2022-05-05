@@ -71,10 +71,6 @@ namespace ARP.APR.Scripts
 			key = KeyCode.Q
 		};
 
-		[Header("The Layer Only This Player Is On")]
-		//Player layer name
-		public string thisPlayerLayer = "Player_1";
-
 		//Movement
 		public float moveSpeed = 10;
 		public float maxJumpStrength = 18;
@@ -381,7 +377,7 @@ namespace ARP.APR.Scripts
 		{
 			if (editorDebugMode)
 			{
-				Debug.DrawRay(Root.transform.position, -Root.transform.up * balanceHeight, Color.green);
+				Debug.DrawRay(Root.transform.position, Vector3.down * balanceHeight, Color.green);
 
 				if (useStepPrediction)
 				{
@@ -509,19 +505,16 @@ namespace ARP.APR.Scripts
 
 		private void GroundCheck()
 		{
-			Ray ray = new Ray(root.transform.position, -root.transform.up);
+			Ray ray = new Ray(root.transform.position, Vector3.down);
 
 			//Balance when ground is detected
-			if (Physics.Raycast(ray, out RaycastHit hit, balanceHeight))
+			if (Physics.Raycast(ray, out RaycastHit hit, balanceHeight, ~(1 << this.gameObject.layer)))
 			{
-				if (hit.transform.root != this.transform.root)
+				if (!isBalanced && root.rigidbody.velocity.magnitude < 1f)
 				{
-					if (!isBalanced && root.rigidbody.velocity.magnitude < 1f)
+					if (!hit.transform.GetComponent<Trampoline>())
 					{
-						if (!hit.transform.GetComponent<Trampoline>())
-						{
-							StartCoroutine(GetUp());
-						}
+						StartCoroutine(GetUp());
 					}
 				}
 			}

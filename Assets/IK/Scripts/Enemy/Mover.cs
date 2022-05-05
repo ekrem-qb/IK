@@ -107,13 +107,7 @@ public class Mover : Ped
 		}
 		else
 		{
-			pathFollower.enabled = true;
-			this.enabled = false;
-
-			if (weaponManager.weapon)
-			{
-				weaponManager.weapon.gameObject.SetActive(false);
-			}
+			Calm();
 		}
 	}
 
@@ -239,6 +233,7 @@ public class Mover : Ped
 	protected override IEnumerator Attack()
 	{
 		isAttacking = true;
+		yield return new WaitForSeconds(attackInterval);
 
 		if (weaponManager.weapon)
 		{
@@ -252,7 +247,6 @@ public class Mover : Ped
 			}
 		}
 
-		yield return new WaitForSeconds(attackInterval);
 		isAttacking = false;
 	}
 }

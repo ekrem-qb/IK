@@ -6,7 +6,7 @@ public abstract class Enemy : Target
 {
 	[HideInInspector] public APRController aprController;
 	[Header("Enemy")] public float attackDistance = 2.5f;
-	protected bool isAttacking;
+	[ReadOnly] [SerializeField] protected bool isAttacking;
 	protected PathFollower pathFollower;
 
 	protected override void Awake()

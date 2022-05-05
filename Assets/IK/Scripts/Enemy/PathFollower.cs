@@ -10,12 +10,12 @@ public class PathFollower : MonoBehaviour
 	public float maxInterval = 2;
 	[Range(0, 100)] public int probabilityPercent = 50;
 	[HideInInspector] public int nextPoint = 0;
-	public bool isWaiting = false;
-	Enemy enemy;
+	[ReadOnly] public bool isWaiting = false;
+	private Enemy _enemy;
 
 	private void Awake()
 	{
-		enemy = this.GetComponent<Enemy>();
+		_enemy = this.GetComponent<Enemy>();
 	}
 
 	private void FixedUpdate()
@@ -27,31 +27,31 @@ public class PathFollower : MonoBehaviour
 
 			if (Vector3.Distance(this.transform.position, target) > 0.5f)
 			{
-				enemy.aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - enemy.aprController.root.transform.position));
+				_enemy.aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - _enemy.aprController.root.transform.position));
 
-				Vector3 direction = enemy.aprController.root.transform.forward;
+				Vector3 direction = _enemy.aprController.root.transform.forward;
 				direction.y = 0f;
-				direction *= enemy.aprController.moveSpeed / 4;
+				direction *= _enemy.aprController.moveSpeed / 4;
 
-				enemy.aprController.root.rigidbody.velocity = Vector3.Lerp(enemy.aprController.root.rigidbody.velocity, direction + new Vector3(0, enemy.aprController.root.rigidbody.velocity.y, 0), Time.fixedDeltaTime * 10);
+				_enemy.aprController.root.rigidbody.velocity = Vector3.Lerp(_enemy.aprController.root.rigidbody.velocity, direction + new Vector3(0, _enemy.aprController.root.rigidbody.velocity.y, 0), Time.fixedDeltaTime * 10);
 
-				if (enemy.aprController.isBalanced)
+				if (_enemy.aprController.isBalanced)
 				{
-					if (!enemy.aprController.walkForward && !enemy.aprController.moveAxisUsed)
+					if (!_enemy.aprController.walkForward && !_enemy.aprController.moveAxisUsed)
 					{
-						enemy.aprController.walkForward = true;
-						enemy.aprController.moveAxisUsed = true;
-						enemy.aprController.isKeyDown = true;
+						_enemy.aprController.walkForward = true;
+						_enemy.aprController.moveAxisUsed = true;
+						_enemy.aprController.isKeyDown = true;
 					}
 				}
 			}
 			else
 			{
-				if (enemy.aprController.walkForward && enemy.aprController.moveAxisUsed)
+				if (_enemy.aprController.walkForward && _enemy.aprController.moveAxisUsed)
 				{
-					enemy.aprController.walkForward = false;
-					enemy.aprController.moveAxisUsed = false;
-					enemy.aprController.isKeyDown = false;
+					_enemy.aprController.walkForward = false;
+					_enemy.aprController.moveAxisUsed = false;
+					_enemy.aprController.isKeyDown = false;
 				}
 
 				if (nextPoint < path.Count - 1)
@@ -68,9 +68,9 @@ public class PathFollower : MonoBehaviour
 		}
 		else
 		{
-			enemy.aprController.walkForward = false;
-			enemy.aprController.moveAxisUsed = false;
-			enemy.aprController.isKeyDown = false;
+			_enemy.aprController.walkForward = false;
+			_enemy.aprController.moveAxisUsed = false;
+			_enemy.aprController.isKeyDown = false;
 		}
 	}
 
