@@ -7,10 +7,10 @@ public class Melee : Weapon
 	[Header("Melee")] public float force = 50;
 
 	[HideInInspector] public bool isAttacking;
-	private bool _isInHook;
+	[ReadOnly] [SerializeField] private bool _isInHook;
 	protected Action<bool> isInHookChanged = newIsInHook => { };
 
-	protected bool isInHook
+	public bool isInHook
 	{
 		get => _isInHook;
 		set

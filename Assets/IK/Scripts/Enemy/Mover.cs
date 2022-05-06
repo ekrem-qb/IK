@@ -233,7 +233,6 @@ public class Mover : Ped
 	protected override IEnumerator Attack()
 	{
 		isAttacking = true;
-		yield return new WaitForSeconds(attackInterval);
 
 		if (weaponManager.weapon)
 		{
@@ -247,6 +246,7 @@ public class Mover : Ped
 			}
 		}
 
+		yield return new WaitForSeconds(attackInterval);
 		isAttacking = false;
 	}
 }

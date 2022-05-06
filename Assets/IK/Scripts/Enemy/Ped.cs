@@ -54,6 +54,14 @@ public class Ped : Enemy
 	{
 		pathFollower.enabled = true;
 		this.enabled = false;
+
+		if (weaponManager.weapon is Melee melee)
+		{
+			melee.isInHook = false;
+		}
+
+		isAttacking = false;
+		aprController.RelaxArms(APRController.Arms.Both);
 	}
 
 	public virtual void Annoy()
