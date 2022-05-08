@@ -79,7 +79,10 @@ public class Mover : Ped
 				{
 					if (other.GetComponent<Conveyor>())
 					{
-						StartCoroutine(Drop());
+						if (other.transform.parent == conveyorStart.parent)
+						{
+							StartCoroutine(Drop());
+						}
 					}
 				}
 				else if (box)

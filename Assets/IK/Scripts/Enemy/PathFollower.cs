@@ -25,9 +25,14 @@ public class PathFollower : MonoBehaviour
 			Vector3 target = path[nextPoint].position;
 			target.y = this.transform.position.y;
 
+
 			if (Vector3.Distance(this.transform.position, target) > 0.5f)
 			{
-				_enemy.aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - _enemy.aprController.root.transform.position));
+				_enemy.agent.SetDestination(target);
+				Vector3 agentNextPosition = _enemy.agent.nextPosition;
+				agentNextPosition.y = this.transform.position.y;
+				_enemy.aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(agentNextPosition - _enemy.aprController.root.transform.position));
+				_enemy.agent.speed = Vector3.Distance(this.transform.position, agentNextPosition).Remap(0, 2, _enemy.aprController.moveSpeed, 0);
 
 				Vector3 direction = _enemy.aprController.root.transform.forward;
 				direction.y = 0f;

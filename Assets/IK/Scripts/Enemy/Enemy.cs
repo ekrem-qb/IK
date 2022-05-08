@@ -1,12 +1,14 @@
 using System.Collections;
 using ARP.APR.Scripts;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class Enemy : Target
 {
 	[HideInInspector] public APRController aprController;
 	[Header("Enemy")] public float attackDistance = 2.5f;
 	[ReadOnly] [SerializeField] protected bool isAttacking;
+	public NavMeshAgent agent;
 	protected PathFollower pathFollower;
 
 	protected override void Awake()
@@ -16,6 +18,9 @@ public abstract class Enemy : Target
 		{
 			aprController.PlayerSetup();
 		}
+
+		agent.updatePosition = false;
+		agent.updateRotation = false;
 
 		selfTarget = aprController.body.transform;
 		pathFollower = this.GetComponent<PathFollower>();
@@ -27,7 +32,11 @@ public abstract class Enemy : Target
 		Vector3 target = player.transform.position;
 		target.y = this.transform.position.y;
 
-		aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - aprController.root.transform.position));
+		agent.SetDestination(target);
+		Vector3 agentNextPosition = agent.nextPosition;
+		agentNextPosition.y = this.transform.position.y;
+		aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(agentNextPosition - aprController.root.transform.position));
+		agent.speed = Vector3.Distance(this.transform.position, agentNextPosition).Remap(0, 2, aprController.moveSpeed, 0);
 
 		if (Vector3.Distance(this.transform.position, target) > attackDistance)
 		{
@@ -49,6 +58,8 @@ public abstract class Enemy : Target
 		}
 		else
 		{
+			aprController.root.joint.targetRotation = Quaternion.Inverse(Quaternion.LookRotation(target - aprController.root.transform.position));
+
 			if (aprController.walkForward && aprController.moveAxisUsed)
 			{
 				aprController.walkForward = false;

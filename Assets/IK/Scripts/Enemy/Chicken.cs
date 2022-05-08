@@ -44,5 +44,10 @@ public class Chicken : Enemy
 	protected override void OnPlayerChanged(Player newPlayer)
 	{
 		this.enabled = newPlayer;
+		agent.enabled = newPlayer;
+		if (newPlayer)
+		{
+			agent.nextPosition = this.transform.position;
+		}
 	}
 }

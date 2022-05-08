@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 824344473}
   - component: {fileID: 824344476}
   - component: {fileID: 9134988436939919270}
+  - component: {fileID: 4889131597358789350}
   m_Layer: 0
   m_Name: Trampoline
   m_TagString: CanBeGrabbed
@@ -193,3 +194,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   springForce: 200
   direction: {x: 0, y: 1, z: 0}
+--- !u!208 &4889131597358789350
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493132805836720069}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 2.447, y: 0.73200005, z: 2.447}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.078, z: 0}
+  m_TimeToStationary: 0.5

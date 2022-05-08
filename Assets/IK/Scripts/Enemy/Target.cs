@@ -14,10 +14,9 @@ public class Target : MonoBehaviour
 		{
 			if (_player != value)
 			{
+				_player = value;
 				OnPlayerChanged(value);
 			}
-
-			_player = value;
 		}
 	}
 

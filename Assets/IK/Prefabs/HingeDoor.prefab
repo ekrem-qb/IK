@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 3104744664960276737}
   - component: {fileID: 3104744664960276736}
   - component: {fileID: 3104744664960276739}
+  - component: {fileID: 4367029523266932533}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -335,7 +336,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0.5, z: 0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 4.2708006, y: 7.0493755, z: 2.7624967}
+  m_ConnectedAnchor: {x: -14.2292, y: 7.0493755, z: 2.7624967}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -371,7 +372,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0.5, z: 0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 4.2708006, y: 7.0493755, z: 2.7624967}
+  m_ConnectedAnchor: {x: -14.2292, y: 7.0493755, z: 2.7624967}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -407,7 +408,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0, z: 0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 4.2708006, y: 3.5600004, z: 2.7624967}
+  m_ConnectedAnchor: {x: -14.2292, y: 3.5600004, z: 2.7624967}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -431,6 +432,22 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!208 &4367029523266932533
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104744664960276738}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3104744665609205670
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +464,7 @@ GameObject:
   - component: {fileID: 3104744665609205669}
   - component: {fileID: 3104744665609205668}
   - component: {fileID: 3104744665609205671}
+  - component: {fileID: 5717364245443500729}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -559,7 +577,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0.5, z: -0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -4.5008307, y: 7.0493755, z: 2.7624972}
+  m_ConnectedAnchor: {x: -23.000832, y: 7.0493755, z: 2.7624972}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -595,7 +613,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0.5, z: -0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -4.5008307, y: 7.0493755, z: 2.7624972}
+  m_ConnectedAnchor: {x: -23.000832, y: 7.0493755, z: 2.7624972}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -631,7 +649,7 @@ HingeJoint:
   m_Anchor: {x: 0.5, y: 0, z: -0.5}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -4.5008307, y: 3.5600004, z: 2.7624972}
+  m_ConnectedAnchor: {x: -23.000832, y: 3.5600004, z: 2.7624972}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -655,6 +673,22 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!208 &5717364245443500729
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104744665609205670}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3104744665736033174
 GameObject:
   m_ObjectHideFlags: 0
