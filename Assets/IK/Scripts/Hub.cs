@@ -20,7 +20,8 @@ public class Hub : MonoBehaviour
 
     private void Awake()
     {
-        toggler.Toggle += OnSwitchToggle;
+        if (toggler)
+            toggler.Toggle += OnSwitchToggle;
         _originalPosition = movingPart.localPosition;
     }
 

@@ -39,7 +39,9 @@ public class Mover : Ped
 		base.Awake();
 		_trigger = this.GetComponent<SphereCollider>();
 		boxManager.boxes.CountChanged += OnBoxesCountChanged;
-		toggler.Toggle += OnSwitchToggle;
+
+		if(toggler)
+			toggler.Toggle += OnSwitchToggle;
 
 		if (weaponManager.weapon)
 		{
@@ -51,7 +53,8 @@ public class Mover : Ped
 	{
 		base.OnDestroy();
 		boxManager.boxes.CountChanged -= OnBoxesCountChanged;
-		toggler.Toggle -= OnSwitchToggle;
+		if (toggler)
+			toggler.Toggle -= OnSwitchToggle;
 	}
 
 	private void OnDrawGizmos()

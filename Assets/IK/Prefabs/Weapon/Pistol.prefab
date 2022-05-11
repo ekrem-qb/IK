@@ -332,7 +332,7 @@ MonoBehaviour:
   isPickedUp: 0
   bulletPrefab: {fileID: 5670340682170588313, guid: b8a860d9d7a7f2c48a580325b7f1f267,
     type: 3}
-  recoilForce: 50
+  recoilForce: 0
   _ammo: 10
   left:
     transform: {fileID: 3718233501164052286}
