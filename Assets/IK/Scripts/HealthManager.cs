@@ -11,15 +11,21 @@ public class HealthManager : MonoBehaviour
 	[Range(MinHealth, MaxHealth)] [SerializeField]
 	private float _health = 100;
 
+	[Tooltip("Blood or another particle that plays, when weapon hits this HealthManager owner")]
 	public GameObject particlePrefab;
+
+	[Tooltip("Blood or another particle main color")]
 	public Color particleColor = Color.white;
+
 	public Text textHealth;
 
+	// Components that will be destroyed after death
 	private APRController _aprController;
 	private Enemy _enemy;
 	private PathFollower _pathFollower;
 	private Player _player;
 	private WeaponManager _weaponManager;
+
 	public Action Hit = () => { };
 
 	public float health

@@ -6,9 +6,16 @@ public class PathFollower : MonoBehaviour
 {
 	public List<Transform> path = new List<Transform>();
 	public bool loop = true;
+
+	[Tooltip("Minimum waiting interval between points")]
 	public float minInterval = 0.5f;
+
+	[Tooltip("Maximum waiting interval between points")]
 	public float maxInterval = 2;
-	[Range(0, 100)] public int probabilityPercent = 50;
+
+	[Tooltip("Probability of Enemy stop and waiting in random point")] [Range(0, 100)]
+	public int probabilityPercent = 50;
+
 	[HideInInspector] public int nextPoint = 0;
 	[ReadOnly] public bool isWaiting = false;
 	private Enemy _enemy;
@@ -24,7 +31,6 @@ public class PathFollower : MonoBehaviour
 		{
 			Vector3 target = path[nextPoint].position;
 			target.y = this.transform.position.y;
-
 
 			if (Vector3.Distance(this.transform.position, target) > 0.5f)
 			{
@@ -81,17 +87,21 @@ public class PathFollower : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		// Drawing path gizmo
+
 		Gizmos.color = Color.cyan;
 
 		for (int i = 0; i < path.Count; i++)
 		{
 			if (path[i])
 			{
+				// Drawing points
 				Gizmos.DrawSphere(path[i].position, 0.25f);
 				if (i < path.Count - 1)
 				{
 					if (path[i + 1])
 					{
+						// Drawing lines between points
 						Gizmos.DrawLine(path[i].position, path[i + 1].position);
 					}
 				}
@@ -102,6 +112,7 @@ public class PathFollower : MonoBehaviour
 		{
 			if (path[path.Count - 1] && path[0] && (path[path.Count - 1] != path[0]))
 			{
+				// Drawing connecting line between first and last point
 				Gizmos.DrawLine(path[path.Count - 1].position, path[0].position);
 			}
 		}

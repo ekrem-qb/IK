@@ -7,9 +7,17 @@ public class Mover : Ped
 
 	public Transform conveyorStart;
 	public BoxManager boxManager;
+
+	// Toggler that annoys Mover when player switch it on
 	public Toggler toggler;
+
+	// Target box for picking up 
 	private Box _box;
+
+	// Hand joints for attaching boxes 
 	private FixedJoint _jointLeft, _jointRight;
+
+	// Trigger for detecting boxes and conveyors
 	private SphereCollider _trigger;
 
 	private Box box
@@ -40,7 +48,7 @@ public class Mover : Ped
 		_trigger = this.GetComponent<SphereCollider>();
 		boxManager.boxes.CountChanged += OnBoxesCountChanged;
 
-		if(toggler)
+		if (toggler)
 			toggler.Toggle += OnSwitchToggle;
 
 		if (weaponManager.weapon)
@@ -59,6 +67,8 @@ public class Mover : Ped
 
 	private void OnDrawGizmos()
 	{
+		// Drawing line towards current target
+
 		if (pathFollower)
 		{
 			if (pathFollower.path.Count > 0)
@@ -144,10 +154,7 @@ public class Mover : Ped
 
 		aprController.isGrabbing = true;
 
-		//upper  left arm pose
 		aprController.armLeft.joint.targetRotation = new Quaternion(-0.88f, 0.58f, -0.8f, 1);
-
-		//upper  left arm pose
 		aprController.armRight.joint.targetRotation = Quaternion.Inverse(new Quaternion(0.88f, 0.58f, -0.8f, 1));
 
 		yield return new WaitForSeconds(pickUpDelay);

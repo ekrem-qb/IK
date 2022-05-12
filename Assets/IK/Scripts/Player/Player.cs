@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
 {
 	public readonly ObservableList<Target> nearTargets = new ObservableList<Target>();
 	private APRController _aprController;
+
+	// Trigger for detecting near targets and enemies
 	private SphereCollider _trigger;
 	private WeaponManager _weaponManager;
 
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
 		{
 			if (_weaponManager.weapon is Gun)
 			{
+				// Aiming guns towards enemies
+
 				Vector3 bodyBendingFactor = new Vector3(_aprController.body.transform.eulerAngles.x, _aprController.root.transform.localEulerAngles.y, 0);
 
 				nearTargets.SortByDistanceTo(_aprController.armLeft.transform.position);
@@ -37,6 +41,7 @@ public class Player : MonoBehaviour
 				Quaternion targetRotationLeft = Quaternion.LookRotation(nearestToArmLeft.selfTarget.position - _aprController.armLeft.transform.position);
 				Vector3 anglesLeft = targetRotationLeft.eulerAngles;
 				anglesLeft.y -= 270;
+				// Hands bending fix when aiming backwards relative to Player
 				if (Mathf.Abs(Quaternion.Dot(Quaternion.LookRotation(_aprController.root.transform.forward), targetRotationLeft)) < 0.5)
 				{
 					anglesLeft.x *= -1;
@@ -62,6 +67,7 @@ public class Player : MonoBehaviour
 				Quaternion targetRotationRight = Quaternion.LookRotation(nearestToArmRight.selfTarget.position - _aprController.armRight.transform.position);
 				Vector3 anglesRight = targetRotationRight.eulerAngles;
 				anglesRight.y -= 90;
+				// Hands bending fix when aiming backwards relative to Player
 				if (Mathf.Abs(Quaternion.Dot(Quaternion.LookRotation(_aprController.root.transform.forward), targetRotationRight)) < 0.5)
 				{
 					anglesRight.x *= -1;
@@ -102,6 +108,7 @@ public class Player : MonoBehaviour
 			{
 				if (!nearTargets.Contains(target))
 				{
+					// Setting self as a near Player for Target
 					target.player = this;
 					nearTargets.Add(target);
 				}
@@ -117,6 +124,7 @@ public class Player : MonoBehaviour
 			{
 				if (other.TryGetComponent(out Target target))
 				{
+					// Setting null as a near Player for Target, when going far away from it
 					target.player = null;
 					nearTargets.Remove(target);
 				}

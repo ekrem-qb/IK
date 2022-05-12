@@ -29,6 +29,8 @@ public abstract class Enemy : Target
 
 	protected virtual void FixedUpdate()
 	{
+		// Following Player
+
 		Vector3 target = player.transform.position;
 		target.y = this.transform.position.y;
 
@@ -97,7 +99,9 @@ public abstract class Enemy : Target
 
 	protected override void OnPlayerChanged(Player newPlayer)
 	{
+		// Disabling following Player if it goes far away and enabling if it is near 
 		base.OnPlayerChanged(newPlayer);
+		// Disabling following path if Player is near and enabling if it goes far away 
 		pathFollower.enabled = !newPlayer;
 	}
 }

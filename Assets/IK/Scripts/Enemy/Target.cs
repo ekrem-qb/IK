@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-	[Header("Target")] [SerializeField] [ReadOnly]
+	[Header("Target")] [Tooltip("Near Player, null if Player is far from this Target")] [SerializeField] [ReadOnly]
 	private Player _player;
 
+	// Target point for player aiming
 	[HideInInspector] public Transform selfTarget;
 
 	public Player player
